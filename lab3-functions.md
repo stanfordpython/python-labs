@@ -1,19 +1,17 @@
-# TODOs
-Varargs, var kwargs (writing and calling), bonus?
-
 # Lab 3.2: Functions
 
 ## Overview
-Build familiarity with writing and calling Python functions with different types of formal parameter types and explore nuances of function execution semantics.
+Build familiarity with writing and calling Python functions with different types of formal parameters and explore some nuances of function execution semantics.
 
 ### Time
 As with Lab 2.2, there is more material here than anyone could feasibly cover in eighty minutes.
 
-Expect to spend the first hour working on the lab, and the last twenty minutes of class working on Assignment 1.
+We will spend the first hour working on the lab, and the last twenty minutes of class working on Assignment 1. You are welcome to finish up the lab on your own time; however, that is not required.
 
 ## Function Definitions and Function Execution
 ### Basic Function
 Consider the following function definition:
+
 ```
 def foo(a, b):
     print("a:", a)
@@ -24,22 +22,23 @@ For each of the following function calls, determine whether the call is valid or
 
 ```
 foo()
-foo(0)
-foo(0, 1)
 foo(a=0, 1)
+foo(0, 1)
+foo(0, a=1)
+foo(0, 1, 1)
 foo(b=0, 1)
 foo(a=0, b=1)
 foo(b=1, a=0)
+foo(0)
 foo(0, a=0)
-foo(0, a=1)
-foo(0, 1, 1)
 foo(0, 1, b=1)
 ```
 
-Write at least two more function calls, not listed above, predict their output, and then check your guess. This is your chance to clarify your own understanding of function call semantics. Remember, the interactive interpreter is your friend! It is a wonderful tool for answering questions of the form "But what happens if I..."
+Write at least two more function calls not listed above, predict their output, and then check your guess. This is your chance to clarify your own understanding of function call semantics. Remember, the interactive interpreter is your friend! It is a great tool for answering questions of the form "But what happens if I..."
 
 ### Keyword Arguments
 Consider the following function definition:
+
 ```
 def bar(a, b=1, c='X', d=None):
     print("a:", a)
@@ -69,27 +68,34 @@ bar(5, 2, b=4)
 Write at least two more function calls, not listed above, predict their output, and then check your guess.
 
 ### Exploring Variadic Argument lists
+As before, consider the following function definition: 
+
 ```
 def baz(*args, **kwargs):
     print("args:", args)
     print("kwargs:", kwargs)
 ```
+
 For each of the following function calls, determine whether the call is valid or not. If it is valid, what will the output be?
+
 ```
 baz(2, 3, 5, 7)
 baz(1, 1, n=1)
 baz(n=1, 2, 3)
 baz()
 baz(cs="Computer Science", pd="Product Design")
+baz(cs="Computer Science", cs="CompSci", cs="CS")
 baz(5, 8, k=1, swap=2)
+baz(8, *[3, 4, 5], k=1, **{'a':5, 'b':'x'})
 ```
 
 Write at least two more function calls, not listed above, predict their output, and then check your guess.
 
-### *Optional:* Putting it all together
+### *Optional: Putting it all together*
 *If you feel confident that you understand how function calling works, you can skip this section. We suggest that you work through it anyway, but the final decision is up to you.*
 
-Often, however, we don't just see keyword arguments of variadic parameter lists in isolated situations.
+Often, however, we don't just see keyword arguments of variadic parameter lists in isolated situations. The following function definition, which incorporates positional parameters, keyword parameters, variadic positional parameters, and variadic keyword parameters, is not uncommon in Python. 
+
 ```
 def all_together(x, y, *nums, indent=True, spaces=4, **options):
     print("x:", x)
@@ -99,8 +105,25 @@ def all_together(x, y, *nums, indent=True, spaces=4, **options):
     print("spaces:", spaces)
     print("options:", options)
 ```
+
 For each of the following function calls, determine whether the call is valid or not. If it is valid, what will the output be?
 
+```
+all_together(2)
+all_together(2, 5, 7, indent=False)
+all_together(2, 5, 7, indent=None)
+all_together()
+all_together(indent=True, 3, 4, 5)
+all_together(**{'indent': False}, scope='maximum')
+all_together(dict(x=0, y=1), *range(10))
+all_together(**dict(x=0, y=1), *range(10))
+all_together(*range(10), **dict(x=0, y=1))
+all_together([1, 2], {3:4})
+all_together(8, 9, 10, *[2, 4, 6], x=7, spaces=0, **{'a':5, 'b':'x'})
+all_together(8, 9, 10, *[2, 4, 6], spaces=0, **{'a':[4,5], 'b':'x'})
+```
+
+Write at least two more function calls, not listed above, predict their output, and then check your guess.
 
 ## Writing Functions
 ### `speak_excitedly`
@@ -156,9 +179,9 @@ drive(True)   # => ?
 Read [Jeff Knupp's awesome post](https://www.jeffknupp.com/blog/2012/11/13/is-python-callbyvalue-or-callbyreference-neither/) about Python's pass-by-object-reference semantics. (Note! This post is technical, but you should spend time reading and understanding the material. If you understand Python's name binding, everything else will make sense.),
 
 Alternatively, for a more visual, less comprehensive overview of Python's parameter passing semantics, read:
-[Rob Heaton's narrative](http://robertheaton.com/2014/02/09/pythons-pass-by-object-reference-as-explained-by-philip-k-dick/), [Understanding Python Variables](http://foobarnbaz.com/2012/07/08/understanding-python-variables/) up through the header 'A bit about Python's memory management'
+[Rob Heaton's narrative](http://robertheaton.com/2014/02/09/pythons-pass-by-object-reference-as-explained-by-philip-k-dick/) about Python naming, or [Understanding Python Variables](http://foobarnbaz.com/2012/07/08/understanding-python-variables/) up through the header 'A bit about Python's memory management'
 
-If you're still confused, read through [this lovely StackOverflow explanation](http://stackoverflow.com/a/986145)
+If you're still confused, you can read through [this lovely StackOverflow explanation](http://stackoverflow.com/a/986145)
 
 ```
 def rename(arr):
