@@ -149,6 +149,26 @@ Suppose that we have a list `l = [0, 3, 4, 8]`. How can we use our `average` fun
 
 ### `make_table`
 
+Write a function to make a table given an arbitrary number of keyword arguments. The keys in the table should be left-justified, and the values in the table should be right justified. Pad appropriately with whitespace so that the table is aligned perfectly. As an example:
+
+```
+make_table(
+    fn="Sam",
+    ln="Redmond",
+    shirt="pink"
+)
+```
+
+should produce
+
+```
+===============
+|fn   |    Sam|
+|ln   |Redmond|
+|shirt|   pink|
+===============
+```
+
 ## Nuances
 ### Return
 Predict the output of the following code snippet. Then, run the code to check your hypothesis.
