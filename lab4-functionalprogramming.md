@@ -120,8 +120,8 @@ alpha('hEllO')  # => 20 = 5 ('E') + 15 ('O')
 
 def five_best(words):
     pass  # Your implementation here
+```
 
-```Python
 You may want to use `filter` too.
 
 ## Purely Functional Programming
