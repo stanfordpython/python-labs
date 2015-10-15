@@ -5,7 +5,7 @@
 
 Recall that lambda functions are anonymous, unnamed function objects created on the fly. As an example,
 
-```
+```Python
 (lambda val: val ** 2)(5)  # => 25
 (lambda x, y: x * y)(3, 8)  # => 24
 (lambda s: s.upper())('pytHoN')  # => 'PYTHON'
@@ -28,7 +28,8 @@ From  | To
 
 #### Using Multiple Iterables
 The `map` function can accept a variable number of iterables as arguments. Thus, `map(func, iterA, iterB, iterC)` is equivalent to `map(func, zip(iterA, iterB, iterC))`. This can be used as follows:
-```
+
+```Python
 map(int, ('10110', '0xCAFE', '42'), (2, 16, 10))  # generates 22, 51966, 42
 ```
 *This works because* `int` *takes an optional second argument specifying the conversion base*
@@ -52,11 +53,11 @@ From  | To
 There is another utility in the `functools` module called `reduce`. This function is well-explained by the [official documentation](https://docs.python.org/3.4/library/functools.html#functools.reduce):
 
 > `functools.reduce(function, iterable[, initializer])`
->>Apply `function` of two arguments cumulatively to the items of `iterable`, from left to right, so as to reduce the iterable to a single value. For example, `functools.reduce(lambda x, y: x+y, [1, 2, 3, 4, 5])` calculates `((((1+2)+3)+4)+5)`. The left argument, `x`, is the accumulated value and the right argument, `y`, is the update value from the sequence. If the optional `initializer` is present, it is placed before the items of the sequence in the calculation, and serves as a default when the iterable is empty. If `initializer` is not given and `iterable` contains only one item, the first item is returned.
+>> Apply `function` of two arguments cumulatively to the items of `iterable`, from left to right, so as to reduce the iterable to a single value. For example, `functools.reduce(lambda x, y: x+y, [1, 2, 3, 4, 5])` calculates `((((1+2)+3)+4)+5)`. The left argument, `x`, is the accumulated value and the right argument, `y`, is the update value from the sequence. If the optional `initializer` is present, it is placed before the items of the sequence in the calculation, and serves as a default when the iterable is empty. If `initializer` is not given and `iterable` contains only one item, the first item is returned.
 
 Use the `reduce` function to find the least common multiple of a arbitrary list of arguments. This can be accomplished in one line of Python.
 
-```
+```Python
 from functools import reduce
 
 def gcd(a, b):
@@ -73,7 +74,8 @@ def lcm(*args):
 #### Module: `operator`
 
 Frequently, you might find yourself writing anonymous functions similar to `lambda x, y: x + y`. This feels a little redundant, since Python already knows how to add two values together. Unfortunately, we can't just refer to `+` as a function - it's a builtin syntax element. To solve this problem, The `operator` module exports callable functions for each builtin operation. These operators can simplify some common uses of lambdas, and should be used wherever possible.
-```
+
+```Python
 import operator
 operator.add(1, 2)  # => 3
 operator.mul(3, 10)  # => 30
@@ -85,7 +87,7 @@ Take a moment to skim over the [official documentation for the `operator` module
 
 Use `reduce` in conjunction with a function from the `operator` module to compute factorials in one line of Python:
 
-```
+```Python
 from functools import reduce
 
 def fact(n):
@@ -98,7 +100,7 @@ Python defaults to ordering sequences by a default ordering. For instances, stri
 
 For example:
 
-```
+```Python
 words = ['pear', 'cabbage', 'apple', 'bananas']
 min(words)  # => 'apple'
 words.sort(key=lambda s: s[-1])  # Alternatively, key=operator.itemgetter(-1)
@@ -109,7 +111,7 @@ min(words, key=lambda s: s[1::2])  # What will this value be?
 
 Write a function to return the five words with the highest alphanumeric score of uppercase letters:
 
-```
+```Python
 def alpha_score(upper_letters):
     return sum(map(lambda l: 1 + ord(l) - ord('A'), upper_letters))
 
@@ -118,7 +120,8 @@ alpha('hEllO')  # => 20 = 5 ('E') + 15 ('O')
 
 def five_best(words):
     pass  # Your implementation here
-```
+
+```Python
 You may want to use `filter` too.
 
 ## Purely Functional Programming
@@ -128,19 +131,21 @@ As a purely academic exercise, let's investigate how we would use Python in a pu
 ### Replacing Control Flow
 The first thing that needs to go are control flow statements - `if/elif/else`. Luckily, Python, like many other languages, short circuits boolean expressions. This means that we can rewrite
 
-```
+```Python
 if <cond1>:   func1()
 elif <cond2>: func2()
 else:         func3()
 ```
+
 as the equivalent expression
-```
+
+```Python
 (<cond1> and func1()) or (<cond2> and func2()) or (func3())
 ```
 
 Rewrite the following code block without using `if/elif/else`:
 
-```
+```Python
 if s == 0:  s += 1
 else:       s -= 1
 ```
@@ -149,7 +154,7 @@ else:       s -= 1
 
 However, we would still need return values to do anything useful. Since lambdas implicitly return their expression, we will use lambdas to eliminate return statements. We can bind these temporary conditional conjunctive normal form expressions to a lambda function.
 
-```
+```Python
 echo = lambda arg: arg  # In practice, you should never bind lambdas to local names
 cond_fn = lambda x: (x==1 and echo("one")) \
                  or (x==2 and echo("two")) \
@@ -160,24 +165,27 @@ cond_fn = lambda x: (x==1 and echo("one")) \
 
 Getting rid of loops is easy! We can use `map` over a sequence, instead of looping over the sequence. For example:
 
-```
+```Python
 for e in lst:
     func(e)
 ```
+
 becomes
-```
+
+```Python
 map(func, lst)
 ```
 
 ### Replacing Action Sequence
 Most programs take the form a sequence of steps, written out line by line. By using an apply function and map, we can replicate a sequence of function calls.
 
-```
+```Python
 apply = lambda f: f()
 
 # Suppose f1, f2, f3 are actions
 map(apply, [f1, f2, f3])
 ```
+
 Our main function can be a single call to such a map expression.
 
 #### Note
@@ -201,7 +209,8 @@ it = iter(range(100))
 ```
 
 What is the output of each of the following lines of code?
-```
+
+```Python
 next(it)  # => ??
 37 in it  # => ??
 next(it)  # => ??
@@ -214,7 +223,8 @@ With a partner, discuss why we see these results.
 Python ships with a spectacular module for manipulating iterators called `itertools`. Take a moment to read through the [documentation page for itertools](https://docs.python.org/3.4/library/itertools.html).
 
 Predict the output of the following pieces of code:
-```
+
+```Python
 import itertools
 import operator
 
@@ -244,7 +254,7 @@ For each of the following scenarios, discuss whether it would be more appropriat
 
 Write a infinite generator that successively yields the triangle numbers `0, 1, 3, 6, 10, ...`
 
-```
+```Python
 def generate_triangles():
     pass  # Your implementation here
 ```
@@ -253,7 +263,7 @@ def generate_triangles():
 
 In class, we quickly showed a highly unusual way to generate primes. Take some time to read through it again, and talk with a partner about how and why this successfully generates prime numbers.
 
-```
+```Python
 def primes_under(n):
     tests = []
     for i in range(2, n):
@@ -266,7 +276,7 @@ def primes_under(n):
 
 In class, we saw that functions can be defined within the scope of another function (recall from Week 3 that functions introduce new scopes via a new local symbol table). An inner function is only in scope inside of the outer function, so this type of function definition is usually only used when the inner function is being returned to the outside world.
 
-```
+```Python
 def outer():
     def inner(a):
         return a
@@ -285,7 +295,7 @@ f(12)  # => 12
 ### Closure
 As we saw above, the definition of the inner function occurs during the execution of the outer function. This implies that a nested function has access to the environment in which it was defined. Therefore, it is possible to return an inner function that remembers the state of the outer function, even after the outer function has completed execution. This model is referred to as a closure.
 
-```
+```Python
 def make_adder(n):
     def add_n(m):  # Captures the outer variable in a closure
         return m + n
@@ -302,7 +312,8 @@ add2(5)  # => 7
 ```
 
 The information in a closure is available in the function's `__closure__` attribute. For example:
-```
+
+```Python
 closure = add1.__closure__
 cell0 = closure[0]
 cell0.cell_contents  # => 1 (this is the n = 1 passed into make_adder)
@@ -310,14 +321,15 @@ cell0.cell_contents  # => 1 (this is the n = 1 passed into make_adder)
 
 As another example, consider the function:
 
-```
+```Python
 def foo(a, b, c=-1, *d, e=-2, f=-3, **g):
     def wraps():
         print(a, c, e, g)        
 ``` 
+
 The `print` call induces a closure of `wraps` over `a`, `c`, `e`, `g` from the enclosing scope of `foo`. Or, you can imagine that wraps "knows" that it will need `a`, `c`, `e`, and `g` from the enclosing scope, so at the time `wraps` is defined, Python takes a "screenshot" of these variables from the enclosing scope and stores references to the underlying objects in the `__closure__` attribute of the `wraps` function.
 
-```
+```Python
 w = foo(1, 2, 3, 4, 5, e=6, f=7, y=2, z=3)
 list(map(lambda cell: cell.cell_contents, w.__closure__))
 # = > [1, 3, 6, {'y': 2, 'z': 3}]
@@ -328,13 +340,16 @@ list(map(lambda cell: cell.cell_contents, w.__closure__))
 Recall that a decorator is a special type of function that accepts a function as an argument and (usually) returns a modified version of that function. In class, we saw the `debug` decorator - review the slides if you still feel uncomfortable with the idea of a decorator.
 
 Furthermore, recall that the `@decorator` syntax is syntactic sugar.
-```
+
+```Python
 @decorator
 def fn():
     pass
 ```
+
 is equivalent to
-```
+
+```Python
 def fn():
     pass
 fn = decorator(fn)
@@ -345,7 +360,7 @@ The `debug` decorator we wrote in class isn't very good. It doesn't tell us whic
 
 Use function attributes to improve our `debug` decorator into a `print_args` decorator that is as good as you can make it.
 
-```
+```Python
 def print_args(function):
     def wrapper(*args, **kwargs):
         # (1) You could do something here
@@ -363,12 +378,14 @@ There are a lot of subtleties to this function, since functions can be called in
 ### Automatic Caching
 Write a decorator `cache` that will automatically cache any calls to the decorated function. You can assume that all arguments passed are hashable types.
 
-```
+```Python
 def cache(function):
     pass  # Your implementation here
 ```
+
 For example:
-```
+
+```Python
 @cache
 def fib(n):
     return fib(n-1) + fib(n-2) if n > 2 else 1
@@ -388,7 +405,7 @@ This is actually implemented as part of the language in `functools.lru_cache`
 
 Recall that functions in Python can be optionally annotated by semantically-useless but structurally-valuable type annotations. For example:
 
-```
+```Python
 def foo(a: int, b: str) -> bool:
     return b[a] == 'X'
 
@@ -397,13 +414,14 @@ foo.__annotations__  # => {'a': int, 'b': str, 'return': bool}
 
 Write a static type checker, implemented as a decorator, that enforces the parameter types and return type of Python objects.
 
-```
+```Python
 def enforce_types(function):
     pass  # Your implementation here
 ```
 
 For example:
-```
+
+```Python
 @enforce_types
 def foo(a: int, b: str) -> bool:
     if a == -1:
@@ -424,7 +442,8 @@ There are lots of nuances to this function. When you think you're done, check wi
 Extend the `enforce_types` decorator to accept a keyword argument `severity` which modifies the extent of the enforcement. If `severity == 0`, disable type checking. If `severity == 1` (which is the default), just print a message if there are any type violations. If `severity == 2`, raise an Exception if there are any type violations.
 
 For example:
-```
+
+```Python
 @enforce_types(severity=2)
 def bar(a: list, b: str) -> int:
     return 0
@@ -433,7 +452,6 @@ def bar(a: list, b: str) -> int:
 def baz(a: bool, b: str) -> str:
     return ''
 ```
-
 
 ## Credit
 Credit goes to a lot of websites, whose names I've unfortunately forgotten along the way. Credit to everyone!
