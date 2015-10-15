@@ -19,7 +19,7 @@ Recall from class that `map(func, iterable)` applies a function over elements of
 Write statements using `map` that convert the following sequences from the left column to the right column:
 
 From  | To
-- | -
+--- | ---
 `['12', '-2', '0']` | `[12, -2, 0]`
 `['hello', 'world']`  | `[5, 5]`
 `['hello', 'world']`|`['olleh', 'dlrow']`
@@ -40,7 +40,7 @@ Recall from class that `filter(pref, iterable)` keeps only those elements from a
 Write statements using `filter` that convert the following sequences from the left column to the right column:
 
 From  | To
-- | -
+--- | ---
 `['12', '-2', '0']` | `[12, 0]`
 `['hello', 'world']`  | `[5, 5]`
 `['Stanford', 'Cal', 'UCLA']`|`['Stanford']`
@@ -307,6 +307,21 @@ closure = add1.__closure__
 cell0 = closure[0]
 cell0.cell_contents  # => 1 (this is the n = 1 passed into make_adder)
 ``` 
+
+As another example, consider the function:
+
+```
+def foo(a, b, c=-1, *d, e=-2, f=-3, **g):
+    def wraps():
+        print(a, c, e, g)        
+``` 
+The `print` call induces a closure of `wraps` over `a`, `c`, `e`, `g` from the enclosing scope of `foo`. Or, you can imagine that wraps "knows" that it will need `a`, `c`, `e`, and `g` from the enclosing scope, so at the time `wraps` is defined, Python takes a "screenshot" of these variables from the enclosing scope and stores references to the underlying objects in the `__closure__` attribute of the `wraps` function.
+
+```
+w = foo(1, 2, 3, 4, 5, e=6, f=7, y=2, z=3)
+list(map(lambda cell: cell.cell_contents, w.__closure__))
+# = > [1, 3, 6, {'y': 2, 'z': 3}]
+```
 
 ## Building Decorators
 
