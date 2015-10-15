@@ -36,7 +36,7 @@ map(int, ('10110', '0xCAFE', '42'), (2, 16, 10))  # generates 22, 51966, 42
 
 ### Filter
 
-Recall from class that `filter(pref, iterable)` keeps only those elements from an iterable that satisfy a predicate function.
+Recall from class that `filter(pred, iterable)` keeps only those elements from an iterable that satisfy a predicate function.
 
 Write statements using `filter` that convert the following sequences from the left column to the right column:
 
@@ -53,7 +53,7 @@ From  | To
 There is another utility in the `functools` module called `reduce`. This function is well-explained by the [official documentation](https://docs.python.org/3.4/library/functools.html#functools.reduce):
 
 > `functools.reduce(function, iterable[, initializer])`
->> Apply `function` of two arguments cumulatively to the items of `iterable`, from left to right, so as to reduce the iterable to a single value. For example, `functools.reduce(lambda x, y: x+y, [1, 2, 3, 4, 5])` calculates `((((1+2)+3)+4)+5)`. The left argument, `x`, is the accumulated value and the right argument, `y`, is the update value from the sequence. If the optional `initializer` is present, it is placed before the items of the sequence in the calculation, and serves as a default when the iterable is empty. If `initializer` is not given and `iterable` contains only one item, the first item is returned.
+>> Apply `function` of two arguments cumulatively to the items of `iterable`, from left to right, so as to reduce the iterable to a single value. For example, `functools.reduce(lambda x, y: x + y, [1, 2, 3, 4, 5])` calculates `((((1 + 2) + 3) + 4) + 5)`. The left argument, `x`, is the accumulated value and the right argument, `y`, is the update value from the sequence. If the optional `initializer` is present, it is placed before the items of the sequence in the calculation, and serves as a default when the iterable is empty. If `initializer` is not given and `iterable` contains only one item, the first item is returned.
 
 Use the `reduce` function to find the least common multiple of a arbitrary list of arguments. This can be accomplished in one line of Python.
 
@@ -91,12 +91,15 @@ Use `reduce` in conjunction with a function from the `operator` module to comput
 from functools import reduce
 
 def fact(n):
-    # Your implementation here: Use reduce, an operator, and only one line! 
+    # Your implementation here: Use reduce, an operator, and only one line!
+
+fact(3)  # => 6
+fact(7)  # => 5040
 ```
 
 #### Custom comparison for `sort`, `max`, and `min`
 
-Python defaults to ordering sequences by a default ordering. For instances, strings sort alphabetically, and tuples sort lexicographically. Sometimes, however, we need to sort based on a custom key value. In Python, we can supply an optional `key` argument to `sorted(seq)`, `max(seq)`, `min(seq)`, and `seq.sort()` which determines the values used for primarily ordering elements in a sequence.
+Python defaults to ordering sequences by a default ordering. For instances, strings sort alphabetically, and tuples sort lexicographically. Sometimes, however, we need to sort based on a custom key value. In Python, we can supply an optional `key` argument to `sorted(seq)`, `max(seq)`, `min(seq)`, and `seq.sort()` to determine the values used for ordering elements in a sequence. In Python, these default sorting tools are guaranteed to be stable.
 
 For example:
 
@@ -109,24 +112,29 @@ max(words, key=len)  # 'cabbage' ... Why not 'bananas'?
 min(words, key=lambda s: s[1::2])  # What will this value be?
 ```
 
-Write a function to return the five words with the highest alphanumeric score of uppercase letters:
+
+Write a function to return the two words with the highest alphanumeric score of uppercase letters:
 
 ```Python
 def alpha_score(upper_letters):
+    """Computers the alphanumeric sum of letters in a string.
+    Prerequisite: upper_letters is composed entirely of capital letters.
+    """
     return sum(map(lambda l: 1 + ord(l) - ord('A'), upper_letters))
 
-alpha('ABC')  # => 6 = 1 ('A') + 2 ('B') + 3 ('C')
-alpha('hEllO')  # => 20 = 5 ('E') + 15 ('O')
+alpha_score('ABC')  # => 6 = 1 ('A') + 2 ('B') + 3 ('C')
 
-def five_best(words):
+def two_best(words):
     pass  # Your implementation here
+
+two_best(['hEllO', 'wOrLD', 'i', 'aM', 'PyThOn'])
 ```
 
 You may want to use `filter` too.
 
 ## Purely Functional Programming
 
-As a purely academic exercise, let's investigate how we would use Python in a purely functional programming paradigm. Ultimately, we will try to remove statements and replace them with expressions.
+As a solely academic thought exercise, let's investigate how we would use Python in a purely functional programming paradigm. Ultimately, we will try to remove statements and replace them with expressions.
 
 ### Replacing Control Flow
 The first thing that needs to go are control flow statements - `if/elif/else`. Luckily, Python, like many other languages, short circuits boolean expressions. This means that we can rewrite
@@ -146,8 +154,12 @@ as the equivalent expression
 Rewrite the following code block without using `if/elif/else`:
 
 ```Python
-if s == 0:  s += 1
-else:       s -= 1
+if score == 1:
+    print("Winner")
+elif score == -1:
+    print("Loser")
+else:
+    print("Tied")
 ```
 
 ### Replacing Returns
@@ -163,7 +175,7 @@ cond_fn = lambda x: (x==1 and echo("one")) \
 
 ### Replacing Loops
 
-Getting rid of loops is easy! We can use `map` over a sequence, instead of looping over the sequence. For example:
+Getting rid of loops is easy! We can `map` over a sequence instead of looping over the sequence. For example:
 
 ```Python
 for e in lst:
@@ -177,19 +189,19 @@ map(func, lst)
 ```
 
 ### Replacing Action Sequence
-Most programs take the form a sequence of steps, written out line by line. By using an apply function and map, we can replicate a sequence of function calls.
+Most programs take the form a sequence of steps, written out line by line. By using a `just_do_it` function and `map`, we can replicate a sequence of function calls.
 
 ```Python
-apply = lambda f: f()
+just_do_it = lambda f: f()
 
 # Suppose f1, f2, f3 are actions
-map(apply, [f1, f2, f3])
+map(just_do_it, [f1, f2, f3])
 ```
 
-Our main function can be a single call to such a map expression.
+Our main program execution can then be a single call to such a map expression.
 
 #### Note
-In fact, Python has an `eval` and `exec` function builtin. Don't use them! They are dangerous.
+In fact, Python has `eval` and `exec` functions builtin. Don't use them! They are dangerous.
 
 ### Closing
 Python supports functional programming paradigms, but as you can see, in some cases FP introduces unnecessary complexity.
@@ -283,13 +295,12 @@ def outer():
     return inner
 
 f = outer()
-f  # => <function inner at 0x1004340c8>
+print(f)  # <function outer.<locals>.inner at 0x1044b61e0>
 f(10)  # => 10
 
 f2 = outer()
-f2  # => <function inner at 0x1004341b8> ... Different from above!
+print(f2)  # <function outer.<locals>.inner at 0x1044b6268> (Different from above!)
 f2(11)  # => 11
-f(12)  # => 12
 ```
 
 ### Closure
@@ -297,7 +308,7 @@ As we saw above, the definition of the inner function occurs during the executio
 
 ```Python
 def make_adder(n):
-    def add_n(m):  # Captures the outer variable in a closure
+    def add_n(m):  # Captures the outer variable `n` in a closure
         return m + n
     return add_n
 
@@ -306,7 +317,7 @@ print(add1)  # <function make_adder.<locals>.add_n at 0x103edf8c8>
 add1(4)  # => 4
 add1(5)  # => 6
 add2 = make_adder(2)
-print(add2)  # <function make_adder.<locals>.add_n at 0x103ecbf28> (different from above!)
+print(add2)  # <function make_adder.<locals>.add_n at 0x103ecbf28>
 add2(4)  # => 6
 add2(5)  # => 7
 ```
@@ -356,7 +367,7 @@ fn = decorator(fn)
 ```
 
 ### `print_args`
-The `debug` decorator we wrote in class isn't very good. It doesn't tell us which function is being called, and it just gives us a tuple of positional arguments and a dictionary of keywords arguments - it doesn't even know what the names of the positional arguments are! If the default arguments aren't overridden, it won't show us their value either.
+The `debug` decorator we wrote in class isn't very good. It doesn't tell us which function is being called, and it just gives us a tuple of positional arguments and a dictionary of keyword arguments - it doesn't even know what the names of the positional arguments are! If the default arguments aren't overridden, it won't show us their value either.
 
 Use function attributes to improve our `debug` decorator into a `print_args` decorator that is as good as you can make it.
 
@@ -370,13 +381,13 @@ def print_args(function):
     return wrapper
 ```
 
-Hint: Consider using the attributes `fn.__name__`, `fn.__defaults__`, and `foo.__code__`. You'll have to investigate all of these attributes, but I will say that the last one is a code object which contains a number of useful attributes - for instance, `fn.__code__.co_varnames`. Check it out!
+Hint: Consider using the attributes `fn.__name__` and `foo.__code__`. You'll have to investigate these attributes, but I will say that the last one is `.__code__` code object which contains a number of useful attributes - for instance, `fn.__code__.co_varnames`. Check it out!
 
 #### Note
-There are a lot of subtleties to this function, since functions can be called in a number of different ways. If you're interested in other ways to customize this function, look at `fn.__kwdefaults__` (for keyword-only default arguments) and other attributes of `fn.__code__`.
+There are a lot of subtleties to this function, since functions can be called in a number of different ways. How does your `print_args` handle keyword arguments or even keyword-only arguments? Variadic positional arguments? Variadic keyword arguments? For more customization, look at `fn.__defaults__`, `fn.__kwdefaults__`, as well as other attributes of `fn.__code__`.
 
 ### Automatic Caching
-Write a decorator `cache` that will automatically cache any calls to the decorated function. You can assume that all arguments passed are hashable types.
+Write a decorator `cache` that will automatically cache any calls to the decorated function. You can assume that all arguments passed to the decorated function will always be hashable types.
 
 ```Python
 def cache(function):
@@ -393,7 +404,7 @@ def fib(n):
 fib(10)  # 55 (takes a moment to execute)
 fib(10)  # 55 (returns immediately)
 fib(100) # doesn't take forever
-fib(500) # doesn't raise RecursionError
+fib(400) # doesn't raise RuntimeError
 ```
 
 Hint: You can set arbitrary attributes on a function (e.g. `fn._cache`). When you do so, the attribute-value pair also gets inserted into `fn.__dict__`. Take a look for yourself. Are the extra attributes and `.__dict__` always in sync?
@@ -434,7 +445,9 @@ foo(1, 4)  # prints "Invalid argument type for b: expected str, received int
 foo(-1, '')  # prints "Invalid return type: expected bool, received str
 ```
 
-There are lots of nuances to this function. When you think you're done, check with us.
+There are lots of nuances to this function. What happens if some annotations are missing? How are keyword arguments and variadic arguments handled? What happens if the expected type of a parameter is not a primitive type? Can you annotate a function to describe that a parameter should be a list of strings? A tuple of (str, bool) pairs? A dictionary mapping strings to lists of ints?
+
+If you think you're done, show your decorator to us. 
 
 #### Bonus: Optional Debug Argument
 *Warning! This extension is very hard*
