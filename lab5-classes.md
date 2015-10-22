@@ -16,13 +16,13 @@ class Course:
 
 We can import this class definition and create an instance of the class in the sandbox, by running:
 ```
->>> from courses import course
->>> python_course = Course(“CS”, “92SI”, “hap.py coder: The python programming language”)
+>>> from courses import Course
+>>> python_course = Course("CS", "92SI", "hap.py coder: The python programming language")
 ```
 
 Now we can play around with this instance of the class in our console:
 ```
->>> from courses import course
+>>> from courses import Course
 >>> python_course = Course("CS", "92SI", "hap.py coder: the python programming language")
 >>> python_course.title
 'hap.py coder: the python programming language'
