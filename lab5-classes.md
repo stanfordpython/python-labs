@@ -79,7 +79,7 @@ Let's add more functionality to the `Course` class!
 
 * Add a property `students` to the `Course` class that tracks whether students are here or not.
 
-* Create a method `mark_attendance(**students)` that takes a splat operator `students` to mark students as present or absent.
+* Create a method `mark_attendance(*students)` that takes a splat operator `students` to mark students as present or absent.
 
 * Create a method `is_present(student)` that takes a student’s name as a parameter and returns `True` if the student is present and `False` otherwise.
 
