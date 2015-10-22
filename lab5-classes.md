@@ -71,7 +71,7 @@ After creating the following course instances, consider the statements below:
 5. a == b
 ```
 
-**2.** Note any inconsistences that you noticed in a comment at the top of your `courses.py` file. (You can annotate your comments with `2-1` if you noticed an inconsistency with the first statement above)
+**2.** Note any inconsistences that you noticed in a comment at the top of your `courses.py` file. (You can annotate your comments with `2.1` if you noticed an inconsistency with the first statement above)
 
 
 ## More properties and methods
@@ -94,11 +94,7 @@ Now we want to implement functionality to determine if a course is a prerequsite
 True
 >>> cs107 > cs110
 False
->>> cs142 > cs107
-False
 ```
-
-Note the last case represents the default return value when a course hasn't been initialized yet.
 
 To accomplish this, we'd like you to implement a magic method `__le__` that will add functionality to determine if a course is a prerequisite for another course. Read up on [total ordering](https://docs.python.org/3.4/library/functools.html#functools.total_ordering) to figure out what `__le__` should return based on the argument you pass in.
 
@@ -114,7 +110,7 @@ Allow the class to take a splat argument `instructors` that will take any number
 Modify the way you track attendance in the `Course` class to map a Python date object (you can use the `datetime` module) to a data structure tracking what students are there on that day.
 
 ## Timed key-value store
-We’ll be building a really interesting problem straight out of an interview [programming challenge from [Stripe](https://stripe.com/).
+We’ll be building a really interesting problem straight out of an interview programming challenge from [Stripe](https://stripe.com/).
 
 In a sentence, we’ll be building a key-value store (think Dictionary or HashMap) that has a `get` method that takes an optional second parameter as a `time` object in Python to return the most recent value before that period in time. If no key-value pair was added to the map before that period in time, return `None`.
 
