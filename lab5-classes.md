@@ -102,12 +102,12 @@ Note the last case represents the default return value when a course hasn't been
 
 To accomplish this, we'd like you to implement a magic method `__le__` that will add functionality to determine if a course is a prerequisite for another course. Read up on [total ordering](https://docs.python.org/3.4/library/functools.html#functools.total_ordering) to figure out what `__le__` should return based on the argument you pass in.
 
-To give a few hints on how to add this piece of functionality might be implemented, we would encourage you to think about using a class variable to represent some sort of ordering amongs the classes that get initialized. Every call to the `Course` `__init` method might want to order the class variable in a way that `__le__` knows exactly how to compare the two courses it is given.
+To give a few hints on how to add this piece of functionality might be implemented, we would encourage you to think about using a class variable to represent some sort of ordering amongs the classes that get initialized. Every call to the `Course` `__init` method might want to order the class variable in a way that `__le__` knows exactly how to compare the two courses it is given. Check out the slides or this [awesome blog post](http://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide) for a refresher on Python namespacing and class variables.
 
-We encourage you to think about the best (and most space + time efficient) way to accomplish such a task - perhaps you might investigate creating another class just to store the relations between the instances of `Course`
+We encourage you to think about the most space and time-efficient way to accomplish this bit of functionality - perhaps you might investigate creating another class just to store the relations between the instances of `Course`
 
 ## Bonus
-Try out the following two tasks if there's more than 30 minutes left in lab!
+Try out the following two tasks if there's more than `30` minutes left in lab!
 
 Allow the class to take a splat argument `instructors` that will take any number of strings and store them as a list of instructors.
 
