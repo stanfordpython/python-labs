@@ -3,6 +3,11 @@
 ## Congratulations!
 You've made it through week 6! Midterms are almost over (*cough* CS107 *cough*), and we've more or less finished discussing Python language syntax. At this point, you know most of the important stuff about Python. We'll spend more time in class going over useful builtin- or third-party modules that are omnipresent in the Python ecosystem. However, as far as the language itself goes, you have all become skilled in the art of the Python language.
 
+## Feedback
+Before you begin the lab, please take a moment to give us feedback on how we're doing.
+
+[Click Me! I'm a Typeform =D](https://stanfordpython.typeform.com/to/kehII6)
+
 ## Overview
 Generally, these labs have focused on exploring nuances of the Python language - whether the syntax, semantics, or style of thinking. However, since we've know almost wrapped up talking about the language, labs will become a period of time for you to build something awesome.
 
