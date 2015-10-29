@@ -105,7 +105,7 @@ response.content
 # returns an iterator over the server response - useful if the server responds with a lot of data.
 response.iter_content()
 
-# If the content represents JSON-encoded data, return the data decoded into a Python dictionary
+# If and only if the content represents JSON-encoded data, return the data decoded into a Python dictionary
 response.json()
 
 # Returns true if and only if there were no errors in client-server communication. 
