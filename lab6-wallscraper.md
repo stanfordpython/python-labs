@@ -13,9 +13,6 @@ Generally, these labs have focused on exploring nuances of the Python language -
 
 In particular, today you will write a program that automatically downloads the top wallpaper from reddit every night to your local computer, and optionally sets it as your desktop background. So cool!
 
-### Technical Overview
-We will use the requests module to fetch data from Reddit and save it to disk.
-
 ## Getting Set Up
 ### Summary
 Before we begin, we need to get our development environments properly working. Because requests is a third-party library, we first need to install it using `pip3`. Let's create a new virtual environment so that all of our installations for this project will live in one isolated place.
