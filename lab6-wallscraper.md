@@ -240,7 +240,7 @@ class Post:
     attributes = {'author', 'created', 'domain', 'downs', 'id', 'is_self', 'num_comments', 'over_18', 'score', 'selftext', 'subreddit', 'title', 'ups', 'url'}
 ```
 
-Write an `__init__(self, info)` method that takes a dictionary as an argument. Create a dictionary instance variable named `self.info` that stores the key-value pairs from the argument info, if and only if the key is in `Post.attributes`.
+Write an `__init__(self, info)` method that takes a dictionary as an argument. Create a dictionary instance variable named `self.info` that stores the key-value pairs from the argument info using the class variable `Post.attributes` as a filter.
 
 In essence, we're filtering out the uninteresting attributes. For example,
 
@@ -265,7 +265,9 @@ print(post.info)
 }
 ```
 
-Write a `__str__(self)` method that returns a string representing a human-readable form of a post. We suggest using a format like `"{title} ({score}): {url}"`. What happens if these attributes aren't in `Post.attributes`?
+Implement the magic method `__str__(self)` that returns a string representing a human-readable form of a post. (This will allow us to print out post objects to the console). We suggest printing the posts in the following format: `"{title} ({score}): {url}"` (e.g. `print(post)` using the above object could yield: `Mech Warfare (1652): http://i.imgur.com/1O9JfRC.jp`). 
+
+What should you print out if one of these attributes are undefined?
 
 Write a method `is_image(self)` which returns true if and only if `is_self` is False, `selftext` is empty,  `over_18` is False, and either `domain` ends in `imgur.com` (because we love imgur) or `url` ends in `.jpg`, `.jpeg`, or `.png`.
 
