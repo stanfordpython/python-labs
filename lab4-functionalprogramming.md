@@ -43,7 +43,7 @@ Write statements using `filter` that convert the following sequences from the le
 From  | To
 --- | ---
 `['12', '-2', '0']` | `[12, 0]`
-`['hello', 'world']`  | `[5, 5]`
+`['hello', 'world']`  | `['world']`
 `['Stanford', 'Cal', 'UCLA']`|`['Stanford']`
 `range(20)`|`[0, 3, 5, 6, 9, 10, 12, 15, 18]`
 
