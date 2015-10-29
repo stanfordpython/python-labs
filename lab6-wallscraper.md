@@ -1,7 +1,7 @@
 # Python Week 6
 
 ## Congratulations!
-You've made it through week 6! Midterms are almost over (*cough* CS107 *cough*), and we've more or less finished discussing Python language syntax. At this point, you know most of the important stuff about Python. We'll spend more time in class going over useful builtin- or third-party modules that are omnipresent in the Python ecosystem. However, as far as the language itself goes, you have all become skilled in the art of the Python language.
+You've made it through week 6! Midterms are almost over (*cough* CS107 *cough*), and we've more or less finished discussing the syntax of the Python language. At this point, you know most of the important stuff about the language itself. Therefore, we'll spend most of the rest of the time in class going over useful builtin- or third-party modules that are omnipresent in the Python ecosystem. However, as far as the language itself goes, you have all become skilled in the art of the Python language.
 
 ## Feedback
 Before you begin the lab, please take a moment to give us feedback on how we're doing.
