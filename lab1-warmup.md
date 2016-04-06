@@ -73,7 +73,7 @@ Want to be fancy (challenge)? Try to print the final temperature to two decimal 
 
 ## Done Early?
 
-Skim [Python’s Style Guide](https://www.python.org/dev/peps/pep-0008/), keeping the Zen of Python in mind.Feel free to skip portions of the style guide that cover material we haven’t yet touched on in this class, but it's always good to start with an overview of good style.
+Skim [Python’s Style Guide](https://www.python.org/dev/peps/pep-0008/), keeping the Zen of Python in mind. Feel free to skip portions of the style guide that cover material we haven’t yet touched on in this class. Nevertheless, itcan't hurt to start with an overview of good style.
 
 ## Submitting Labs
 
