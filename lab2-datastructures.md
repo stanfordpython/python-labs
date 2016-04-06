@@ -134,11 +134,11 @@ s[0] += 'a'
 print(s)
 
 s = [[]] * 3
-s[0] += [1]  # Syntactic sugar for .extend(iter)
+s[0] += [1]
 print(s)
 ```
 
-Why is this happening? Consider using the `id` function to investigate further.
+Why is this happening? Consider using the `id` function to investigate further. What happens when we replace the second-to-last line with `s[0] = s[0] + [1]`?
 
 ### Tuples
 
