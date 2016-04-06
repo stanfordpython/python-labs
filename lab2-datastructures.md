@@ -10,7 +10,7 @@ The second half focuses more on using data structures to solve some interesting 
 
 You're welcome to work in groups or individually. Remember to have some fun! Make friends and maybe relax a little too. If you want to cue up any songs to the playlist, let us know!
 
-**Note: These labs are *designed* to be long! You shouldn't be able to finish all the problems in one class period. Work through as much as you can in the time allotted. The extra problems are intended to be extra practice, if you want to hone your Python skills even more.**
+**Note: These labs are *designed* to be long! You shouldn't be able to finish all the problems in one class period. Work through as much as you can in the time allotted, but also feel free to skip from question to question freely. The extra problems are intended to be extra practice, if you want to hone your Python skills even more.**
 
 Above all, have fun playing with Python! Enjoy.
 
