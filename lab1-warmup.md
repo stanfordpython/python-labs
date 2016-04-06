@@ -71,50 +71,12 @@ It is -12.222222222222221 degrees Celsius
 
 Want to be fancy (challenge)? Try to print the final temperature to two decimal places. *Hint: Take a look at the [`round()`](https://docs.python.org/3.4/library/functions.html#round) function. Isn't Python great?*
 
-### Efficient Phrases
-
-The following phrases are all 'efficient'
-
-```
-UNCONSCIOUS OMISSION
-COLD WINDOWSILL
-INSIDIOUS DOMINION
-VOLUMINOUS PILLOWS
-VIVID DISILLUSIONS
-```
-
-but none of the following phrases are 'efficient':
-
-```
-INSENSIBLE EXCLUSION
-UNUSUAL OBLIGATION
-CHILLY WINDOW LEDGE
-ANCIENT APARTMENT
-CAPACIOUS CUSHIONS
-```
-
-What makes a phrase efficient or inefficient? Only scroll down once you have a guess.
-
----
-
-Efficient phrases are those for which every letter is drawn from `BCDGIJLMNOPSUVWZ` - that is, every letter can be drawn with a single stroke.
-
-Your task is to write a function, `is_efficient_phrase`, to determine if a given phrase is efficient. For example,
-
-```
-is_efficient_phrase("UNCONSCIOUS OMISSION")  # => True
-is_efficient_phrase("ANCIENT APARTMENT")     # => False
-```
-
-What approaches are there to this problem? Again, chat with a neighbor about the most 'pythonic' way you can think of.
-
-*Credit to [Puzzling.SE](http://puzzling.stackexchange.com/questions/17079/what-is-an-efficient-phrase/17081)*
-
 ## Done Early?
 
 Skim [Python’s Style Guide](https://www.python.org/dev/peps/pep-0008/), keeping the Zen of Python in mind.Feel free to skip portions of the style guide that cover material we haven’t yet touched on in this class, but it's always good to start with an overview of good style.
 
-## Still Done Early?
+## Submitting Labs
 
-Alright, you did it! You're free to leave as soon as you've finished this lab.
+Alright, you did it! There's nothing to submit for this lab. You're free to leave as soon as you've finished this lab.
 
+*Credit to Puzzling.SE, ProjectEuler and InterviewCake for several problem ideas.*
