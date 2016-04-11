@@ -30,6 +30,8 @@ Write a program using `print()` that, when run, prints out a tic-tac-toe board.
   |  |  
 ```
 
+*Hint: you may find the optional arguments to `print` useful. You can read about them [here](https://docs.python.org/3.4/library/functions.html#print)*
+
 ### Printing #2 (challenge)
 
 Write a program that, when run, prints out a SUPER tic-tac-toe board.
@@ -56,8 +58,6 @@ Write a program that, when run, prints out a SUPER tic-tac-toe board.
 
 You'll find that there may be many ways to solve this problem. Which do you think is the most 'pythonic?' Talk to someone next to you about your approach to this problem. Remember the Zen of Python!
 
-*Hint: you may find the optional arguments to `print` very useful. You can read about them [here](https://docs.python.org/3.4/library/functions.html#print)*
-
 ### Fizz, Buzz, FizzBuzz!
 If we list all of the natural numbers under 41 that are a multiple of 3 or 5, we get
 
@@ -72,7 +72,7 @@ The sum of these numbers is 408.
 Find the sum of all the multiples of 3 or 5 below 1001.
 
 ### Collatz Sequence
-Depending on who you took 106A from, you may have seen this problem before.
+Depending on who you took CS106A from, you may have seen this problem before.
 
 The *Collatz sequence* is an iterative sequence defined on the positive integers by:
 
@@ -93,7 +93,7 @@ What is the length of the longest chain which has a starting number under 1000?
 
 *NOTE: Once the chain starts the terms are allowed to go above one thousand.*
 
-Challenge: Same question, but for any starting number under 10,000,000 (you may need to implement a cleverer-than-naive algorithm)
+Challenge: Same question, but for any starting number under 1,000,000 (you may need to implement a cleverer-than-naive algorithm)
 
 ### Fahrenheit-to-Celsius converter
 Write a program to convert degrees Fahrenheit to degrees Celcius by (1) asking the user for a number (not necessarily integral) representing the current temperature in degrees Fahrenheit, (2) converting that value into the equivalent degrees Celsius, and (3) printing the final equivalent value.
@@ -112,7 +112,6 @@ It is -12.222222222222221 degrees Celsius.
 ```
 
 Want to be fancy (challenge)? Try to print the final temperature to two decimal places. *Hint: Take a look at the [`round()`](https://docs.python.org/3.4/library/functions.html#round) function. Isn't Python great?*
-
 
 
 ## Investigating Data Structures
@@ -240,14 +239,16 @@ generate_pascal_row([]) -> [1]
 generate_pascal_row([1, 4, 6, 4, 1]) -> [1, 5, 10, 10, 5, 1]
 ```
 
-*Hint: you may find the `zip` function discussed briefly in lecture useful, along with a lot of cleverness.*
+*Hint: you may find the `zip` function discussed briefly in lecture useful, along with some cleverness.*
 
 ### Triangle Numbers
 The nth term of the sequence of triangle numbers is given by 1 + 2 + ... + n = n(n+1) / 2. For example, the first ten triangle numbers are: `1, 3, 6, 10, 15, 21, 28, 36, 45, 55, ...`
 
 By converting each letter in a word to a number corresponding to its alphabetical position and adding these values we form a word value. For example, the word value for SKY is `19 + 11 + 25 = 55` and 55 is a triangle number. If the word value is a triangle number then we shall call the word a triangle word.
 
-Using either `/usr/share/dict/words` or `http://stanfordpython.com/words`, a 2.5M text file containing over 200 thousand English words, which are triangle words? As a sanity check, we found 17294 triangle words.
+Using either `/usr/share/dict/words` or `http://stanfordpython.com/words`, a 2.5M text file containing over 200 thousand English words, which are triangle words? As a sanity check, we found 16303 distinct triangle words.
+
+*Hint: you can use `ord(ch)` to get the integer ASCII value of a character*
 
 ## Challenge Problems
 
