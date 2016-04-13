@@ -121,3 +121,5 @@ Skim [Python’s Style Guide](https://www.python.org/dev/peps/pep-0008/), keepin
 Alright, you did it! There's nothing to submit for this lab. You're free to leave as soon as you've finished this lab.
 
 *Credit to ProjectEuler and InterviewCake for some of the above problem ideas.*
+
+> With <3 by @sredmond

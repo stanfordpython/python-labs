@@ -624,3 +624,5 @@ Scan through [PEP 257](https://www.python.org/dev/peps/pep-0257/), Python's sugg
 Woohoo! There's nothing to officially submit for this lab, but before you go, call over a TA to sign off on your work. After that, you're free to leave as soon as you would like! However, you're also welcome to stick around and work on Assignment 1. :)
 
 **Major credit to PSF for incredibly clear/readable documentation making this all possible, as well as the linked resources.**
+
+> With <3 by @sredmond
