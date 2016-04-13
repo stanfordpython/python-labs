@@ -456,23 +456,23 @@ def all_together(x, y, z=1, *nums, indent=True, spaces=4, **options):
 code = all_together.__code__
 ```
 
-Attribute  | Sample Value | Explanation
---- | ---
-`.co_argcount` | `3` | number of positional arguments (including arguments with default values)
-`.co_cellvars` | `()` | tuple containing the names of local variables that are referenced by nested functions
-`.co_code` | `b't\x00\x00...\x00\x00S'` | string representing the sequence of bytecode instructions
-`.co_consts` | `('A useless comment', '{}\t{}', '{}{}{}', ' ', None)` | tuple containing the literals used by the bytecode - our `None` is from the implicit `return None` at the end
-`.co_filename` | `<stdin>` | file in which the function was defined
-`.co_firstlineno` | `1` | line of the file the first line of the function appears
-`.co_flags` | `79` | compiler-specific flags whose internal meaning is (largely) unspecified
-`.co_freevars` | () | tuple containing the names of free variables
-`.co_kwonlyargcount` | 2 | number of keyword-only arguments
-`.co_lnotab` | `b'\x00\x02\x12\x01\x10\x01\x19\x01\x06\x01\x19\x02'` | string encoding the mapping from bytecode offsets to line numbers
-`.co_name` | `"all_together"` | the function name 
-`.co_names` | `('print', 'sum', 'items', 'format')` | tuple containing the names used by the bytecode
-`co_nlocals` | `9` | number of local variables used by the function (including arguments)
-`co_stacksize` | `6` | required stack size (including local variables)
-`co_varnames` | `('x', 'y', 'z', 'indent', 'spaces', 'nums', 'options', 'k', 'v')` | tuple containing the names of the local variables (starting with the argument names)
+| Attribute  | Sample Value | Explanation |
+| --- | --- | --- |
+| `.co_argcount` | `3` | number of positional arguments (including arguments with default values) |
+| `.co_cellvars` | `()` | tuple containing the names of local variables that are referenced by nested functions |
+| `.co_code` | `b't\x00\x00...\x00\x00S'` | string representing the sequence of bytecode instructions |
+| `.co_consts` | `('A useless comment', '{}\t{}', '{}{}{}', ' ', None)` | tuple containing the literals used by the bytecode - our `None` is from the implicit `return None` at the end |
+| `.co_filename` | `<stdin>` | file in which the function was defined |
+| `.co_firstlineno` | `1` | line of the file the first line of the function appears |
+| `.co_flags` | `79` | compiler-specific flags whose internal meaning is (largely) unspecified |
+| `.co_freevars` | () | tuple containing the names of free variables |
+| `.co_kwonlyargcount` | 2 | number of keyword-only arguments |
+| `.co_lnotab` | `b'\x00\x02\x12\x01\x10\x01\x19\x01\x06\x01\x19\x02'` | string encoding the mapping from bytecode offsets to line numbers |
+| `.co_name` | `"all_together"` | the function name  |
+| `.co_names` | `('print', 'sum', 'items', 'format')` | tuple containing the names used by the bytecode |
+| `co_nlocals` | `9` | number of local variables used by the function (including arguments) |
+| `co_stacksize` | `6` | required stack size (including local variables) |
+| `co_varnames` | `('x', 'y', 'z', 'indent', 'spaces', 'nums', 'options', 'k', 'v')` | tuple containing the names of the local variables (starting with the argument names) |
 
 More info on this, and on all types in Python, can be found at the [data model reference](https://docs.python.org/3.4/reference/datamodel.html#the-standard-type-hierarchy). For code objects, you have to scroll down to "Internal Types."
 
