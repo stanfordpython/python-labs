@@ -171,7 +171,7 @@ It should be possible to call the function as follows:
 
 ```
 average()  # => None
-average(5) # => 5
+average(5) # => 5.0
 average(6, 8, 9, 11)  # => 8.5
 ```
 
