@@ -440,23 +440,71 @@ Furthermore, the [doctest](https://docs.python.org/3.4/library/doctest.html) sta
 
 #### Code Object (`__code__`)
 
-Python functions 
+In CPython, the reference implementation of Python that many people (including us) use, functions are compiled into bytecode when defined. This code object is bound to the `__code__` attribute, and has a ton of interesting properties, best illustrated by example.
 
-{'co_argcount',
- 'co_cellvars',
- 'co_code',
- 'co_consts',
- 'co_filename',
- 'co_firstlineno',
- 'co_flags',
- 'co_freevars',
- 'co_kwonlyargcount',
- 'co_lnotab',
- 'co_name',
- 'co_names',
- 'co_nlocals',
- 'co_stacksize',
- 'co_varnames'}
+```
+def all_together(x, y, z=1, *nums, indent=True, spaces=4, **options):
+    """A useless comment"""
+    print(x + y * z)
+    print(sum(nums))
+    for k, v in options.items():
+        if indent:
+            print("{}\t{}".format(k, v))
+        else:
+            print("{}{}{}".format(k, " " * spaces, v))
+            
+code = all_together.__code__
+```
+
+Attribute  | Sample Value | Explanation
+--- | ---
+`.co_argcount` | `3` | number of positional arguments (including arguments with default values)
+`.co_cellvars` | `()` | tuple containing the names of local variables that are referenced by nested functions
+`.co_code` | `b't\x00\x00...\x00\x00S'` | string representing the sequence of bytecode instructions
+`.co_consts` | `('A useless comment', '{}\t{}', '{}{}{}', ' ', None)` | tuple containing the literals used by the bytecode - our `None` is from the implicit `return None` at the end
+`.co_filename` | `<stdin>` | file in which the function was defined
+`.co_firstlineno` | `1` | line of the file the first line of the function appears
+`.co_flags` | `79` | compiler-specific flags whose internal meaning is (largely) unspecified
+`.co_freevars` | () | tuple containing the names of free variables
+`.co_kwonlyargcount` | 2 | number of keyword-only arguments
+`.co_lnotab` | `b'\x00\x02\x12\x01\x10\x01\x19\x01\x06\x01\x19\x02'` | string encoding the mapping from bytecode offsets to line numbers
+`.co_name` | `"all_together"` | the function name 
+`.co_names` | `('print', 'sum', 'items', 'format')` | tuple containing the names used by the bytecode
+`co_nlocals` | `9` | number of local variables used by the function (including arguments)
+`co_stacksize` | `6` | required stack size (including local variables)
+`co_varnames` | `('x', 'y', 'z', 'indent', 'spaces', 'nums', 'options', 'k', 'v')` | tuple containing the names of the local variables (starting with the argument names)
+
+More info on this, and on all types in Python, can be found at the [data model reference](https://docs.python.org/3.4/reference/datamodel.html#the-standard-type-hierarchy). For code objects, you have to scroll down to "Internal Types."
+
+##### Security
+
+As we briefly mentioned in class, this can lead to a pretty glaring security vulnerability. Namely, the code object on a given function can be hot-swapped for the code object of another (perhaps malicious function) at runtime!
+
+```
+def nice(): print("You're awesome!")
+def mean(): print("You're... not awesome. OOOOH")
+
+# Overwrite the code object for nice
+nice.__code__ = mean.__code__
+nice()  # prints "You're... not awesome. OOOOH"
+```
+ 
+##### `dis` module
+
+The `dis` module, for "disassemble," exports a `dis` function that allows us to disassemble Python byte code (at least, for Python distributions implemented in CPython for existing versions). The disassembled code isn't exactly normal assembly code, but rather is a specialized Python syntax
+
+```
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+    
+import dis
+dis.dis(gcd)
+```
+
+Details on the instructions themselves can be found [here](https://docs.python.org/3.4/library/dis.html#python-bytecode-instructions).
+You can read more about the `dis` module [here](https://docs.python.org/3.4/library/dis.html).
 
 #### Parameter Annotations (`__annotations__`)
 
