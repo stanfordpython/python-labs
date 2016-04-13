@@ -3,11 +3,13 @@
 ## Overview
 Build familiarity with reading and writing Python functions with different types of formal parameters, explore some nuances of function execution semantics, and dive into the internals of functions.
 
-*Disclaimer: we know that this lab is particularly focused on Python semantics, which may not seem exciting at first. However, mastering the mechanics of Python functions gives you access to a whole lot of powerful tools that either don't exist or are uncommon or hard-to-use in other languages. The skills you learn through this lab will allow you to write and debug powerful Pythonic code quickly and easily!*
+*Disclaimer: we know that this lab is particularly focused on Python semantics, which may not seem exciting at first. However, mastering the mechanics of Python functions gives you access to a whole lot of powerful tools that either don't exist or are uncommon or hard-to-use in other languages! The skills you learn through this lab will allow you to write (and debug) powerful Pythonic code quickly and easily!*
 
 **As with Lab 2, we don't expect you to finish all of the material here in one class period. If you do - great! But if not, you are encouraged to work through the extra material at your own pace - it explores interesting and intriguing aspects of Python functions.**
 
 ## Exploring Arguments and Parameters
+
+With a partner, work through the following problems.
 
 ### Familiar Functions
 Consider the following function definition:
@@ -45,29 +47,29 @@ Write at least two more instances of function calls, not listed above, and predi
 Consider the following function definition:
 
 ```
-def bar(a, b=1, c='X', d=None):
+def keyword_args(a, b=1, c='X', d=None):
     print("a:", a)
     print("b:", b)
     print("c:", c)
     print("d:", d)
 ```
 
-For each of the following function calls, determine whether the call is valid or not. If it is valid, what will the output be?
+For each of the following function calls, predict whether the call is valid or not. If it is valid, what will the output be? If it is invalid, what is the cause of the error?
 
 ```
-bar(5)
-bar(a=5)
-bar(5, 8)
-bar(5, 2, c=4)
-bar(5, 0, 1)
-bar(5, 2, d=8, c=4)
-bar(5, 2, 0, 1, "")
-bar(c=7, 1)
-bar(c=7, a=1)
-bar(5, 2, [], 5)
-bar(1, 7, e=6)
-bar(1, c=7)
-bar(5, 2, b=4)
+keyword_args(5)
+keyword_args(a=5)
+keyword_args(5, 8)
+keyword_args(5, 2, c=4)
+keyword_args(5, 0, 1)
+keyword_args(5, 2, d=8, c=4)
+keyword_args(5, 2, 0, 1, "")
+keyword_args(c=7, 1)
+keyword_args(c=7, a=1)
+keyword_args(5, 2, [], 5)
+keyword_args(1, 7, e=6)
+keyword_args(1, c=7)
+keyword_args(5, 2, b=4)
 ```
 
 Write at least two more instances of function calls, not listed above, and predict their output. Are they valid or invalid? Check your hypothesis.
@@ -76,25 +78,25 @@ Write at least two more instances of function calls, not listed above, and predi
 As before, consider the following function definition: 
 
 ```
-def baz(*args, **kwargs):
+def variadic(*args, **kwargs):
     print("Positional:", args)
     print("Keyword:", kwargs)
 ```
 
-For each of the following function calls, determine whether the call is valid or not. If it is valid, what will the output be?
+For each of the following function calls, predict whether the call is valid or not. If it is valid, what will the output be? If it is invalid, what is the cause of the error?
 
 ```
-baz(2, 3, 5, 7)
-baz(1, 1, n=1)
-baz(n=1, 2, 3)
-baz()
-baz(cs="Computer Science", pd="Product Design")
-baz(cs="Computer Science", cs="CompSci", cs="CS")
-baz(5, 8, k=1, swap=2)
-baz(*[8, 3], *[4, 5], k=1, **{'a':5, 'b':'x'})
-baz(8, *[3, 4, 5], k=1, **{'a':5, 'b':'x'})
-baz(*[3, 4, 5], 8, *(4, 1), k=1, **{'a':5, 'b':'x'})
-baz({'a':5, 'b':'x'}, *{'a':5, 'b':'x'}, **{'a':5, 'b':'x'})
+variadic(2, 3, 5, 7)
+variadic(1, 1, n=1)
+variadic(n=1, 2, 3)
+variadic()
+variadic(cs="Computer Science", pd="Product Design")
+variadic(cs="Computer Science", cs="CompSci", cs="CS")
+variadic(5, 8, k=1, swap=2)
+variadic(8, *[3, 4, 5], k=1, **{'a':5, 'b':'x'})
+variadic(*[8, 3], *[4, 5], k=1, **{'a':5, 'b':'x'})
+variadic(*[3, 4, 5], 8, *(4, 1), k=1, **{'a':5, 'b':'x'})
+variadic({'a':5, 'b':'x'}, *{'a':5, 'b':'x'}, **{'a':5, 'b':'x'})
 ```
 
 Write at least two more instances of function calls, not listed above, and predict their output. Are they valid or invalid? Check your hypothesis.
@@ -102,7 +104,7 @@ Write at least two more instances of function calls, not listed above, and predi
 ### *Optional: Putting it all together*
 *If you feel confident that you understand how function calling works, you can skip this section. We suggest that you work through it anyway, but the final decision is up to you.*
 
-Often, however, we don't just see keyword arguments of variadic parameter lists in isolated situations. The following function definition, which incorporates positional parameters, keyword parameters, variadic positional parameters, and variadic keyword parameters, is not uncommon in Python. 
+Often, however, we don't just see keyword arguments of variadic parameter lists in isolated situations. The following function definition, which incorporates positional parameters, keyword parameters, variadic positional parameters, keyword-only default parameters and variadic keyword parameters, is valid Python. 
 
 ```
 def all_together(x, y, z=1, *nums, indent=True, spaces=4, **options):
@@ -115,7 +117,7 @@ def all_together(x, y, z=1, *nums, indent=True, spaces=4, **options):
     print("options:", options)
 ```
 
-For each of the following function calls, determine whether the call is valid or not. If it is valid, what will the output be?
+For each of the following function calls, predict whether the call is valid or not. If it is valid, what will the output be? If it is invalid, what is the cause of the error?
 
 ```
 all_together(2)
@@ -156,7 +158,16 @@ How would you call this function to produce the following outputs?
 ```
 
 ### `average`
-Write a function `average` that accepts a variable number of integer positional arguments and computes the average. If no arguments are supplied, the function should return None. It should be possible to call the function as follows:
+Write a function `average` that accepts a variable number of integer positional arguments and computes the average. If no arguments are supplied, the function should return `None`.
+
+What would the function signature and implementation look like for this function?
+
+```
+def average(???):
+    pass
+```
+
+It should be possible to call the function as follows:
 
 ```
 average()  # => None
@@ -164,29 +175,62 @@ average(5) # => 5
 average(6, 8, 9, 11)  # => 8.5
 ```
 
-Suppose that we have a list `l = [???]` supplied by the user of unknown length. How can we use our `average` function to compute the average of this list? For this problem, do not use the builtin `sum` or `len` functions.
+Suppose that we have a list `l = [???]` supplied by the user of unknown length. How can we use the `average` function we just wrote function to compute the average of this list? For this problem, do not use the builtin `sum` or `len` functions.
 
-### `make_table`
+### Challenge: `make_table`
 
-Write a function to make a table given an arbitrary number of keyword arguments. The keys in the table should be left-justified, and the values in the table should be right justified. Pad appropriately with whitespace so that the table is aligned perfectly. As an example:
+Write a function to make a table out of an arbitrary number of keyword arguments. There should be two parameters, `key_justify` and `value_justify`, whose default values are `'left'` and `'right'` respectively, and which control the justification for keys and values in the table. Valid options for these parameters are `['left', 'right', 'center']`. There should be an extra space of padding on either side of the keys and values.
+
+What would the function signature and implementation look like for this function?
+
+```
+def make_table(???):
+    pass
+```
+
+As an example:
 
 ```
 make_table(
     first_name="Sam",
     last_name="Redmond",
-    shirt_color="pink",
+    shirt_color="pink"
 )
 ```
 
 should produce
 
 ```
-=================
-|fname |     Sam|
-|lname | Redmond|
-|shirt |    pink|
-=================
+=========================
+| first_name  |     Sam |
+| last_name   | Redmond |
+| shirt_color |    pink |
+=========================
 ```
+
+and
+
+```
+make_table(
+    key_justify="right",
+    value_justify="center",
+    song="Style",
+    artist_fullname="Taylor $wift",
+    album="1989"
+)
+```
+
+should produce
+
+```
+==================================
+|            song |     Style    |
+| artist_fullname | Taylor $wift |
+|           album |     1989     |
+==================================
+```
+
+Hint: you may find Python's string `.format()` [alignment specifiers](https://pyformat.info/#string_pad_align) useful.
 
 ## Function Nuances
 ### Return
@@ -294,8 +338,8 @@ If we swap just two lines of code, something unusual happens. What is the error?
 x = 10
 
 def foo():
-    print("(inside foo) x:", x)
-    x = 8
+    print("(inside foo) x:", x)  # We swapped this line
+    x = 8                        # with this one
     y = 5
     print('value:', x * y)
 
@@ -318,15 +362,15 @@ will compile (that is, the function object will be byte-compiled without problem
 ```
 lst = [1,2,3]
 def foo():
-    lst += [4]
+    lst = lst + [4]
 foo()
 ```
 
-will raise an UnboundLocalError. 
+will raise an UnboundLocalError. Why? It doesn't, surprisingly, have to do with the fact that `.append` is in place and `+` is not.
 
-This is such a common problem that the Python FAQ has [a section](https://docs.python.org/3.4/faq/programming.html#why-am-i-getting-an-unboundlocalerror-when-the-variable-has-a-value) dedicated to the UnboundLocalError
+This is such a common problem that the Python FAQ has [a section](https://docs.python.org/3.4/faq/programming.html#why-am-i-getting-an-unboundlocalerror-when-the-variable-has-a-value) dedicated to this type of `UnboundLocalError`.
 
-*Note, the `global` and `nonlocal` keywords can be used to assign to a variable outside of the currently active (innermost function) scope. If you're interested, you can read more about scoping rules in the optional reading, or in the [appropriate FAQ section](https://docs.python.org/3.4/faq/programming.html#what-are-the-rules-for-local-and-global-variables-in-python)*
+*Note, the `global` and `nonlocal` keywords can be used to assign to a variable outside of the currently active (innermost function) scope. If you're interested, you can read more about scoping rules in the optional reading, or in the [appropriate FAQ section](https://docs.python.org/3.4/faq/programming.html#what-are-the-rules-for-local-and-global-variables-in-python).*
 
 ### Default Mutable Arguments - A Dangerous Game
 
@@ -383,29 +427,29 @@ def append_twice(a, lst=None):
     return lst
 ```
 
-Sometimes, however, this odd keyword value initialization behavior can be desirable, for example, as a cache that is modifiable and accessible by all invocations of a function:
+Sometimes, however, this odd keyword value initialization behavior can be desirable. For example, it can be used as a cache that is modifiable and accessible by all invocations of a function:
 
 ```
 def fib(n, cache={0: 1, 1: 1}):
-   if n in cache:  # Note: this captures our base case
+   if n in cache:  # Note: default value captures our base cases
        return cache[n]
    out = fib(n-1) + fib(n-2)
    cache[n] = out
    return out
 ```
 
-Cool, right? Even so, there are better, more Pythonic ways to capture this particular cache design pattern (see [functools.lru_cache](https://docs.python.org/3.4/library/functools.html#functools.lru_cache)). Nevertheless, it's a neat trick that might come in useful!
+Cool, right? The cache follows the function around, as an attribute on the function object, rather than being the responsibility of the caller! Even so, there are better, more Pythonic ways to capture this particular cache design pattern (see [functools.lru_cache](https://docs.python.org/3.4/library/functools.html#functools.lru_cache)). Nevertheless, it's a neat trick that might come in useful!
 
 
 ## Investigating Function Objects
 
-At the end of Monday's class, we explored some of the attributes of function objects. We'll explore several of these attributes here.
+At the end of Monday's class, we explored some of the attributes of function objects. We'll explore several of these attributes more in depth here.
 
 Usually, this information isn't particularly useful for practitioners (you'll rarely want to hack around with the internals of functions), but even seeing that you *can* in Python is very cool.
 
 #### Default Values (`__defaults__` and `__kwdefaults__`)
 
-As stated earlier, any default values (either normal default arguments or keyword-only default arguments that follow a variadic positional argument parameter) are bound to the function object at the time of function definition. Consider our `all_together` function from earlier:
+As stated earlier, any default values (either normal default arguments or the keyword-only default arguments that follow a variadic positional argument parameter) are bound to the function object at the time of function definition. Consider our `all_together` function from earlier:
 
 ```
 def all_together(x, y, z=1, *nums, indent=True, spaces=4, **options): pass
@@ -464,9 +508,9 @@ code = all_together.__code__
 | `.co_consts` | `('A useless comment', '{}\t{}', '{}{}{}', ' ', None)` | tuple containing the literals used by the bytecode - our `None` is from the implicit `return None` at the end |
 | `.co_filename` | `<stdin>` | file in which the function was defined |
 | `.co_firstlineno` | `1` | line of the file the first line of the function appears |
-| `.co_flags` | `79` | compiler-specific flags whose internal meaning is (largely) unspecified |
-| `.co_freevars` | () | tuple containing the names of free variables |
-| `.co_kwonlyargcount` | 2 | number of keyword-only arguments |
+| `.co_flags` | `79` | AND of compiler-specific binary flags whose internal meaning is (largely) unspecified |
+| `.co_freevars` | `()` | tuple containing the names of free variables |
+| `.co_kwonlyargcount` | `2` | number of keyword-only arguments |
 | `.co_lnotab` | `b'\x00\x02\x12\x01\x10\x01\x19\x01\x06\x01\x19\x02'` | string encoding the mapping from bytecode offsets to line numbers |
 | `.co_name` | `"all_together"` | the function name  |
 | `.co_names` | `('print', 'sum', 'items', 'format')` | tuple containing the names used by the bytecode |
@@ -501,6 +545,24 @@ def gcd(a, b):
     
 import dis
 dis.dis(gcd)
+"""
+  2           0 SETUP_LOOP              27 (to 30)
+        >>    3 LOAD_FAST                1 (b)
+              6 POP_JUMP_IF_FALSE       29
+
+  3           9 LOAD_FAST                1 (b)
+             12 LOAD_FAST                0 (a)
+             15 LOAD_FAST                1 (b)
+             18 BINARY_MODULO
+             19 ROT_TWO
+             20 STORE_FAST               0 (a)
+             23 STORE_FAST               1 (b)
+             26 JUMP_ABSOLUTE            3
+        >>   29 POP_BLOCK
+
+  4     >>   30 LOAD_FAST                0 (a)
+             33 RETURN_VALUE
+"""
 ```
 
 Details on the instructions themselves can be found [here](https://docs.python.org/3.4/library/dis.html#python-bytecode-instructions).
@@ -534,7 +596,7 @@ greet() # "Hello world!"
 greet.__call__()  # "Hello world!"
 ```
 
-This means that any object (including instances of custom classes) with a `__call__` method can use the parenthesized function call syntax! We'll see a lot more about using these so-called "magic methods" to exploit Python's apparent operators (like function calling, `+` (`__add__`) or `*` (`__mul__`), etc) later in the course.
+This means that any object (including instances of custom classes) with a `__call__` method can use the parenthesized function call syntax! We'll see a lot more about using these so-called "magic methods" to exploit Python's apparent operators (like function calling, `+` (`__add__`) or `*` (`__mul__`), etc) in Week 5.
 
 #### Name Information (`__module__`, `__name__`, and `__qualname__`)
 
@@ -561,4 +623,4 @@ Scan through [PEP 257](https://www.python.org/dev/peps/pep-0257/), Python's sugg
 
 Woohoo! There's nothing to officially submit for this lab, but before you go, call over a TA to sign off on your work. After that, you're free to leave as soon as you would like! However, you're also welcome to stick around and work on Assignment 1. :)
 
-**Major credit to PSF for incredibly clear/readable documentation making this all possible.**
+**Major credit to PSF for incredibly clear/readable documentation making this all possible, as well as the linked resources.**
