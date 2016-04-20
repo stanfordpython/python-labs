@@ -1,4 +1,10 @@
-# Lab 4
+# Lab 4: Functional Programming
+
+## Overview
+Explore functional programming's place in the Python landscape, and gain practice with common tools like `map`, `filter`, iterators, generators, and decorators.
+
+*A few people have asked for longer labs - we think we've delivered! There are lots of challenge problems in this lab, many of which are domain-specific. If you're short on time, or don't know exactly what a challenge problem is asking, skip it! Challenge problems are intended to be challenging.*
+
 
 ## Functional Tools
 ### Lambdas
@@ -61,6 +67,7 @@ There is another utility in the `functools` module called `reduce`. This functio
 Use the `reduce` function to find the least common multiple of a arbitrary list of arguments. This can be accomplished in one line of Python.
 
 ```Python
+import operator
 from functools import reduce
 
 def gcd(a, b):
@@ -71,6 +78,7 @@ def gcd(a, b):
     return a
 
 def lcm(*args):
+    pass
     # Your implementation here: Use reduce and use only one line! 
 ```
 
@@ -91,6 +99,7 @@ Take a moment to skim over the [official documentation for the `operator` module
 Use `reduce` in conjunction with a function from the `operator` module to compute factorials in one line of Python:
 
 ```Python
+import operator
 from functools import reduce
 
 def fact(n):
@@ -252,6 +261,59 @@ for el in itertools.cycle('LO'):
 itertools.starmap(operator.mul, itertools.zip_longest([3,5,7],[2,3], fillvalue=1))
 ```
 
+### (Challenge) Linear Algebra
+
+These challenge problems test your ability to write compact Python functions using the tools of functional programming and some good old-fashioned cleverness. As always, challenge problems are optional. These challenge problems focus heavily on linear algebra.
+
+#### Dot Product
+Write a one-liner in Python that takes the dot product of two lists `u` and `v`. You can assume that the lists are the same size, and are standard Python lists (not anything special, like numpy arrays). You should use
+
+```Python
+def dot_product(u, v):
+    pass
+```
+
+For example, `dot_product([1, 3, 5], [2, 4, 6])` should return `44` (since `1 * 2 + 3 * 4 + 5 * 6 = 44`).
+
+#### Matrix Transposition
+Write a one-liner in Python to transpose a matrix. Assume that the input matrix is a tuple-of-tuples that represents a valid matrix, not necessarily square. Again, do not use numpy or any other libraries - just raw data structure manipulation.
+
+```Python
+def transpose(m):
+    pass
+```
+
+Not only can you do this in one line - you can do it in 14 characters!
+
+For example,
+
+```Python
+matrix = (
+    (1, 2, 3, 4),
+    (5, 6, 7, 8),
+    (9,10,11,12)
+)
+transpose(matrix)
+# returns 
+# (
+#     (1, 5, 9),
+#     (2, 6, 10),
+#     (3, 7, 11),
+#     (4, 8, 12)
+# )
+```
+
+#### Matrix Multiplication
+Write another one-liner in Python to take the product of two matrices `m1` and `m2`. You can use the `dot_product` and `transpose` functions you already wrote.
+
+```Python
+def matmul(m1, m2):
+    pass
+```
+
+#### Lazy Generation
+Rewrite your `transpose` and `matmul` functions above so that they are lazily evaluated.
+
 ## Generator Expressions
 
 Recall that generator expressions are a way to lazily compute values on the fly, without buffering the entire contents of the list in place.
@@ -259,9 +321,9 @@ Recall that generator expressions are a way to lazily compute values on the fly,
 For each of the following scenarios, discuss whether it would be more appropriate to use a generator expression or a list comprehension:
 
 1. Searching for a given entity in the entries of a 1TB database.
-2. Storing journey-to-destination flight information in order to calculate cheap airfare.
+2. Calculate cheap airfare using journey-to-destination flight information.
 3. Finding the first palindromic Fibonacci number greater than 1,000,000.
-4. Generate all multi-word anagrams of user-supplied 1000-character-or-more strings (very expensive to do).
+4. Determine all multi-word anagrams of user-supplied 1000-character-or-more strings (very expensive to do).
 5. Generate a list of names of Stanford students whose SUNet ID numbers are less than 5000000.
 6. Return a list of all startups within 50 miles of Stanford.
 
@@ -272,6 +334,13 @@ Write a infinite generator that successively yields the triangle numbers `0, 1, 
 ```Python
 def generate_triangles():
     pass  # Your implementation here
+```
+
+Use your generator to write a function `triangles_under(n)` that prints out all triangle numbers strictly less than the parameter `n`.
+
+```Python
+def triangles_under(n):
+    pass
 ```
 
 ## Functions in Data Structures
@@ -286,6 +355,8 @@ def primes_under(n):
             tests.append(make_divisibility_test(i))
             yield i
 ```
+
+How would you modify the code above to yield all composite numbers, rather than all prime numbers? Test your solution. What is the 1000th composite number?
 
 ## Nested Functions and Closures
 
@@ -305,6 +376,8 @@ f2 = outer()
 print(f2)  # <function outer.<locals>.inner at 0x1044b6268> (Different from above!)
 f2(11)  # => 11
 ```
+
+Why are the memory addresses different for `f` and `f2`? Discuss with a partner.
 
 ### Closure
 As we saw above, the definition of the inner function occurs during the execution of the outer function. This implies that a nested function has access to the environment in which it was defined. Therefore, it is possible to return an inner function that remembers the state of the outer function, even after the outer function has completed execution. This model is referred to as a closure.
@@ -349,6 +422,20 @@ list(map(lambda cell: cell.cell_contents, w.__closure__))
 # = > [1, 3, 6, {'y': 2, 'z': 3}]
 ```
 
+What happens in the following situation? Why?
+```Python
+def outer(l):
+    def inner(n):
+        return l * n
+    return inner
+    
+l = [1, 2, 3]
+f = outer(l)
+print(f(3))  # => ??
+
+l.append(4)
+print(f(3))  # => ??
+
 ## Building Decorators
 
 Recall that a decorator is a special type of function that accepts a function as an argument and (usually) returns a modified version of that function. In class, we saw the `debug` decorator - review the slides if you still feel uncomfortable with the idea of a decorator.
@@ -384,7 +471,7 @@ def print_args(function):
     return wrapper
 ```
 
-Hint: Consider using the attributes `fn.__name__` and `foo.__code__`. You'll have to investigate these attributes, but I will say that the last one is `.__code__` code object which contains a number of useful attributes - for instance, `fn.__code__.co_varnames`. Check it out!
+*Hint: Consider using the attributes `fn.__name__` and `foo.__code__`. You'll have to investigate these attributes, but I will say that the last one is `.__code__` code object which contains a number of useful attributes - for instance, `fn.__code__.co_varnames`. Check it out! More information is available in the latter half of Lab 3.*
 
 #### Note
 There are a lot of subtleties to this function, since functions can be called in a number of different ways. How does your `print_args` handle keyword arguments or even keyword-only arguments? Variadic positional arguments? Variadic keyword arguments? For more customization, look at `fn.__defaults__`, `fn.__kwdefaults__`, as well as other attributes of `fn.__code__`.
@@ -411,6 +498,10 @@ fib(400) # doesn't raise RuntimeError
 ```
 
 Hint: You can set arbitrary attributes on a function (e.g. `fn._cache`). When you do so, the attribute-value pair also gets inserted into `fn.__dict__`. Take a look for yourself. Are the extra attributes and `.__dict__` always in sync?
+
+#### Challenge: Cache Options
+
+Add `max_size` and `eviction_policy` keyword arguments, with reasonable defaults (perhaps `max_size=None` as a sentinel), to your `cache` decorator. `eviction_policy` should be `'LRU'`, `'MRU'`, or `'random'`.
 
 #### Note
 This is actually implemented as part of the language in `functools.lru_cache`
@@ -469,7 +560,7 @@ def baz(a: bool, b: str) -> str:
     return ''
 ```
 
-### Challenge: Decorator for 
+### Challenge: Asynchronous Decorator
 
 ## Credit
 Credit goes to a lot of websites, whose names I've unfortunately forgotten along the way. Credit to everyone!
