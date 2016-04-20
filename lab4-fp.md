@@ -435,6 +435,7 @@ print(f(3))  # => ??
 
 l.append(4)
 print(f(3))  # => ??
+```
 
 ## Building Decorators
 
