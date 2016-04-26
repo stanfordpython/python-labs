@@ -556,12 +556,10 @@ For example:
 def bar(a: list, b: str) -> int:
     return 0
 
-@enforce_types  # Note that there are no parentheses
+@enforce_types()  # Note that there are parentheses
 def baz(a: bool, b: str) -> str:
     return ''
 ```
-
-### Challenge: Asynchronous Decorator
 
 ## Credit
 Credit goes to a lot of websites, whose names I've unfortunately forgotten along the way. Credit to everyone!
