@@ -565,3 +565,5 @@ def baz(a: bool, b: str) -> str:
 
 ## Credit
 Credit goes to a lot of websites, whose names I've unfortunately forgotten along the way. Credit to everyone!
+
+> With <3 by @sredmond
