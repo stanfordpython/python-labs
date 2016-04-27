@@ -1,8 +1,14 @@
-# Lab 5: Object-Oriented Programming
+# Lab 5: Object-Oriented Python
 
-This lab is going to delve into some practical features of classes in Python. Please submit any work you have at the end of lab to [our submission portal](http://stanfordpython.com/submit)
+*Note: there may be some typos in this lab, so periodically refresh GitHub to make sure you're always working on the latest version*
 
-## Class Definition
+## Overview
+
+After Monday's lecture on mostly rules, definitions, and semantics, we'll be playing around with actual classes today, writing a lot of code and building several classes to solve a variety of problems.
+
+## Stanford Prereqs
+
+### Basic Class
 
 Let’s create a class to represent courses at Stanford! Copy the following into a file and save it as `courses.py`.
 
@@ -14,55 +20,48 @@ class Course:
         self.title = title
 ```
 
-We can import this class definition and create an instance of the class in the sandbox, by running:
+We can import this class definition and create an instance of the class in the interacitve interpreter, by running:
+
 ```
+$ python3
 >>> from courses import Course
->>> python_course = Course("CS", "92SI", "hap.py coder: The python programming language")
+>>> stanford_python = Course("CS", "41", "hap.py code: The python programming language")
 ```
 
-Now we can play around with this instance of the class in our console:
+We can access attributes of `stanford_python`, our instance object:
+
 ```
 >>> from courses import Course
->>> python_course = Course("CS", "92SI", "hap.py coder: the python programming language")
->>> python_course.title
+>>> stanford_python = Course("CS", "41", "hap.py code: the python programming language")
+>>> stanford_python
 'hap.py coder: the python programming language'
+>>> stanford_python
+41
 >>>
 ```
 
-What happens when you pass in conflicting types of data into this different instances of this class?
-```
->>> python_course = Course("CS", "92SI", "hap.py coder: the python programming language")
->>> python_course.number
-“92SI”
->>> javascript_course = Course("CS", 42, "hap.py coder: the python programming language")
->>> javascript_course.number
-```
+### Inheritance
 
-**1.**Why does Python do this? (Please answer in a comment at the top of your file)
-
-## Inheritance
-Let’s add inheritance by creating a “CS_Course” class that takes an additional parameter `recorded` that defaults to `False`
+Let’s add inheritance by creating a `CSCourse` class that takes an additional parameter `recorded` that defaults to `False`
 
 Write the following code snippet in the `courses.py` file:
+
 ```
-class CS_Course(Course):
-    def __init__(self, department, number, title):
-        Course.__init__(self, department, number, title)
-        self.is_recorded = False
+class CSCourse(Course):
+    def __init__(self, department, number, title, recorded=False):
+        super().__init__(department, number, title)
+        self.is_recorded = recorded
 ```
 
 Assess the following equalities in your Python interpreter. You can import both classes by running either one of the following lines in your terminal
+
 ```
 >>> from courses import Course, CS_Course
->>> from courses import *
-```
-
-After creating the following course instances, consider the statements below:
-```
 >>> a = Course(“CS”, “106A”, “Programming Methodology”)
 >>> b = CS_Course(“CS”, “106B”, “Programming Abstractions”)
 ```
-
+After creating the following course instances, consider the statements below:
+```
 ```
 1. type(a)
 2. isinstance(a, Course)
@@ -85,6 +84,7 @@ Let's add more functionality to the `Course` class!
 
 ## Implementing Prerequesites
 Now we want to implement functionality to determine if a course is a prerequsite of another. In our implementation, we will assume that each subsequent course that is instantiated requires all of the previous course listings as a prerequesite. For example, after implementing:
+
 ```
 >>> cs106a = Course(“CS”, “106A”, “Programming Methodology”)
 >>> cs106b = CS_Course(“CS”, “106B”, “Programming Abstractions”)
@@ -109,10 +109,60 @@ Allow the class to take a splat argument `instructors` that will take any number
 
 Modify the way you track attendance in the `Course` class to map a Python date object (you can use the `datetime` module) to a data structure tracking what students are there on that day.
 
-## Timed key-value store
-We’ll be building a really interesting problem straight out of an interview programming challenge from [Stripe](https://stripe.com/).
+## SimpleGraph
 
-In a sentence, we’ll be building a key-value store (think Dictionary or HashMap) that has a `get` method that takes an optional second parameter as a `time` object in Python to return the most recent value before that period in time. If no key-value pair was added to the map before that period in time, return `None`.
+In this part, you'll build the implementation for a SimpleGraph class in Python whose functionality imitates that of the BasicGraph class in the Stanford CPP libraries.
+
+In particular, you will need to define a Vertex class, and Edge class, and a SimpleGraph class. The specification is as follows:
+
+A `Vertex` has:
+
+* a name, representing the label of the vertex, that defaults to the empty string
+* a set of edges representing edges outbound from this vertex to the neighbors
+
+A new Vertex should be constructed with an optional `name`, which defaults to `""`, and should be initialized with an empty edge set.
+
+An `Edge` has:
+
+* Vertex: a starting vertex, call it `start`, required for edge instantiation
+* Vertex: an ending vertex, call it `end`, required for edge instantiation
+* float: a cost, used for graph algorithms, defaults to 1
+* bool: a visited flag, used for graph algorithms, defaults to False
+
+Note that for our purposes, these are directed edges.
+
+
+A `SimpleGraph` has
+
+* a collection of `Vertex`s
+* a collection of `Edge`s
+
+as well as several methods:
+
+* `graph.addVertex(v)`
+* `graph.clearAll()`
+* `graph.containsEdge(v1, v2)`
+* `graph.containsVertex(v)`
+* `graph.containsVertexName(name)`
+* `graph.isNeighbor(v1, v2)`
+* `graph.isConnected(v1, v2)  # Use any algorithm you like`
+
+
+*Note: debugging will significantly easier if you write `__str__` or `__repr__` methods on your custom classes.*
+### Challenge: Graph Algorithms
+
+If you're feeling up to the challenge, and you have sufficient time, implement the graph algorithms covered in CS106B/X using your SimpleGraph. The point isn't to check whether you still know your graph algorithms - rather, these algorithms will serve to test the correctness of your graph implementation. In particular, write
+
+```
+graph = SimpleGraph()
+# Do any initialization here
+
+```
+
+## Timed Key-Value Store (challenge)
+Let's build an interesting data structure straight out of an interview programming challenge from [Stripe](https://stripe.com/). This is more of an algorithms challenge than a Python challenge, but we hope you're still interested in tackling it.
+
+At a high-level, we'll be building a key-value store (think Dictionary or HashMap) that has a `get` method that takes an optional second parameter as a `time` object in Python to return the most recent value before that period in time. If no key-value pair was added to the map before that period in time, return `None`.
 
 For consistency’s sake, let’s call this class `TimedKVStore` and put it into a file called `kv_store.py`
 
@@ -140,15 +190,162 @@ Implement a method called `remove(key)` that takes a key and removes that entire
 
 Write another `remove(key, time)` method that takes a key and removes all memory of values before that time method.
 
+## Inheritance
+
+Consider the following code:
+
+```
+"""Examples of Single Inheritance"""
+class Transportation:
+    wheels = 0
+
+    def __init__(self):
+        self.wheels = -1
+
+    def travel_one(self):
+        print("Travelling on generic transportation")
+
+    def travel(self, distance):
+        for _ in range(distance):
+            self.travel_one()
+
+    def is_auto(self):
+        return self.wheels == 4
+
+class Bike(Transportation):
+
+    def travel_one(self):
+        print("Biking one mile")
+
+class Car(Transportation):
+    wheels = 4
+
+    def travel_one(self):
+        print("Driving one mile")
+
+    def make_sound(self):
+        print("VROOM")
+
+class Ferrari(Car):
+    pass
+
+t = Transportation()
+b = Bike()
+c = Car()
+f = Ferrari()
+```
+
+Predict the outcome of each of the following lines of code.
+
+```
+isinstance(t, Transportation)
+
+isinstance(b, Bike)
+isinstance(b, Transportation)
+isinstance(b, Car)
+isinstance(b, t)
+
+isinstance(c, Car)
+isinstance(c, Transportation)
+
+isinstance(f, Ferrari)
+isinstance(f, Car)
+isinstance(f, Transportation)
+
+issubclass(Bike, Transportation)
+issubclass(Car, Transportation)
+issubclass(Ferrari, Car)
+issubclass(Ferrari, Transportation)
+issubclass(Transportation, Transportation)
+
+b.travel(5)
+c.is_auto()
+f.is_auto()
+b.is_auto()
+b.make_sound()
+c.travel(10)
+f.travel(4)
+```
+
+## Bloom Filter
+A bloom filter is a fascinating data structure that 
+
+Override the `__contains__`
+
 ## Exceptions
 
 ### Reading
-https://docs.python.org/3.4/library/exceptions.html
 
-### `try`/`except`
+Skim over [Python's documentation on built-in exceptions](https://docs.python.org/3.4/library/exceptions.html).
 
+### `try`/`except`/`else`/`finally`
+
+Python provides `try` and `except` blocks , similar to other languages' `try` and `catch` blocks, for basic exceptional control flow.
+
+#### `get_age`
+
+Write a function `get_age` that asks a user for their age, which must be a positive integer between 0 and 123 (the oldest human recorded, Jeanna Clement, died at the age of 122). If the user enters something that's not an integer, you should reprompt them. However, if they enter an integer and it's out of range, you should raise an exception. That is, you should keep reprompting them until they enter something that can be converted into an integer, and then return that number if it's in range, and raise an exception otherwise. Two sample runs are shown below
+
+```
+# (Call 1)
+How old are you? ABC
+Invalid integer input.
+How old are you? -4.5
+Invalid integer input.
+How old are you? 36
+# returns 36
+
+# (Call 2)
+How old are you? XYZ
+Invalid integer input.
+How old are you? 128
+# raises some exception
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ValueError: Age 128 out of range
+```
 
 ### Custom Exceptions
 
+Write a custom exception class called `OutOfRangeError` that inherits from `ValueError` which indicates that a given value is outside of an acceptable range. What does this class definition look like? What is the body of the class?
 
-### `try`/`except`/`else`/`finally`
+``` 
+# Implement OutOfRangeError
+```
+
+Rewrite your code in `get_age` to use this custom exception. Do you need to change any other code?
+
+### Using `else` and `finally`
+
+Rewrite your `get_age` function to use the `else` block, and optionally the `finally` block. As is consistent with general style guidelines, try to keep the `try` block as short as possible, containing just the code that might raise the exception you're trying to catch.
+
+### Reraising
+
+Consider the following code:
+
+```
+try:
+	print("in try")
+	# (A)
+except Exception as exc:
+	print("in except")
+	# (B)
+else:
+	print("in else")
+	# (C)
+finally:
+    print("in finally")
+    # (D)
+```
+
+We're going to add some errors to this code block, which currently prints out
+
+```
+in try
+in else
+in finally
+```
+
+For each of the labelled locations, what happens if we `raise Exception()` at that position? Run the code to test your hypotheses.
+
+> With <3 by @sredmond
