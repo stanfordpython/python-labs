@@ -77,11 +77,11 @@ What is the output of the statements below?
 
 Let's add more functionality to the `Course` class!
 
-* Add a property `students` to the `Course` class that tracks whether students are here or not.
+* Add a attribute `students` to the `Course` class that tracks whether students are here or not, which initially is an empty set
 * Create a method `mark_attendance(*students)` that takes a splat operator `students` to mark students as present or absent.
 * Create a method `is_present(student)` that takes a student’s name as a parameter and returns `True` if the student is present and `False` otherwise.
 
-### Implementing Prerequesites
+### Implementing Prerequisites
 
 Now we want to implement functionality to determine if one course is a prerequisite of another. In our implementation, we will assume that each one course is a prerequisite for another if it is in the same department and the numeric part of the course number is less. For example, after implementing:
 
