@@ -73,15 +73,15 @@ What is the output of the statements below?
 5. a == b
 ```
 
-## More properties and methods
+### Additional Attributes
+
 Let's add more functionality to the `Course` class!
 
 * Add a property `students` to the `Course` class that tracks whether students are here or not.
 * Create a method `mark_attendance(*students)` that takes a splat operator `students` to mark students as present or absent.
-
 * Create a method `is_present(student)` that takes a student’s name as a parameter and returns `True` if the student is present and `False` otherwise.
 
-## Implementing Prerequesites
+### Implementing Prerequesites
 
 Now we want to implement functionality to determine if one course is a prerequisite of another. In our implementation, we will assume that each one course is a prerequisite for another if it is in the same department and the numeric part of the course number is less. For example, after implementing:
 
@@ -98,12 +98,11 @@ False
 
 To accomplish this, you will need to implement a magic method `__le__` that will add functionality to determine if a course is a prerequisite for another course. Read up on [total ordering](https://docs.python.org/3.4/library/functools.html#functools.total_ordering) to figure out what `__le__` should return based on the argument you pass in.
 
-To give a few hints on how to add this piece of functionality might be implemented, we would encourage you to think about using a class variable to represent some sort of ordering amongs the classes that get initialized. Every call to the `Course` `__init__` method might want to order the class variable in a way that `__le__` knows exactly how to compare the two courses it is given. Check out the slides or this [awesome blog post](http://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide) for a refresher on Python namespacing and class variables.
+To give a few hints on how to add this piece of functionality might be implemented, consider how you might extract the actual `int` number from the course number attribute, which might be a string, or might be a number. 
 
-We encourage you to think about the most space and time-efficient way to accomplish this bit of functionality - perhaps you might investigate creating another class just to store the relations between the instances of `Course`
+We encourage you to think about the most space and time-efficient way to accomplish this bit of functionality - perhaps you might investigate creating another class just to store the relations between the instances of `Course`.
 
-## Bonus
-Try out the following two tasks if there's more than `30` minutes left in lab!
+### Instructors (challenge)
 
 Allow the class to take a splat argument `instructors` that will take any number of strings and store them as a list of instructors.
 
@@ -113,23 +112,25 @@ Modify the way you track attendance in the `Course` class to map a Python date o
 
 In this part, you'll build the implementation for a SimpleGraph class in Python whose functionality imitates that of the BasicGraph class in the Stanford CPP libraries.
 
-In particular, you will need to define a Vertex class, and Edge class, and a SimpleGraph class. The specification is as follows:
+In particular, you will need to define a `Vertex` class, an `Edge` class, and a `SimpleGraph` class. The specification is as follows:
 
-A `Vertex` has:
+A `Vertex` has attributes:
 
-* a name, representing the label of the vertex, that defaults to the empty string
-* a set of edges representing edges outbound from this vertex to the neighbors
+* `name`, a string representing the label of the vertex.
+* `edges`, a set representing edges outbound from this vertex to its neighbors
 
-A new Vertex should be constructed with an optional `name`, which defaults to `""`, and should be initialized with an empty edge set.
+A new Vertex should be initialized with an optional `name`, which defaults to `""`, and should be initialized with an empty edge set.
 
-An `Edge` has:
+An `Edge` has attributes:
 
-* Vertex: a starting vertex, call it `start`, required for edge instantiation
-* Vertex: an ending vertex, call it `end`, required for edge instantiation
-* float: a cost, used for graph algorithms, defaults to 1
-* bool: a visited flag, used for graph algorithms, defaults to False
+* `start`, a `Vertex` representing the start point of the edge.
+* `end`, a `Vertex` representing the end point of the edge.
+* `cost`, a `float` (used for graph algorithms) representing the weight of the edge.
+* `visited`, a `bool` (used for graph algorithms) representing whether this edge has been visited before.
 
-Note that for our purposes, these are directed edges.
+Note that for our purposes, an `Edge` is directed.
+
+An `Edge` requires a `start` and `end` vertex in order to be instantiated. `cost` should default to 1, and `visited` should default to `False`, but both should be able to be set via an initializer.
 
 
 A `SimpleGraph` has
