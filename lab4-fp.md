@@ -1,15 +1,15 @@
 # Lab 4: Functional Programming
 
 ## Overview
-Explore functional programming's place in the Python landscape, and gain practice with common tools like `map`, `filter`, iterators, generators, and decorators.
+Explore functional programming's place in the Python landscape, and gain practice with powerful tools like `map`, `filter`, iterators, generators, and decorators.
 
-*A few people have asked for longer labs - we think we've delivered! There are lots of challenge problems in this lab, many of which are domain-specific. If you're short on time, or don't know exactly what a challenge problem is asking, skip it! Challenge problems are intended to be challenging.*
+*Surprisingly, a few people have asked for longer labs - we think we've delivered! We've added lots of challenge problems to this lab, many of which are domain-specific, but we don't expect you t complete them all. If you're short on time, or don't know exactly what a challenge problem is asking, skip it! Challenge problems are intended to be challenging, and are reserved for when you've finished the rest of the lab.*
 
 
 ## Functional Tools
 ### Lambdas
 
-Recall that lambda functions are anonymous, unnamed function objects created on the fly, usually to accomplish a small transformation. As an example,
+Recall that lambda functions are anonymous, unnamed function objects created on the fly, usually to accomplish a small transformation. For example,
 
 ```Python
 (lambda val: val ** 2)(5)  # => 25
@@ -17,7 +17,9 @@ Recall that lambda functions are anonymous, unnamed function objects created on 
 (lambda s: s.strip().lower()[:2])('  PyTHon')  # => 'py'
 ```
 
-Lambdas on their own aren't particularly useful, as you can see above. They're most often seen used as arguments to `map`, `filter` and as return values from higher-order functions.
+On their own, `lambda`s aren't particularly useful, as demonstrated above. Usually, `lambda`s are used to avoid creating a formal function definiton for small throwaway functions, not only because they involves less typing (no `def` or `return` statement needed) but also, and perhaps more imporatntly, because these small functions won't pollute the namespace.
+
+Lambdas are also frequently used as arguments to or return values from higher-order functions, such as `map` and `filter`.
 
 ### Map
 
