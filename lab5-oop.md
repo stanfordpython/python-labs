@@ -53,15 +53,18 @@ class CSCourse(Course):
         self.is_recorded = recorded
 ```
 
+The `super()` call is a little bit of magic to us at this point - it builds an object described by the superclass, allowing us to call the `__init__` method on that object.
+
 Assess the following equalities in your Python interpreter. You can import both classes by running either one of the following lines in your terminal
 
 ```
 >>> from courses import Course, CS_Course
->>> a = Course(“CS”, “106A”, “Programming Methodology”)
->>> b = CS_Course(“CS”, “106B”, “Programming Abstractions”)
+>>> a = Course("CS", "106A", "Programming Methodology")
+>>> b = CS_Course("CS", "106B", "Programming Abstractions")
 ```
-After creating the following course instances, consider the statements below:
-```
+
+What is the output of the statements below?
+
 ```
 1. type(a)
 2. isinstance(a, Course)
@@ -69,9 +72,6 @@ After creating the following course instances, consider the statements below:
 4. type(a) == type(b)
 5. a == b
 ```
-
-**2.** Note any inconsistences that you noticed in a comment at the top of your `courses.py` file. (You can annotate your comments with `2.1` if you noticed an inconsistency with the first statement above)
-
 
 ## More properties and methods
 Let's add more functionality to the `Course` class!
@@ -267,10 +267,10 @@ c.travel(10)
 f.travel(4)
 ```
 
-## Bloom Filter
-A bloom filter is a fascinating data structure that 
+## Bloom Filter (challenge)
+A bloom filter is a fascinating data structure that support insertion and probabilistic set membership. Read up on Wikipedia!
 
-Override the `__contains__`
+Write a class `BloomFilter` to implement a bloom filter data structure. Override the `__contains__` method so that membership can be tested with `x in bloom_filter`.
 
 ## Exceptions
 
