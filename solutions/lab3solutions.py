@@ -7,6 +7,8 @@ Reference solutions to Lab 3 for CS41: Hap.py Code.
 This lab incorporated a lot of exploration, so there's less
 "code" per se.
 
+These solutions are still a work in progress! More to come.
+
 Revision history:
 @sredmond 04-16-2016 Adds comments
 @sredmond 04-12-2016 Created
