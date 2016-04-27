@@ -142,14 +142,14 @@ as well as several methods:
 * `graph.add_vertex(v)`
 * `graph.add_edge(v_1, v_2)`
 * `graph.contains_vertex(v)`
-* `graph.contains_edge(e_1, e_2)`
+* `graph.contains_edge(v_1, v_2)`
 * `graph.get_neighbors(v)`
 * `graph.is_empty()`
 * `graph.size()`
 * `graph.remove_vertex(v)`
 * `graph.remove_edge(v_1, v_2)`
 * `graph.is_neighbor(v1, v2)`
-* `graph.is_connected(v1, v2)  # Use any algorithm you like`
+* `graph.is_reachable(v1, v2)  # Use any algorithm you like`
 * `graph.clear_all()`
 
 The actual implementation details are up to you.
@@ -299,6 +299,31 @@ f.travel(4)
 A bloom filter is a fascinating data structure that support insertion and probabilistic set membership. Read up on Wikipedia!
 
 Write a class `BloomFilter` to implement a bloom filter data structure. Override the `__contains__` method so that membership can be tested with `x in bloom_filter`.
+
+## Silencer Context Manager (challenge)
+
+In some cases, you may want to suppress the output a given code block. Maybe it's untrusted code, or maybe it's littered with `print`s that you don't want to comment out. We can use the context manager syntax in Python to define a class that servers as a context manager. We want to use this as:
+
+```
+with Silencer():
+    noisy_code()
+```
+
+
+
+```
+class Silencer():
+    def __init__(self):
+        pass
+        
+    def __enter__(self):
+        pass
+        
+    def __exit__(self, *exc):
+        pass
+```
+
+The `__enter__` method is called when the with block is entered, and `__exit__` is called when leaving the block, with any 
 
 ## Exceptions
 
