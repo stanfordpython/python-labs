@@ -33,9 +33,9 @@ We can access attributes of `stanford_python`, our instance object:
 ```
 >>> from courses import Course
 >>> stanford_python = Course("CS", "41", "hap.py code: the python programming language")
->>> stanford_python
+>>> stanford_python.title
 'hap.py coder: the python programming language'
->>> stanford_python
+>>> stanford_python.number
 41
 >>>
 ```
