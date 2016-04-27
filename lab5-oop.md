@@ -58,9 +58,9 @@ The `super()` call is a little bit of magic to us at this point - it builds an o
 Assess the following equalities in your Python interpreter. You can import both classes by running either one of the following lines in your terminal
 
 ```
->>> from courses import Course, CS_Course
+>>> from courses import Course, CSCourse
 >>> a = Course("CS", "106A", "Programming Methodology")
->>> b = CS_Course("CS", "106B", "Programming Abstractions")
+>>> b = CSCourse("CS", "106B", "Programming Abstractions")
 ```
 
 What is the output of the statements below?
@@ -86,10 +86,10 @@ Let's add more functionality to the `Course` class!
 Now we want to implement functionality to determine if a course is a prerequsite of another. In our implementation, we will assume that each subsequent course that is instantiated requires all of the previous course listings as a prerequesite. For example, after implementing:
 
 ```
->>> cs106a = Course(“CS”, “106A”, “Programming Methodology”)
->>> cs106b = CS_Course(“CS”, “106B”, “Programming Abstractions”)
->>> cs107 = CS_Course(“CS”, “107”, “Computer Organzation and Systems”)
->>> cs110 = CS_Course(“CS”, “110”, “Principles of Computer Systems”)
+>>> cs106a = Course("CS", "106A", "Programming Methodology")
+>>> cs106b = CSCourse("CS", "106B", "Programming Abstractions")
+>>> cs107 = CSCourse("CS", "107", "Computer Organzation and Systems")
+>>> cs110 = CSCourse("CS", "110", "Principles of Computer Systems")
 >>> cs110 > cs106b
 True
 >>> cs107 > cs110
@@ -98,7 +98,7 @@ False
 
 To accomplish this, we'd like you to implement a magic method `__le__` that will add functionality to determine if a course is a prerequisite for another course. Read up on [total ordering](https://docs.python.org/3.4/library/functools.html#functools.total_ordering) to figure out what `__le__` should return based on the argument you pass in.
 
-To give a few hints on how to add this piece of functionality might be implemented, we would encourage you to think about using a class variable to represent some sort of ordering amongs the classes that get initialized. Every call to the `Course` `__init` method might want to order the class variable in a way that `__le__` knows exactly how to compare the two courses it is given. Check out the slides or this [awesome blog post](http://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide) for a refresher on Python namespacing and class variables.
+To give a few hints on how to add this piece of functionality might be implemented, we would encourage you to think about using a class variable to represent some sort of ordering amongs the classes that get initialized. Every call to the `Course` `__init__` method might want to order the class variable in a way that `__le__` knows exactly how to compare the two courses it is given. Check out the slides or this [awesome blog post](http://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide) for a refresher on Python namespacing and class variables.
 
 We encourage you to think about the most space and time-efficient way to accomplish this bit of functionality - perhaps you might investigate creating another class just to store the relations between the instances of `Course`
 
@@ -151,7 +151,7 @@ as well as several methods:
 *Note: debugging will significantly easier if you write `__str__` or `__repr__` methods on your custom classes.*
 ### Challenge: Graph Algorithms
 
-If you're feeling up to the challenge, and you have sufficient time, implement the graph algorithms covered in CS106B/X using your SimpleGraph. The point isn't to check whether you still know your graph algorithms - rather, these algorithms will serve to test the correctness of your graph implementation. In particular, write
+If you're feeling up to the challenge, and you have sufficient time, implement the graph algorithms covered in CS106B/X using your SimpleGraph. The point isn't to check whether you still know your graph algorithms - rather, these algorithms will serve to test the correctness of your graph implementation. The particulars are up to you
 
 ```
 graph = SimpleGraph()
@@ -174,14 +174,14 @@ To give you an idea of how this class works, this is what should happen after yo
 >>> from kv_store import *
 >>> d = TimedKVStore()
 >>> t0 = time.time()
->>> d.put(“1”, 1)
+>>> d.put("1", 1)
 >>> t1 = time.time()
->>> d.put(“1”, 1.1)
->>> d.get(“1”)
+>>> d.put("1", 1.1)
+>>> d.get("1")
 1.1
->>> d.get(“1”, t1)
+>>> d.get("1", t1)
 1
->>> d.get(“1”, t0)
+>>> d.get("1", t0)
 None
 ```
 
