@@ -132,31 +132,54 @@ Note that for our purposes, an `Edge` is directed.
 
 An `Edge` requires a `start` and `end` vertex in order to be instantiated. `cost` should default to 1, and `visited` should default to `False`, but both should be able to be set via an initializer.
 
+A `SimpleGraph` has attributes
 
-A `SimpleGraph` has
-
-* a collection of `Vertex`s
-* a collection of `Edge`s
+* `verts`, a collection of `Vertex`s (you need to decide the collection type)
+* `edges`, a collection of `Edge`s (you need to decide the collection type)
 
 as well as several methods:
 
-* `graph.addVertex(v)`
-* `graph.clearAll()`
-* `graph.containsEdge(v1, v2)`
-* `graph.containsVertex(v)`
-* `graph.containsVertexName(name)`
-* `graph.isNeighbor(v1, v2)`
-* `graph.isConnected(v1, v2)  # Use any algorithm you like`
+* `graph.add_vertex(v)`
+* `graph.add_edge(v_1, v_2)`
+* `graph.contains_vertex(v)`
+* `graph.contains_edge(e_1, e_2)`
+* `graph.get_neighbors(v)`
+* `graph.is_empty()`
+* `graph.size()`
+* `graph.remove_vertex(v)`
+* `graph.remove_edge(v_1, v_2)`
+* `graph.is_neighbor(v1, v2)`
+* `graph.is_connected(v1, v2)  # Use any algorithm you like`
+* `graph.clear_all()`
 
+The actual implementation details are up to you.
 
 *Note: debugging will significantly easier if you write `__str__` or `__repr__` methods on your custom classes.*
+
 ### Challenge: Graph Algorithms
 
-If you're feeling up to the challenge, and you have sufficient time, implement the graph algorithms covered in CS106B/X using your SimpleGraph. The point isn't to check whether you still know your graph algorithms - rather, these algorithms will serve to test the correctness of your graph implementation. The particulars are up to you
+If you're feeling up to the challenge, and you have sufficient time, implement other graph algorithms, including those covered in CS106B/X, using your SimpleGraph. The point isn't to check whether you still know your graph algorithms - rather, these algorithms will serve to test the correctness of your graph implementation. The particulars are up to you.
+
+As some suggestions:
+
+* Longest path
+* D'ijkstras Algorithm
+* A*
+* Max Flow
+* K-Clique
+* Largest Connected Component
+* is_bipartite
 
 ```
 graph = SimpleGraph()
-# Do any initialization here
+# Your extension code here
+```
+
+### Challenge: Using Magic Methods
+
+See if you can rewrite the `SimpleGraph` class using magic methods to emulate the behavior and operators of standard Python. In particular,
+
+```
 
 ```
 
