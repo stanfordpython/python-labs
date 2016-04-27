@@ -169,6 +169,7 @@ As some suggestions:
 * K-Clique
 * Largest Connected Component
 * is_bipartite
+* hamiltonian_path_exists
 
 ```
 graph = SimpleGraph()
@@ -180,7 +181,10 @@ graph = SimpleGraph()
 See if you can rewrite the `SimpleGraph` class using magic methods to emulate the behavior and operators of standard Python. In particular,
 
 ```
-
+graph[v]  # returns neighbors of v
+graph[v] = v_2  # Builds an edge from v to v2
+len(graph)
+# etc
 ```
 
 ## Timed Key-Value Store (challenge)
@@ -209,7 +213,7 @@ To give you an idea of how this class works, this is what should happen after yo
 None
 ```
 
-### Bonus
+### Remove (challenge)
 Implement a method called `remove(key)` that takes a key and removes that entire key from the key-value store.
 
 Write another `remove(key, time)` method that takes a key and removes all memory of values before that time method.
