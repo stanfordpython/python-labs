@@ -77,13 +77,13 @@ What is the output of the statements below?
 Let's add more functionality to the `Course` class!
 
 * Add a property `students` to the `Course` class that tracks whether students are here or not.
-
 * Create a method `mark_attendance(*students)` that takes a splat operator `students` to mark students as present or absent.
 
 * Create a method `is_present(student)` that takes a student’s name as a parameter and returns `True` if the student is present and `False` otherwise.
 
 ## Implementing Prerequesites
-Now we want to implement functionality to determine if a course is a prerequsite of another. In our implementation, we will assume that each subsequent course that is instantiated requires all of the previous course listings as a prerequesite. For example, after implementing:
+
+Now we want to implement functionality to determine if one course is a prerequisite of another. In our implementation, we will assume that each one course is a prerequisite for another if it is in the same department and the numeric part of the course number is less. For example, after implementing:
 
 ```
 >>> cs106a = Course("CS", "106A", "Programming Methodology")
@@ -96,7 +96,7 @@ True
 False
 ```
 
-To accomplish this, we'd like you to implement a magic method `__le__` that will add functionality to determine if a course is a prerequisite for another course. Read up on [total ordering](https://docs.python.org/3.4/library/functools.html#functools.total_ordering) to figure out what `__le__` should return based on the argument you pass in.
+To accomplish this, you will need to implement a magic method `__le__` that will add functionality to determine if a course is a prerequisite for another course. Read up on [total ordering](https://docs.python.org/3.4/library/functools.html#functools.total_ordering) to figure out what `__le__` should return based on the argument you pass in.
 
 To give a few hints on how to add this piece of functionality might be implemented, we would encourage you to think about using a class variable to represent some sort of ordering amongs the classes that get initialized. Every call to the `Course` `__init__` method might want to order the class variable in a way that `__le__` knows exactly how to compare the two courses it is given. Check out the slides or this [awesome blog post](http://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide) for a refresher on Python namespacing and class variables.
 
