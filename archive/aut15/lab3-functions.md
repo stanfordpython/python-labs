@@ -130,6 +130,7 @@ Write at least two more function calls, not listed above, predict their output, 
 Write a function `speak_excitedly` that accepts one required positional argument (a message) and two optional keyword arguments, the first of which is a positive integer referring to the number of exclamation marks to put at the end of the message (defaults to 1), and the second of which is a boolean flag indicating whether or not to capitalize the message (defaults to False).
 
 How would you call this function to produce the following outputs?
+
 ```
 "I love Python!"
 "Keyword arguments are great!!!!"
@@ -172,6 +173,7 @@ should produce
 ## Nuances
 ### Return
 Predict the output of the following code snippet. Then, run the code to check your hypothesis.
+
 ```
 def say_hello():
     print("Hello!")
