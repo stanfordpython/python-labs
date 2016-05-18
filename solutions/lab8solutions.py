@@ -1,6 +1,6 @@
 #!/usr/bin/env python3 -tt
 """
-File: lab7solutions.py
+File: lab8solutions.py
 ----------------------
 Reference solutions to Lab 8 for CS41: Hap.py Code.
 
