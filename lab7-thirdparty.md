@@ -1,4 +1,4 @@
-# Lab 6: 3rd Party Libraries
+# Lab 7: 3rd Party Libraries
 
 ## Overview
 
@@ -22,6 +22,8 @@ As a reminder, the packages discussed in class are listed below, along with some
 
 ### Other Packages
 
+* Pillow - better image processing
+* twisted - event-driven network programming framework
 * selenium - Automated web client 
 * dateutil - better date/time handling
 * SQLAlchemy - Build objects on top of database schemas
@@ -31,11 +33,41 @@ As a reminder, the packages discussed in class are listed below, along with some
 * boto - Python interface to Amazon Web Services.
 * PyEphem - Track planets and satellites.
 * Basemap - Plot 2D data on maps.
-* PRAW - Play with reddit's API, write a reddit bot.
+* praw - Play with reddit's API, write a reddit bot.
 * robobrowser - automate web tasks
 * mechanize - automate web tasks
 * networkx - visualize small graphs
 * BeautifulSoup - rapidly prototype HTML parsers
+* pygame and pyglet - prototyping games
+* tornado - web framework and asynchronous web framework
+* cyclone - web server framework connecting tornado and twisted
+* fabric - Automate interactions with remote servers.
+* Scrapy - Screen scraping/Web crawling framework
+* Pattern - Web mining
+* rstr and exrex and regex - Random string generation/regex reversing.
+* autobahn - web sockets
+* peewee - simple ORM for databases
+* sh - Python bindings for unix commands
+* celery - asynchronous task queue
+* py2app / py2exe - create standalone Mac OS X app / windows executable
+* delorean - friendly dates/times
+* docutils - documentation utilities
+* colorama - terminal colors
+* wxpython and pyqt and pygtk - gui toolkits for python
+* scapy - packet sniffer and analyzer
+* pywin32 - simplifies common interactions with Windows
+* nose - testing framework
+* SymPy - symbolic manipulation including algebraic evaluation, differentiation, expansion
+* whoosh - full text indexing, search, and spell checking
+* fuzzywuzzy - fuzzy string matching library
+* progressbar - easy ASCII progress bars
+* retrying - easily retry failed operations
+* phonenumbers - easy to work with phone numbers
+* gensim - feature vectors for humans
+* tensorflow - Google's machine intelligence
+* sphinx - documentation generation
+
+For more, check out [awesome-python](https://github.com/vinta/awesome-python#awesome-python).
 
 ## Write
 
