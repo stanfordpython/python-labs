@@ -9,7 +9,7 @@ This lab also gives you the chance to write what might be your first programs in
 
 These problems are not intended to be algorithmically challenging - just ways to flex your new Python 3 muscles. Even if the problems seem simple, work through them quickly, and then you're free to go.
 
-As always, have fun, and enjoy the class period!
+As always, have fun, and enjoy the (remainder of the) class period!
 
 ## Warming Up
 

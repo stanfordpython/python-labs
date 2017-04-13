@@ -113,7 +113,7 @@ Temperature F? 10
 It is -12.222222222222221 degrees Celsius.
 ```
 
-Want to be fancy (challenge)? Try to print the final temperature to two decimal places. *Hint: Take a look at the [`round()`](https://docs.python.org/3.4/library/functions.html#round) function. Isn't Python great?*
+Want to be fancy (challenge)? Try to print the final temperature to two decimal places. For example, in the last case above we would print `-12.22` instead of `-12.222222222222221`. *Hint: Take a look at the [`round()`](https://docs.python.org/3.4/library/functions.html#round) function. Isn't Python great?*
 
 
 ## Investigating Data Structures
@@ -141,7 +141,7 @@ Why is this happening? Consider using the `id` function to investigate further. 
 
 ### Tuples
 
-Write a function to compute the [GCD](https://en.wikipedia.org/wiki/Greatest_common_divisor) of two numbers.
+Write a function to compute the [GCD](https://en.wikipedia.org/wiki/Greatest_common_divisor) of two numbers. You can freely use the fact that `gcd(a, b)` is mathematically equal to `gcd(b, a % b)` when `a >= b`, and that `gcd(a, 0) == a`.
 
 ```
 def gcd(a, b):
@@ -153,7 +153,7 @@ gcd(3, 9) # => 3
 gcd(1, 1) # => 1
 ```
 
-You can assume that `a < b` if you'd like.
+You can assume that `a >= b` if you'd like.
 
 You should be able to reasonably accomplish this in three lines of Python code (fewer if you're really clever). Try to exploit tuple packing and unpacking!
 
@@ -172,8 +172,10 @@ Write a function that properly reverses the keys and values of a dictionary - ea
 
 ```
 flip_dict({"CA": "US", "NY": "US", "ON": "CA"})
-# => {"US": {"CA", "NY"}, "CA": {"ON"}}
+# => {"US": ["CA", "NY"], "CA": ["ON"]}
 ```
+
+Note: there is a data structure in the `collections` module from the standard library called `defaultdict` which provides exactly this sort of functionality. You provide it a factory method for creating default values in the dictionary (in this case, a list.) You can read more about `defaultdict` and other `collections` data structures [here](https://docs.python.org/3.4/library/collections.html).
 
 ### Comprehensions
 
@@ -212,14 +214,69 @@ Write a comprehension to transform the input data structure into the output data
 ['apple', 'orange', 'pear'] -> {'apple': 5, 'orange': 6, 'pear': 4}
 ```
 
+### Triad Phrases
+
+Triad words are words for which the two smaller strings you make by extracting alternating letters both form valid words.
+
+For example:
+
+![Triad Phrases](http://i.imgur.com/jGEXJWi.png =400x)
+
+Write a function to determine whether an entire phrase passed into a function is made of triad words. You can assume that all words are made of only alphabetic characters, and are separated by whitespace. We will consider the empty string to be an invalid English word.
+
+```
+is_triad_phrase("learned theorems") # => True
+is_triad_phrase("studied theories") # => False
+is_triad_phrase("poorest agrarians") # => True
+is_triad_phrase("needy farmers") # => False
+is_triad_phrase("schooled oriole") # => True
+is_triad_phrase("educated small bird") # => True
+is_triad_phrase("a") # => False
+is_triad_phrase("") # => False
+```
+
+What would be an appropriate data structure in which to store the English words?
+
+Using either `/usr/share/dict/words` or `http://stanfordpython.com/res/misc/words`, a 2.5M text file containing over 200 thousand English words, which are triad words? As a sanity check, we found 2770 distinct triad words (case-insensitive).
+
+### Surpassing Phrases (challenge)
+
+Surpassing words are words for which the gap between each adjacent pair of letters strictly increases. These gaps are computed without "wrapping around" from Z to A.
+
+For example:
+
+![Surpassing Phrases](http://i.imgur.com/XKiCnUc.png =400x)
+
+Write a function to determine whether an entire phrase passed into a function is made of surpassing words. You can assume that all words are made of only alphabetic characters, and are separated by whitespace. We will consider the empty string and a 1-character string to be valid surpassing phrases.
+
+```
+is_surpassing_phrase("superb subway") # => True
+is_surpassing_phrase("excellent train") # => False
+is_surpassing_phrase("porky hogs") # => True
+is_surpassing_phrase("plump pigs") # => False
+is_surpassing_phrase("turnip fields") # => True
+is_surpassing_phrase("root vegetable lands") # => True
+is_surpassing_phrase("a") # => True
+is_surpassing_phrase("") # => True
+```
+
+You may find the Python functions `ord` (one-character string to integer ordinal) and `chr` (integer ordinal to one-character string) useful to solve this puzzles.
+
+```
+ord('a') # => 97
+chr(97) # => 'a'
+```
+
+Using either `/usr/share/dict/words` or `http://stanfordpython.com/res/misc/words`, a 2.5M text file containing over 200 thousand English words, which are surpassing words? As a sanity check, we found 1931 distinct surpassing words.
+
+
 ### Cyclone Phrases (challenge)
 
 Cyclone words are words that have a sequence of characters in alphabetical order when following a cyclic pattern. 
 
 For example:
 
-![Image](http://i.stack.imgur.com/4XBV3.png)
-
+![Cyclone Phrases](http://i.stack.imgur.com/4XBV3.png =250x)
 
 Write a function that to determine whether an entire phrase passed into a function is made of cyclone words. You can assume that all words are made of only alphabetic characters, and are separated by whitespace.
 
@@ -231,6 +288,12 @@ is_cyclone_phrase("by myself at twelve pm") # => False
 is_cyclone_phrase("acb") # => True
 is_cyclone_phrase("") # => True
 ```
+
+Using either `/usr/share/dict/words` or `http://stanfordpython.com/res/misc/words`, a 2.5M text file containing over 200 thousand English words, which are cyclone words? As a sanity check, we found 769 distinct cyclone words.
+
+### Other Phrases (challenge)
+
+On Puzzling.StackExchange, the user [JLee](https://puzzling.stackexchange.com/users/463/jlee) has come up with a ton of interesting puzzles of this form (I call words that follow a certain rule <something> words). If you like puzzles, read through [these JLee puzzles](https://puzzling.stackexchange.com/search?q=%22I+call+it%22+title%3A%22what+is%22+is%3Aquestion+user%3A463) or [these other puzzles inspired by JLee](https://puzzling.stackexchange.com/search?tab=votes&q=%22what%20is%20a%22%20word%20is%3aquestion).
 
 ### Pascal’s Triangle
 Write a function that generates the next level of Pascal’s triangle given a list that represents a valid row of Pascal’s triangle.
@@ -246,9 +309,9 @@ generate_pascal_row([1, 4, 6, 4, 1]) -> [1, 5, 10, 10, 5, 1]
 ### Triangle Numbers
 The nth term of the sequence of triangle numbers is given by 1 + 2 + ... + n = n(n+1) / 2. For example, the first ten triangle numbers are: `1, 3, 6, 10, 15, 21, 28, 36, 45, 55, ...`
 
-By converting each letter in a word to a number corresponding to its alphabetical position and adding these values we form a word value. For example, the word value for SKY is `19 + 11 + 25 = 55` and 55 is a triangle number. If the word value is a triangle number then we shall call the word a triangle word.
+By converting each letter in a word to a number corresponding to its alphabetical position (`A=1`, `B=2`, etc) and adding these values we form a word value. For example, the word value for SKY is `19 + 11 + 25 = 55` and 55 is a triangle number. If the word value is a triangle number then we shall call the word a triangle word.
 
-Using either `/usr/share/dict/words` or `http://stanfordpython.com/words`, a 2.5M text file containing over 200 thousand English words, which are triangle words? As a sanity check, we found 16303 distinct triangle words.
+Using either `/usr/share/dict/words` or `http://stanfordpython.com/res/misc/words`, a 2.5M text file containing over 200 thousand English words, which are triangle words? As a sanity check, we found 16303 distinct triangle words.
 
 *Hint: you can use `ord(ch)` to get the integer ASCII value of a character*
 
@@ -271,6 +334,8 @@ Formally, a polygon is represented by a list of (x, y) tuples, where each (x, y)
 square = [(0,0), (0,1), (1,1), (1,0)]
 ```
 
+You can assume that the polygon described by the provided list of tuples is not self-intersecting, but do not assume that it is convex.
+
 **Note: this is a *hard* problem. Really hard.**
 
 ## Done Early?
@@ -281,6 +346,6 @@ Skim [Python’s Style Guide](https://www.python.org/dev/peps/pep-0008/), keepin
 
 Alright, you did it! There's nothing to submit for this lab. You're free to leave as soon as you've finished this lab.
 
-*Credit to Puzzling.SE, ProjectEuler and InterviewCake for several problem ideas*
+*Credit to Puzzling.SE (specifically [JLee](https://puzzling.stackexchange.com/users/463/jlee)), ProjectEuler and InterviewCake for several problem ideas*
 
 > With <3 by @sredmond
