@@ -252,7 +252,7 @@ Triad words are English words for which the two smaller strings you make by extr
 
 For example:
 
-![Triad Phrases](http://i.imgur.com/jGEXJWi.png =400x)
+![Triad Phrases](http://i.imgur.com/jGEXJWi.png)
 
 Write a function to determine whether an entire phrase passed into a function is made of triad words. You can assume that all words are made of only alphabetic characters, and are separated by whitespace. We will consider the empty string to be an invalid English word.
 
@@ -277,7 +277,7 @@ Surpassing words are English words for which the gap between each adjacent pair 
 
 For example:
 
-![Surpassing Phrases](http://i.imgur.com/XKiCnUc.png =400x)
+![Surpassing Phrases](http://i.imgur.com/XKiCnUc.png)
 
 Write a function to determine whether an entire phrase passed into a function is made of surpassing words. You can assume that all words are made of only alphabetic characters, and are separated by whitespace. We will consider the empty string and a 1-character string to be valid surpassing phrases.
 
@@ -308,7 +308,7 @@ Cyclone words are English words that have a sequence of characters in alphabetic
 
 For example:
 
-![Cyclone Phrases](http://i.stack.imgur.com/4XBV3.png =250x)
+![Cyclone Phrases](http://i.stack.imgur.com/4XBV3.png)
 
 Write a function that to determine whether an entire phrase passed into a function is made of cyclone words. You can assume that all words are made of only alphabetic characters, and are separated by whitespace.
 
