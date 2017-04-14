@@ -1,6 +1,6 @@
 #!/usr/bin/env python3 -tt
 """
-File: lab2solutions.py
+File: lab2_solutions.py
 ----------------------
 Reference solutions to Lab 2 for CS41: Hap.py Code.
 
@@ -9,15 +9,16 @@ Revision history:
 @sredmond 04-07-2016 Minor bugs fixed
 @sredmond 04-04-2016 Created
 """
-
 import math
+DICTIONARY_PATH = '/usr/share/dict/words'  # Feel free to change this to your dictionary
 
-def hello():
+
+def say_hello():
     """Prints "Hello, world!" """
     print("Hello, World!")
 
 
-def tictactoe():
+def print_tictactoe():
     """Print out a tic tac toe board using print's `sep` keyword argument
 
     Note: this is just one of many ways to solve this problem, chosen to
@@ -25,11 +26,11 @@ def tictactoe():
     and, of course, `sep`.
     """
     row = '|'.join(['  '] * 3)      # row = '  |  |  '
-    div = '\n{}\n'.format('-' * 8)  # div = '---------'
+    div = '\n{}\n'.format('+'.join(['-' * 2] * 3))  # div = '--+--+--'
     print(row, row, row, sep=div)
 
 
-def tictactoe_zen():
+def print_tictactoe_zen():
     """Prints out a tic tac toe board. I bet you could've guessed that, huh?
 
     Along the lines of "readability counts," there's no reason to use crazy
@@ -39,7 +40,7 @@ def tictactoe_zen():
     copy and paste! Remember, the Zen of Python makes life easier for the programmer
     rather than the program (and you can take that to the bank)!
     """
-    # using `\` at the end of one line in a multiline string removes the implicit newline.
+    # Using `\` at the end of one line in a multiline string removes the implicit newline.
     s = """\
   |  |
 --+--+--
@@ -50,21 +51,21 @@ def tictactoe_zen():
     print(s)
 
 
-def super_tictactoe():
+def print_super_tictactoe():
     """Prints a super tic-tac-toe board using print's `sep` keyword.
 
     Note: As above, this is just one of many ways to accomplish this program, and
     it isn't very readable, or very fast! But, it does illustrate using the `sep`
     keyword.
     """
-    row = 'H'.join(['  |  |  '] * 3) + '\n'
-    div = 'H'.join(['--+--+--'] * 3) + '\n'
-    superdiv = '+'.join(['=' * 8] * 3) + '\n'
+    row = 'H'.join(['  |  |  '] * 3)  # row = '  |  |  H  |  |  H  |  |  '
+    div = '\n'+ 'H'.join(['--+--+--'] * 3) + '\n'  # div = '\n--+--+--H--+--+--H--+--+--\n'
+    superdiv = '\n' + '+'.join(['=' * 8] * 3) + '\n'  # superdiv = '\n========+========+========\n'
     block = div.join([row] * 3)
     print(block, block, block, sep=superdiv)
 
 
-def super_tictactoe_zen():
+def print_super_tictactoe_zen():
     """Prints a super tic tac toe board.
 
     This solution is much more readable than the one above. And it's faster! Great!
@@ -92,7 +93,7 @@ def super_tictactoe_zen():
 
 
 def fizzbuzz(n):
-    """Returns the sum of all numbers <= n divisible by 3 or 5.
+    """Returns the sum of all numbers < n divisible by 3 or 5.
 
     This iterative approach will work really well, and if it gets the job done
     reasonably quickly, that's all we should ask for.
@@ -127,7 +128,7 @@ def collatz_len(n):
 
     While this iterative approach might look "unpythonic" at first,
     the Collatz sequence is a very iterative algorithm, and there aren't
-    very many good functional ways to solve this problem.
+    very many easy functional ways to solve this problem.
 
     One benefit of this approach is that we do not store the entire
     sequence in memory - since we're only interested in the length, that
@@ -136,7 +137,7 @@ def collatz_len(n):
     length = 1
     while n > 1:
         if n % 2 == 0:
-            n /= 2
+            n //= 2  # We want to explicitly use integer division here, even though n is even.
         else:
             n = 3 * n + 1
         length += 1  # Note: Python has no increment operator (like ++), so we use += 1
@@ -172,14 +173,15 @@ def collatz_len_fast(n, cache):
     """
     if n == 1:
         return 1
-    if i in cache:
-        return cache[i]
+    if n in cache:
+        return cache[n]
 
     if n % 2 == 0:
-        cache[i] = collatz_len_fast(n / 2, cache) + 1
+        cache[n] = collatz_len_fast(n // 2, cache) + 1
     else:
-        cache[i] = collatz_len_fast(3 * n + 1, cache) + 1
-    return cache[i]
+        cache[n] = collatz_len_fast(3 * n + 1, cache) + 1
+    return cache[n]
+
 
 def max_collatz_len_fast(n):
     """Slightly faster way to compute the longest Collatz sequence for numbers < n
@@ -187,15 +189,20 @@ def max_collatz_len_fast(n):
     We use the exact same tactic as in `max_collatz_len` above, with the added
     optimization that we only look over the second half of the range, since everything
     in the first half has a x2 preimage.
-
     """
     cache = {}
-    return max([collatz_len_fast(i) for i in range(n / 2, n)])
+    return max(collatz_len_fast(i, cache) for i in range(n // 2, n))
+
+
+def convert_fahr_to_cels(deg_fahr):
+    """Converts a temperature in degrees Fahrenheit to degrees Celsius."""
+    cels = (fahr - 32) * 5 / 9
+
 
 def converter():
-    """Convert a temperature from Fahrenheit to Celsius.
+    """Converts user-specified temperatures from Fahrenheit to Celsius.
 
-    This problem exists only to check that you're running Python 3, where
+    This problem exists to check that you're running Python 3, where
     `input` returns a string and division is double division by default, in
     contrast to Python 2, where `input` quasi-evaluates it's input and division
     is integer (floored) division by default.
@@ -228,12 +235,12 @@ def object_reference():
     """Explore the differences between objects and references to objects
 
     What's happening here? Lists store references to objects, and any operation which
-    updates the underlying object in place (like += on lists, which expands to .extend)
+    updates the underlying object in-place (like += on lists, which is equivalent to .extend)
     will change the object that all of the list entries point to. For strings and integers,
     adding a number won't update the underlying object in place, so only the first elements
     are changed. In fact, both strings and integers in Python are "immutable," in the sense
     that all modification operations (like .lower(), .upper(), etc) will create (and return!)
-    a new string object.
+    a new object (a new suitcase).
 
     Visually, it looks something like this (forgive the ASCII art):
 
@@ -258,7 +265,7 @@ def object_reference():
         # s[2] __/
 
     Since all the elements of the list are references to the (one and only) list object that
-    has been updated to contain a 1, printing `s` reflects this change across all of its indices.
+    has been updated in place to contain a 1, printing `s` reflects this change across all of its indices.
 
     Bonus! Setting one of the elements of `s` to point to a new object will change this structure.
     For example,
@@ -372,9 +379,9 @@ def comprehension_read():
     # => [None, None, None]
     print(arr)
     # => [
-     [3, 2, 1, 12],
-     ['a', 'b', 'c', 'aaaa'],
-     [('do',), ['re'], 'mi', ('do', 'do', 'do', 'do')]
+      [3, 2, 1, 12],
+      ['a', 'b', 'c', 'aaaa'],
+      [('do',), ['re'], 'mi', ('do', 'do', 'do', 'do')]
     ]
         What's going on here? .append() is a function that returns None,
         so the list comprehension returns a list of three Nones, but the
@@ -390,7 +397,8 @@ def comprehension_read():
     # => ['Y', 'O', 'N']
         Simple enough. Keeps only the upper case letters in "pYthON", which are
         'Y', 'O', and 'N'. Interesting, the result is a list of characters, not
-        a string, as you might guess.
+        a string, as you might guess. This is because the list comprehension
+        traverses the string "pYthON" as a sequence of 1-character strings.
 
     {len(w) for w in ["its", "the", "remix", "to", "ignition"]}
     # => {2, 3, 5, 8}
@@ -418,51 +426,141 @@ def comprehension_write():
     To generate [1, 3, 5, 7] from [0, 1, 2, 3], we need to multiply each element
     by 2 and add 1.
 
-        [2 * num + 1 for num in arr]
-
-    To generate [True, False, True, False] from [3, 5, 9, 8], we could use whether
-    each element is divisible by 3 (or any other such test).
-
-        [num % 3 == 0 for num in arr]
-
-    To extract the TA's names from a class list, we first filter by whether the
-    element starts with 'TA_' and then extract the name using slice syntax.
-
-        [name[3:] for name in arr if name.startswith('TA_')]
+        [2 * num + 1 for num in nums]
 
     To get the first capitalized letter, we convert the 0th character to uppercase.
 
-        [fruit[0].upper() for fruit in arr]
+        [fruit[0].upper() for fruit in fruits]
 
     To keep only 'apple' and 'pear', we filter on whether the fruit has a 'p' in it
     (although we could use any other appropriate test as well).
 
-        [fruit for fruit in arr if 'p' in fruit]
+        [fruit for fruit in fruits if 'p' in fruit]
+
+    To extract the TA's names from a class list, we first filter by whether the
+    element starts with 'TA_' and then extract the name using slice syntax.
+
+        [name[3:] for name in people if name.startswith('TA_')]
 
     To construct a list of tuples, we can build the tuples on the fly inside the list
     comprehension.
 
-        [(fruit, len(fruit)) for fruit in arr]
+        [(fruit, len(fruit)) for fruit in fruits]
 
     To build a dictionary mapping fruits to their lengths, we can use a dictionary
-    comprehension with syntax {key_fn(el): value_fn(el) for el in arr}
+    comprehension with syntax {key_fn(el): value_fn(el) for el in collection}
 
-        {fruit:len(fruit) for fruit in arr}
+        {fruit:len(fruit) for fruit in fruits}
     """
-    arr = [0, 1, 2, 3]
-    print([2 * num + 1 for num in arr])  # [1, 3, 5, 7]
+    nums = [0, 1, 2, 3]
+    fruits = ['apple', 'orange', 'pear']
+    people = ["TA_sam", "TA_guido", "student_poohbear", "student_htiek"]
 
-    arr = [3, 5, 9, 8]
-    print([num % 3 == 0 for num in arr])  # [True, False, True, False]
+    print([2 * num + 1 for num in nums])  # [1, 3, 5, 7]
 
-    arr = ["TA_sam", "TA_guido", "student_poohbear", "student_htiek"]
-    print([name[3:] for name in arr if name.startswith('TA_')])  # ["sam", "guido"]
+    print([fruit[0].upper() for fruit in fruits])  # ['A', 'O', 'P']
+    print([fruit for fruit in fruits if 'p' in fruit])  # ['apple', 'pear']
 
-    arr = ['apple', 'orange', 'pear']
-    print([fruit[0].upper() for fruit in arr])  # ['A', 'O', 'P']
-    print([fruit for fruit in arr if 'p' in fruit])  # ['apple', 'pear']
-    print([(fruit, len(fruit)) for fruit in arr])  # [('apple', 5), ('orange', 6), ('pear', 4)]
-    print({fruit:len(fruit) for fruit in arr})  # {'orange': 6, 'apple': 5, 'pear': 4}
+    print([name[3:] for name in people if name.startswith('TA_')])  # ["sam", "guido"]
+    print([(fruit, len(fruit)) for fruit in fruits])  # [('apple', 5), ('orange', 6), ('pear', 4)]
+    print({fruit:len(fruit) for fruit in fruits})  # {'orange': 6, 'apple': 5, 'pear': 4}
+
+
+def generate_pascal_row(row):
+    """Generate the successive row in Pascal's triangle.
+
+    While there are many iterative approaches, we can zip together offsets of
+    the given row to generate pairs of elements, which we sum to form the final
+    data structure.
+
+    For example, if row = [1, 4, 6, 4, 1], then
+
+        [0] + row  # => [0, 1, 4, 6, 4, 1]
+        row + [0]  # => [1, 4, 6, 4, 1, 0]
+
+    Adding together corresponding entries with zip and a list comprehension gives
+
+                        [1, 5, 10, 10, 5, 1]
+
+    Just like we wanted!
+    """
+    if not row: return [1]
+    return [left + right for left, right in zip([0] + row, row + [0])]
+
+
+def is_triad_word(word, english):
+    """Returns whether a word is a triad word.
+
+    There are many solutions to this problem, but the easiest is to slice our
+    string using the slice syntax to extract two words (built from alternating
+    letters), and then check that both of those words are valid English words.
+    """
+    return word[::2] in english and word[1::2] in english
+
+
+def is_triad_phrase(phrase, english):
+    """Returns whether all the space-delimited words in `phrase` are triad words
+
+    A phrase is a triad phrase if and only if all of its component words are
+    triad words, so we first split the phrase into words using .split(), and then
+    check if all of the words are triad words.
+
+    In Python, you can use `all` to check if all elements of an iterable are True-y,
+    short-circuiting as soon as a False-y element is found. Currently, we're computing
+    the triad-ness of all of the words before evaluating `all`, but there is a way to
+    stream the words through is_triad_word to `all` using generator expressions, which
+    we'll learn about Week 4.
+
+    This strategy is repeated for the other types of phrases, and the same caveats apply
+    for those problems as well.
+    """
+    return all([is_triad_word(word, english) for word in phrase.split()])
+
+
+def character_distance(left, right):
+    """Return the alphabetic distance between two uppercase one-character strings.
+
+    For example, character_distance('R', 'B') returns 16, since 'B' has value 66
+    and 'R' has value 82.
+    """
+    return abs(ord(left) - ord(right))
+
+
+def is_surpassing_word(word):
+    """Returns whether a word is a surpassing word.
+
+    As usual, there are many solutions, but we choose to compute the distances between
+    pairs of characters (zipping together word with word[1:]) first, and then check
+    whether these distances are all increasing (again using zip). This is certainly not
+    the fastest or most readable solution (since we are first computing all adjacent
+    distances, and then only later checking to see if the distances are in increasing
+    order), but it illustrates the use of zip to associate adjacent pairs of elements
+    of a sequence. For example, consider the case where `word` is SUPERB.
+
+        word     ->  S  U  P  E  R  B
+        word[1:] ->  U  P  E  R  B
+                     ----------------
+                     SU UP PE ER RB
+        zip(word, word[1:]) generates (S, U), (U, P), (P, E), (E, R), (R, B)
+
+    Since the last B is unmatched, it isn't included in the results generated by zip.
+    We immediately unpack the tuples generated by zip into a left term and a right term.
+
+    We use the same trick to compare distances, checking if for all pairs, the left term
+    is less than the right term (reminiscent of a stopping condition for bubble sort).
+    """
+    distances = [character_distance(left, right) for left, right in zip(word, word[1:])]
+    return all(left < right for left, right in zip(distances, distances[1:]))
+
+
+def is_surpassing_phrase(phrase):
+    """Returns whether all the space-delimited words in `phrase` are surpassing words
+
+    A phrase is a surpassing phrase if and only if all of its component words are
+    triad words, so we first split the phrase into words using .split(), and then
+    check if all of the words are triad words.
+    """
+    return all([is_surpassing_word(word) for word in phrase.split()])
 
 
 def is_cyclone_word(word):
@@ -503,36 +601,8 @@ def is_cyclone_phrase(phrase):
     A phrase is a cyclone phrase if and only if all of its component words are
     cyclone words, so we first split the phrase into words using .split(), and then
     check if all of the words are cyclone words.
-
-    In Python, you can use `all` to check if all elements of an iterable are True-y,
-    short-circuiting as soon as a False-y element is found. Currently, we're computing
-    the cyclone-ness of all of the words before evaluating `all`, but there is a way to
-    stream the words through is_cyclone_word to all using generator expressions, which
-    we'll learn about Week 4.
     """
     return all([is_cyclone_word(word) for word in phrase.split()])
-
-
-def generate_pascal_row(row):
-    """Generate the successive row in Pascal's triangle.
-
-    While there are many iterative approaches, we can zip together offsets of
-    the given row to generate pairs of elements, which we sum to form the final
-    data structure.
-
-    For example, if row = [1, 4, 6, 4, 1], then
-
-        [0] + row  # => [0, 1, 4, 6, 4, 1]
-        row + [0]  # => [1, 4, 6, 4, 1, 0]
-
-    Adding together corresponding entries with zip and a list comprehension gives
-
-                        [1, 5, 10, 10, 5, 1]
-
-    Just like we wanted!
-    """
-    if not row: return [1]
-    return [left + right for left, right in zip([0] + row, row + [0])]
 
 
 def is_triangle_number(num):
@@ -572,23 +642,54 @@ def is_triangle_word(word):
     return is_triangle_number(count)
 
 
-def triangle_words():
-    """Returns the number of triangle words in the English dictionary.
+def get_word_counts():
+    """Print the number of English words satisfying a number of conditions.
+
+    Specifically, print the number of English words that are
+        (1) Triad words
+        (2) Surpassing words
+        (3) Cyclone words
+        (4) Triangle words
+    """
+    english = get_english_words(DICTIONARY_PATH)
+    triad_words = [word for word in english if is_triad_word(word, english)]
+    surpassing_words = [word for word in english if is_surpassing_word(word)]
+    cyclone_words = [word for word in english if is_cyclone_word(word)]
+    triangle_words = [word for word in english if is_triangle_word(word)]
+
+    print("Number of triad words: {}".format(len(triad_words)))
+    print("Number of surpassing words: {}".format(len(surpassing_words)))
+    print("Number of cyclone words: {}".format(len(cyclone_words)))
+    print("Number of triangle words: {}".format(len(triangle_words)))
+
+
+def get_english_words(dictionary_path):
+    """Returns a set of trimmed, capitalized English words from a path to a dictionary.
+
+    The dictionary is assumed to have one English word per line.
+
+    If dictionary_path can not be read or is formatted incorrectly, a default English word
+    set is returned containing some fruits.
 
     Note that we keep the file open for as little time as possible, which is
     generally a good practice. One downside of this implementation is that it
-    buffers all of the words in memory, but the word list is a known finite size
-    (and that size isn't *too* big), so this approach will work fine. Iterating
-    through the lines in the file with a for loop with mitigate this downside.
+    buffers all of the words in memory (first as a string, and later as a collection
+    of lines, but the word list is a known finite size (and that size isn't *too*
+    big), so this approach will work fine. Iterating through the lines in the file
+    with a for loop could mitigate this downside.
 
     We then use a set comprehension to build an uppercased collection of all of
-    the triangle words in the dictionary, and return its length.
-    """
-    with open('/usr/share/dict/words', 'r') as f:
-        lines = f.readlines()
+    the words in the dictionary.
 
-    triangle_words = {line.upper().strip() for line in lines if is_triangle_word(line)}
-    return len(triangle_words)
+    Note that we choose to represent the English words as a set, because we want fast
+    membership testing (using `in`) and also want to be able to iterate over all words.
+    """
+    try:
+        with open(dictionary_path, 'r') as f:
+            content = f.read()
+        return {line.strip().upper() for line in content.split('\n') if line}
+    except OSError:
+        return {'APPLE', 'BANANA', 'PEAR', 'ORANGE'}
 
 
 def polygon_collision(poly1, poly2):
@@ -597,36 +698,41 @@ def polygon_collision(poly1, poly2):
     If you're interested in reading more about the strategy to solve it,
     check out http://www.phailed.me/2011/02/polygonal-collision-detection/
     """
-    pass  #
-
+    pass
 
 if __name__ == '__main__':
-    """Runs each of the lab solution functions and prints the docstring"""
+    """Runs each of the lab solution functions and prints the attached docstring and source."""
+    english = get_english_words(DICTIONARY_PATH)
     fns = [
         # Comment out any functions that you do not want to run
-        (hello, (), {}),
-        (tictactoe, (), {}),
-        (tictactoe_zen, (), {}),
-        (super_tictactoe, (), {}),
-        (super_tictactoe_zen, (), {}),
+        (say_hello, (), {}),
+        (print_tictactoe, (), {}),
+        (print_tictactoe_zen, (), {}),
+        (print_super_tictactoe, (), {}),
+        (print_super_tictactoe_zen, (), {}),
         (fizzbuzz, (1001,), {}),
         (max_collatz_len, (1000,), {}),
+        (max_collatz_len_fast, (1000000,), {}),
         (converter, (), {}),
         (object_reference, (), {}),
         (gcd, (91, 35), {}),
         (flip_dict, ({"CA": "US", "NY": "US", "ON": "CA"},), {}),
         (comprehension_read, (), {}),
         (comprehension_write, (), {}),
-        (is_cyclone_phrase, ("all alone at noon",), {}),
         (generate_pascal_row, ([1, 4, 6, 4, 1],), {}),
-        (triangle_words, (), {}),
+        (is_triad_phrase, ("LEARNED THEOREM", english), {}),
+        (is_surpassing_phrase, ("TURNIP FIELDS",), {}),
+        (is_cyclone_phrase, ("ALL ALONE AT NOON",), {}),
+        (is_triangle_word, ("SKY",), {}),
+        (get_word_counts, (), {}),
+        (polygon_collision, (None, None), {}),
     ]
     for fn, args, kwargs in fns:
         name = fn.__name__
-        print("*" * len(name))     # header
-        print(name)                # function name
-        print(fn.__doc__)          # function docstring
-        res = fn(*args, **kwargs)  # variadic argument unpacking - cool stuff! More Week 3.
+        print("*" * len(name))        # header
+        print(name)                   # function name
+        print(fn.__doc__)             # function docstring
+        res = fn(*args, **kwargs)     # variadic argument unpacking - cool stuff! More Week 3.
         if res:
             print(res)
         input("Press [ENTER] to continue...")
