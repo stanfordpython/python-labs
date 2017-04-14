@@ -194,8 +194,9 @@ Predict the output of each of the following list comprehensions. After you have 
 
 # Something is fishy here. Can you spot it?
 arr = [[3,2,1], ['a','b','c'], [('do',), ['re'], 'mi']]
-[el.append(el[0] * 4) for el in arr]  # What does this return?
-# What is the content of `arr` at this point?
+print([el.append(el[0] * 4) for el in arr])  # What is printed?
+print(arr)  # What is the content of `arr` at this point?
+
 
 [letter for letter in "pYthON" if letter.isupper()]
 {len(w) for w in ["its", "the", "remix", "to", "ignition"]}
@@ -210,7 +211,7 @@ Write a comprehension to transform the input data structure into the output data
 ['apple', 'orange', 'pear'] -> ['A', 'O', 'P']  # Capitalize first letter
 ['apple', 'orange', 'pear'] -> ['apple', 'pear']  # Contains a 'p'
 
-["TA_sam", "TA_guido", "student_poohbear", "student_htiek"] -> ["sam", "guido"]
+["TA_sam", "student_poohbear", "TA_guido", "student_htiek"] -> ["sam", "guido"]
 ['apple', 'orange', 'pear'] -> [('apple', 5), ('orange', 6), ('pear', 4)]
 
 ['apple', 'orange', 'pear'] -> {'apple': 5, 'orange': 6, 'pear': 4}
@@ -257,12 +258,12 @@ For example:
 Write a function to determine whether an entire phrase passed into a function is made of triad words. You can assume that all words are made of only alphabetic characters, and are separated by whitespace. We will consider the empty string to be an invalid English word.
 
 ```
-is_triad_phrase("learned theorems") # => True
+is_triad_phrase("learned theorem") # => True
 is_triad_phrase("studied theories") # => False
-is_triad_phrase("poorest agrarians") # => True
-is_triad_phrase("needy farmers") # => False
+is_triad_phrase("wooded agrarians") # => True
+is_triad_phrase("forrested farmers") # => False
 is_triad_phrase("schooled oriole") # => True
-is_triad_phrase("educated small bird") # => True
+is_triad_phrase("educated small bird") # => False
 is_triad_phrase("a") # => False
 is_triad_phrase("") # => False
 ```
@@ -287,7 +288,7 @@ is_surpassing_phrase("excellent train") # => False
 is_surpassing_phrase("porky hogs") # => True
 is_surpassing_phrase("plump pigs") # => False
 is_surpassing_phrase("turnip fields") # => True
-is_surpassing_phrase("root vegetable lands") # => True
+is_surpassing_phrase("root vegetable lands") # => False
 is_surpassing_phrase("a") # => True
 is_surpassing_phrase("") # => True
 ```
@@ -336,9 +337,9 @@ Using either `/usr/share/dict/words` or `http://stanfordpython.com/res/misc/word
 
 *Hint: you can use `ord(ch)` to get the integer ASCII value of a character*
 
-## Challenge Problems
+## Bonus Problems
 
-*Only attempt to solve these challenge problems if you've finished the rest of the lab.*
+*Only attempt to solve these bonus problems if you've finished the rest of the lab. Bonus problems are intentionally much harder than the other lab problems.*
 
 ### Polygon Collision
 
@@ -357,7 +358,7 @@ square = [(0,0), (0,1), (1,1), (1,0)]
 
 You can assume that the polygon described by the provided list of tuples is not self-intersecting, but do not assume that it is convex.
 
-**Note: this is a *hard* problem. Really hard.**
+**Note: this is a *hard* problem. Quite hard.**
 
 ## Done Early?
 
