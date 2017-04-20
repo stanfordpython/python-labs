@@ -7,6 +7,10 @@ Build familiarity with reading and writing Python functions with different types
 
 **As with Lab 2, we don't expect you to finish all of the material here in one class period. If you do - great! But if not, you are encouraged to work through the extra material at your own pace - it explores interesting and intriguing aspects of Python functions.**
 
+## Review
+
+As always, take a moment to read through the slides from this week at the [course website](http://stanfordpython.com/#lecture). In particular, pay attention to slides 45-49 (in the condensed version) for a quick overview of best practices in Python style mechanics.
+
 ## Exploring Arguments and Parameters
 
 With a partner, work through the following problems.
@@ -253,11 +257,12 @@ print(echo("Hello")) # => ?
 
 def drive(has_car):
     if not has_car:
-        return
+        # Please never actually signal an error like this
+        return "Oh no!"
     return 100  # miles
 
-drive(False)  # => ?
-drive(True)   # => ?
+print(drive(False))  # => ?
+print(drive(True))   # => ?
 ```
 
 If you made any incorrect predictions, talk to a partner about why!
@@ -398,8 +403,8 @@ def append_twice(a, lst=[]):
     return lst
    
 # Works well when the keyword is provided
-append_twice(1, lst=[4])  # => [4, 1, 1]
-append_twice(11, lst=[2, 3, 5, 7])  # => [2, 3, 5, 7, 11, 11]
+print(append_twice(1, lst=[4]))  # => [4, 1, 1]
+print(append_twice(11, lst=[2, 3, 5, 7]))  # => [2, 3, 5, 7, 11, 11]
 
 # But what happens here?
 print(append_twice(1))
@@ -443,7 +448,7 @@ Cool, right? The cache follows the function around, as an attribute on the funct
 
 ## Investigating Function Objects
 
-At the end of Monday's class, we explored some of the attributes of function objects. We'll explore several of these attributes more in depth here.
+At the end of Tuesday's class, we mentioned some of the attributes of function objects. We'll explore several of these attributes more in depth here.
 
 Usually, this information isn't particularly useful for practitioners (you'll rarely want to hack around with the internals of functions), but even seeing that you *can* in Python is very cool.
 
@@ -484,7 +489,7 @@ Furthermore, the [doctest](https://docs.python.org/3.4/library/doctest.html) sta
 
 #### Code Object (`__code__`)
 
-In CPython, the reference implementation of Python that many people (including us) use, functions are compiled into bytecode when defined. This code object is bound to the `__code__` attribute, and has a ton of interesting properties, best illustrated by example.
+In CPython, the reference implementation of Python used by many people (including us), functions are compiled into a sort of bytecode when defined. This code object is bound to the `__code__` attribute, and has a ton of interesting properties, best illustrated by example.
 
 ```
 def all_together(x, y, z=1, *nums, indent=True, spaces=4, **options):
@@ -570,7 +575,7 @@ You can read more about the `dis` module [here](https://docs.python.org/3.4/libr
 
 #### Parameter Annotations (`__annotations__`)
 
-As we saw in class, Python allows us to offer type annotations on functions
+As mentioned in class, Python allows us to offer type annotations on functions
 
 ```
 def annotated(a: int, b: str) -> list:
@@ -580,7 +585,7 @@ print(annotated.__annotations__)
 # {'b': <class 'str'>, 'a': <class 'int'>, 'return': <class 'list'>}
 ```
 
-This information can be used to build some really neat offline type-checkers for Python!
+This information can be used to build some really neat dynamic type-checkers for Python!
 
 For more info, check out [PEP 3107](https://www.python.org/dev/peps/pep-3107/) on function annotations or [Pep 484](https://www.python.org/dev/peps/pep-0484/) on type hinting (which was introduced in Python 3.5)
 
@@ -600,7 +605,7 @@ This means that any object (including instances of custom classes) with a `__cal
 
 #### Name Information (`__module__`, `__name__`, and `__qualname__`)
 
-Python functions also store some name information, generally for the purposes of friendly printing.
+Python functions also store some name information about a function, generally for the purposes of friendly printing.
 
 `__module__` refers to the module that was active at the time the function was defined. Any functions defined in the interactive interpreter will have `__module__ == '__main__'`, but, for example, `encrypt_caesar.__module__ == 'crypto'`.
 
