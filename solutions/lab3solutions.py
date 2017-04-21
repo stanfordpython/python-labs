@@ -8,7 +8,7 @@ This lab incorporated a lot of exploration, so there's less
 "code" per se.
 
 Revision history:
-@sredmond 05-18-2016 Incorporates Christina's solutions
+@sredmond 04-20-2017 Incorporates Christina's solutions
 @sredmond 05-18-2016 Incorporates Conner's solutions
 @sredmond 04-16-2016 Adds comments
 @sredmond 04-12-2016 Created
