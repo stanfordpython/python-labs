@@ -179,7 +179,7 @@ average(5) # => 5.0
 average(6, 8, 9, 11)  # => 8.5
 ```
 
-Suppose that we have a list `l = [???]` supplied by the user of unknown length. How can we use the `average` function we just wrote function to compute the average of this list? For this problem, do not use the builtin `sum` or `len` functions.
+Suppose that we have a list `l = [???]` supplied by the user of unknown length. How can we use the `average` function we just wrote function to compute the average of this list? For this second half of the problem, do not use the builtin `sum` or `len` functions – try passing the contents of `l` to `average`.
 
 ### Challenge: `make_table`
 
@@ -388,8 +388,8 @@ def square(num=x):
     return num * num
 
 x = 6
-f()   # => 25, not 36
-f(x)  # => 36
+square()   # => 25, not 36
+square(x)  # => 36
 ```
 
 **Warning: A function's default values are evaluated *only once*, when the function definition is encountered. This is important when the default value is a mutable object such as a list or dictionary**

@@ -700,6 +700,7 @@ def polygon_collision(poly1, poly2):
     """
     pass
 
+
 if __name__ == '__main__':
     """Runs each of the lab solution functions and prints the attached docstring and source."""
     english = get_english_words(DICTIONARY_PATH)
