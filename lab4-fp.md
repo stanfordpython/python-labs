@@ -465,7 +465,7 @@ fn = decorator(fn)
 
 In lecture, we implemented the `debug` decorator.
 
-```
+```Python
 def debug(function):
     def wrapper(*args, **kwargs):
         print("Arguments:", args, kwargs)
