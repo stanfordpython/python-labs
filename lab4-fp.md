@@ -3,7 +3,7 @@
 ## Overview
 Explore functional programming's place in the Python landscape, and gain practice with powerful tools like `map`, `filter`, iterators, generators, and decorators.
 
-*Surprisingly, a few people have asked for longer labs - we think we've delivered! We've added lots of challenge problems to this lab, many of which are domain-specific, but we don't expect you t complete them all. If you're short on time, or don't know exactly what a challenge problem is asking, skip it! Challenge problems are intended to be challenging, and are reserved for when you've finished the rest of the lab.*
+*Surprisingly, a few people have asked for longer labs - we think we've delivered! We've added lots of challenge problems to this lab, many of which are domain-specific, but we don't expect you to complete them all. If you're short on time, or don't know exactly what a challenge problem is asking, skip it! Challenge problems are intended to be challenging, and are reserved for when you've finished the rest of the lab.*
 
 
 ## Functional Tools
@@ -17,7 +17,7 @@ Recall that lambda functions are anonymous, unnamed function objects created on 
 (lambda s: s.strip().lower()[:2])('  PyTHon')  # => 'py'
 ```
 
-On their own, `lambda`s aren't particularly useful, as demonstrated above. Usually, `lambda`s are used to avoid creating a formal function definiton for small throwaway functions, not only because they involves less typing (no `def` or `return` statement needed) but also, and perhaps more imporatntly, because these small functions won't pollute the namespace.
+On their own, `lambda`s aren't particularly useful, as demonstrated above. Usually, `lambda`s are used to avoid creating a formal function definiton for small throwaway functions, not only because they involves less typing (no `def` or `return` statement needed) but also, and perhaps more importantly, because these small functions won't pollute the enclosing namespace.
 
 Lambdas are also frequently used as arguments to or return values from higher-order functions, such as `map` and `filter`.
 
@@ -58,35 +58,35 @@ From  | To
 `['Stanford', 'Cal', 'UCLA']`|`['Stanford']`
 `range(20)`|`[0, 3, 5, 6, 9, 10, 12, 15, 18]`
 
-### Other Useful Tools
+### Other Useful Tools (optional)
 
 #### Module: `functools`
-There is another utility in the `functools` module called `reduce`. This function is well-explained by the [official documentation](https://docs.python.org/3.4/library/functools.html#functools.reduce):
+The functools module is "for higher order functions; functions that act on or return other functions."
+
+There is a utility in the `functools` module called `reduce`, which in Python 2.x was a builtin language feature but has since been relegated to this module. The `reduce` function is explained best by the [official documentation](https://docs.python.org/3.4/library/functools.html#functools.reduce):
 
 > `functools.reduce(function, iterable[, initializer])`
 >> Apply `function` of two arguments cumulatively to the items of `iterable`, from left to right, so as to reduce the iterable to a single value. For example, `functools.reduce(lambda x, y: x + y, [1, 2, 3, 4, 5])` calculates `((((1 + 2) + 3) + 4) + 5)`. The left argument, `x`, is the accumulated value and the right argument, `y`, is the update value from the sequence. If the optional `initializer` is present, it is placed before the items of the sequence in the calculation, and serves as a default when the iterable is empty. If `initializer` is not given and `iterable` contains only one item, the first item is returned.
 
-Use the `reduce` function to find the least common multiple of a arbitrary list of arguments. This can be accomplished in one line of Python.
+Use the `reduce` function to find the least common multiple (LCM) of an arbitrary amount of positive integer arguments. This can be accomplished in one line of Python.
 
 ```Python
 import operator
 from functools import reduce
+from fractions import gcd
 
-def gcd(a, b):
-    """Reference implementation of finding the
-    greatest common denominator of two numbers"""
-    while b != 0:
-        a, b = b, a % b
-    return a
-
-def lcm(*args):
+def lcm(*nums):
     pass
-    # Your implementation here: Use reduce and use only one line! 
+    # Your implementation here: Use reduce. This function can be implemented in only one line!
+
+lcm()
 ```
+
+Hint: Recall that, mathematically, the LCM of two numbers `x` and `y` can be expressed as `(x*y) // gcd(x, y)`, and that the LCM of a list of numbers `[x, y, z, ...]` is the same as the `LCM(...(LCM(LCM(x, y), z), ...)`.
 
 #### Module: `operator`
 
-Frequently, you might find yourself writing anonymous functions similar to `lambda x, y: x + y`. This feels a little redundant, since Python already knows how to add two values together. Unfortunately, we can't just refer to `+` as a function - it's a builtin syntax element. To solve this problem, The `operator` module exports callable functions for each builtin operation. These operators can simplify some common uses of lambdas, and should be used wherever possible.
+Frequently, you might find yourself writing anonymous functions similar to `lambda x, y: x + y`. This feels a little redundant, since Python already knows how to add two values together. Unfortunately, we can't just refer to `+` as a function - it's a builtin syntax element. To solve this problem, The `operator` module exports callable functions for each builtin operation. These operators can simplify some common uses of lambdas, and should be used wherever possible, since in almost all cases they are faster than constructing and repeatedly invoking a lambda function.
 
 ```Python
 import operator
@@ -113,7 +113,7 @@ fact(7)  # => 5040
 
 #### Custom comparison for `sort`, `max`, and `min`
 
-Python defaults to ordering sequences by a default ordering. For instances, strings sort alphabetically, and tuples sort lexicographically. Sometimes, however, we need to sort based on a custom key value. In Python, we can supply an optional `key` argument to `sorted(seq)`, `max(seq)`, `min(seq)`, and `seq.sort()` to determine the values used for ordering elements in a sequence. In Python, these default sorting tools are guaranteed to be stable.
+When ordering sequences (or finding the largest or smallest element), Python defaults a default ordering for sequence elements. For instance, a collection of strings will be sorted alphabetically (by ASCII value), and a collection of tuples will sort lexicographically. Sometimes, however, we need to sort based on a custom key value. In Python, we can supply an optional `key` argument to `sorted(seq)`, `max(seq)`, `min(seq)`, or `seq.sort()` to determine the values used for ordering elements in a sequence. In Python, both `sorted(seq)` and `seq.sort()` are stable.
 
 For example:
 
@@ -125,7 +125,6 @@ words  # => ['cabbage', 'apple', 'pear', 'bananas'] ... Why 'cabbage' > 'apple'?
 max(words, key=len)  # 'cabbage' ... Why not 'bananas'?
 min(words, key=lambda s: s[1::2])  # What will this value be?
 ```
-
 
 Write a function to return the two words with the highest alphanumeric score of uppercase letters:
 
@@ -146,11 +145,12 @@ two_best(['hEllO', 'wOrLD', 'i', 'aM', 'PyThOn'])
 
 You may want to use `filter` too.
 
-## Purely Functional Programming
+## Purely Functional Programming (optional)
 
-As a solely academic thought exercise, let's investigate how we would use Python in a purely functional programming paradigm. Ultimately, we will try to remove statements and replace them with expressions.
+As an academic thought exercise, let's investigate how we would use Python in a purely functional programming paradigm. Ultimately, we will try to remove statements and replace them with expressions.
 
 ### Replacing Control Flow
+
 The first thing that needs to go are control flow statements - `if/elif/else`. Luckily, Python, like many other languages, short circuits boolean expressions. This means that we can rewrite
 
 ```Python
@@ -164,6 +164,8 @@ as the equivalent expression
 ```Python
 (<cond1> and func1()) or (<cond2> and func2()) or (func3())
 ```
+
+Note: The above will work if and only if all of the functions return truthy values.
 
 Rewrite the following code block without using `if/elif/else`:
 
@@ -323,7 +325,7 @@ Recall that generator expressions are a way to lazily compute values on the fly,
 For each of the following scenarios, discuss whether it would be more appropriate to use a generator expression or a list comprehension:
 
 1. Searching for a given entity in the entries of a 1TB database.
-2. Calculate cheap airfare using journey-to-destination flight information.
+2. Calculate cheap airfare using lots of journey-to-destination flight information.
 3. Finding the first palindromic Fibonacci number greater than 1,000,000.
 4. Determine all multi-word anagrams of user-supplied 1000-character-or-more strings (very expensive to do).
 5. Generate a list of names of Stanford students whose SUNet ID numbers are less than 5000000.
@@ -459,25 +461,19 @@ def fn():
 fn = decorator(fn)
 ```
 
-### `print_args`
-The `debug` decorator we wrote in class isn't very good. It doesn't tell us which function is being called, and it just gives us a tuple of positional arguments and a dictionary of keyword arguments - it doesn't even know what the names of the positional arguments are! If the default arguments aren't overridden, it won't show us their value either.
+### Review
 
-Use function attributes to improve our `debug` decorator into a `print_args` decorator that is as good as you can make it.
+In lecture, we implemented the `debug` decorator.
 
-```Python
-def print_args(function):
+```
+def debug(function):
     def wrapper(*args, **kwargs):
-        # (1) You could do something here
-		retval = function(*args, **kwargs)
-		# (2) You could also do something here
-		return retval
+        print("Arguments:", args, kwargs)
+        return function(*args, **kwargs)
     return wrapper
 ```
 
-*Hint: Consider using the attributes `fn.__name__` and `foo.__code__`. You'll have to investigate these attributes, but I will say that the last one is `.__code__` code object which contains a number of useful attributes - for instance, `fn.__code__.co_varnames`. Check it out! More information is available in the latter half of Lab 3.*
-
-#### Note
-There are a lot of subtleties to this function, since functions can be called in a number of different ways. How does your `print_args` handle keyword arguments or even keyword-only arguments? Variadic positional arguments? Variadic keyword arguments? For more customization, look at `fn.__defaults__`, `fn.__kwdefaults__`, as well as other attributes of `fn.__code__`.
+Take a moment, with a partner, and make sure you understand what is happening in the above lines. Why are the arguments to wrapper on the second line `*args` and `**kwargs` instead of something else? What would happen if we didn't `return wrapper` at the end of the function body?
 
 ### Automatic Caching
 Write a decorator `cache` that will automatically cache any calls to the decorated function. You can assume that all arguments passed to the decorated function will always be hashable types.
@@ -509,9 +505,29 @@ Add `max_size` and `eviction_policy` keyword arguments, with reasonable defaults
 #### Note
 This is actually implemented as part of the language in `functools.lru_cache`
 
-### Static Type Checker
+### `print_args`
+The `debug` decorator we wrote in class isn't very good. It doesn't tell us which function is being called, and it just gives us a tuple of positional arguments and a dictionary of keyword arguments - it doesn't even know what the names of the positional arguments are! If the default arguments aren't overridden, it won't show us their value either.
 
-Recall that functions in Python can be optionally annotated by semantically-useless but structurally-valuable type annotations. For example:
+Use function attributes to improve our `debug` decorator into a `print_args` decorator that is as good as you can make it.
+
+```Python
+def print_args(function):
+    def wrapper(*args, **kwargs):
+        # (1) You could do something here
+		retval = function(*args, **kwargs)
+		# (2) You could also do something here
+		return retval
+    return wrapper
+```
+
+*Hint: Consider using the attributes `fn.__name__` and `fn.__code__`. You'll have to investigate these attributes, but I will say that the `fn.__code__` code object contains a number of useful attributes - for instance, `fn.__code__.co_varnames`. Check it out! More information is available in the latter half of Lab 3.*
+
+#### Note
+There are a lot of subtleties to this function, since functions can be called in a number of different ways. How does your `print_args` handle keyword arguments or even keyword-only arguments? Variadic positional arguments? Variadic keyword arguments? For more customization, look at `fn.__defaults__`, `fn.__kwdefaults__`, as well as other attributes of `fn.__code__`.
+
+### Dynamic Type Checker
+
+Functions in Python can be optionally annotated by semantically-useless but structurally-valuable type annotations. For example:
 
 ```Python
 def foo(a: int, b: str) -> bool:
@@ -520,7 +536,7 @@ def foo(a: int, b: str) -> bool:
 foo.__annotations__  # => {'a': int, 'b': str, 'return': bool}
 ```
 
-Write a static type checker, implemented as a decorator, that enforces the parameter types and return type of Python objects.
+Write a dynamic type checker, implemented as a decorator, that enforces the parameter types and return type of Python objects, if supplied.
 
 ```Python
 def enforce_types(function):
@@ -544,21 +560,21 @@ foo(-1, '')  # prints "Invalid return type: expected bool, received str
 
 There are lots of nuances to this function. What happens if some annotations are missing? How are keyword arguments and variadic arguments handled? What happens if the expected type of a parameter is not a primitive type? Can you annotate a function to describe that a parameter should be a list of strings? A tuple of (str, bool) pairs? A dictionary mapping strings to lists of ints?
 
-If you think you're done, show your decorator to us. 
+If you think you're done, show your decorator to a member of the course staff. 
 
-#### Bonus: Optional Debug Argument
+#### Bonus: Optional Severity Argument
 *Warning! This extension is very hard*
 
-Extend the `enforce_types` decorator to accept a keyword argument `severity` which modifies the extent of the enforcement. If `severity == 0`, disable type checking. If `severity == 1` (which is the default), just print a message if there are any type violations. If `severity == 2`, raise an Exception if there are any type violations.
+Extend the `enforce_types` decorator to accept a keyword argument `severity` which modifies the extent of the enforcement. If `severity == 0`, disable type checking. If `severity == 1` (which is the default), just print a message if there are any type violations. If `severity == 2`, raise a TypeError if there are any type violations.
 
 For example:
 
 ```Python
-@enforce_types(severity=2)
+@enforce_types_challenge(severity=2)
 def bar(a: list, b: str) -> int:
     return 0
 
-@enforce_types()  # Note that there are parentheses
+@enforce_types_challenge()  # Why are there parentheses here?
 def baz(a: bool, b: str) -> str:
     return ''
 ```
