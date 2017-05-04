@@ -1,10 +1,8 @@
 # Lab 5: Object-Oriented Python
 
-*Note: there may be some typos in this lab, so periodically refresh GitHub to make sure you're always working on the latest version*
-
 ## Overview
 
-After Monday's lecture on mostly rules, definitions, and semantics, we'll be playing around with actual classes today, writing a lot of code and building several classes to solve a variety of problems.
+After Tuesday's lecture, which mostly covered rules, definitions, and semantics, we'll be playing around with actual classes today, writing a fair chunk of code and building several classes to solve a variety of problems.
 
 ## Stanford Prereqs
 
@@ -13,43 +11,45 @@ After Monday's lecture on mostly rules, definitions, and semantics, we'll be pla
 Let’s create a class to represent courses at Stanford! Copy the following into a file and save it as `courses.py`.
 
 ```
-class Course:
-    def __init__(self, department, number, title):
+class StanfordCourse:
+    def __init__(self, department, code, title):
         self.department = department
-        self.number = number
+        self.code = code
         self.title = title
 ```
+
+You can assume that all arguments to this constructor will be strings.
 
 We can import this class definition and create an instance of the class in the interacitve interpreter, by running:
 
 ```
 $ python3
->>> from courses import Course
->>> stanford_python = Course("CS", "41", "hap.py code: The python programming language")
+>>> from courses import StanfordCourse
+>>> stanford_python = StanfordCourse("CS", "41", "hap.py code: The python programming language")
 ```
 
 We can access attributes of `stanford_python`, our instance object:
 
 ```
->>> from courses import Course
->>> stanford_python = Course("CS", "41", "hap.py code: the python programming language")
+>>> from courses import StanfordCourse
+>>> stanford_python = StanfordCourse("CS", "41", "hap.py code: the python programming language")
 >>> stanford_python.title
-'hap.py coder: the python programming language'
->>> stanford_python.number
-41
+'hap.py code: the python programming language'
+>>> stanford_python.code
+"41"
 >>>
 ```
 
 ### Inheritance
 
-Let’s add inheritance by creating a `CSCourse` class that takes an additional parameter `recorded` that defaults to `False`
+Let’s add inheritance by creating a `StanfordCSCourse` class that takes an additional parameter `recorded` that defaults to `False`
 
 Write the following code snippet in the `courses.py` file:
 
 ```
-class CSCourse(Course):
-    def __init__(self, department, number, title, recorded=False):
-        super().__init__(department, number, title)
+class StanfordCSCourse(Course):
+    def __init__(self, department, code, title, recorded=False):
+        super().__init__(department, code, title)
         self.is_recorded = recorded
 ```
 
@@ -58,38 +58,47 @@ The `super()` call is a little bit of magic to us at this point - it builds an o
 Assess the following equalities in your Python interpreter. You can import both classes by running either one of the following lines in your terminal
 
 ```
->>> from courses import Course, CSCourse
->>> a = Course("CS", "106A", "Programming Methodology")
->>> b = CSCourse("CS", "106B", "Programming Abstractions")
+>>> from courses import StanfordCourse, StanfordCSCourse
+>>> a = StanfordCourse("CS", "106A", "Programming Methodology")
+>>> b = StanfordCSCourse("CS", "106B", "Programming Abstractions")
+>>> x = StanfordCSCourse("CS", "106X", "Programming Abstractions", recorded=True)
+>>> a.code
+"106A"
+>>> b.code
+"106b"
 ```
 
 What is the output of the statements below?
 
 ```
-1. type(a)
-2. isinstance(a, Course)
-3. isinstance(b, Course)
-4. type(a) == type(b)
-5. a == b
+type(a)
+isinstance(a, Course)
+isinstance(b, Course)
+isinstance(x, Course)
+isinstance(x, CSCourse)
+type(a) == type(b)
+type(b) == type(x)
+a == b
+b == x
 ```
 
 ### Additional Attributes
 
-Let's add more functionality to the `Course` class!
+Let's add more functionality to the `StanfordCourse` class!
 
-* Add a attribute `students` to the `Course` class that tracks whether students are here or not, which initially is an empty set
-* Create a method `mark_attendance(*students)` that takes a splat operator `students` to mark students as present or absent.
+* Add a attribute `students` to the instances of the `Course` class that tracks whether students are present. Initially, students should be an empty set.
+* Create a method `mark_attendance(*students)` that takes a variadic number of `students` and marks them as present.
 * Create a method `is_present(student)` that takes a student’s name as a parameter and returns `True` if the student is present and `False` otherwise.
 
 ### Implementing Prerequisites
 
-Now we want to implement functionality to determine if one course is a prerequisite of another. In our implementation, we will assume that each one course is a prerequisite for another if it is in the same department and the numeric part of the course number is less. For example, after implementing:
+Now, we'll focus on `StanfordCSCourse`. We want to implement functionality to determine if one computer science course is a prerequisite of another. In our implementation, we will assume that the ordering for courses is determined first by the numeric part of the course code: for example, `140` comes before `255`. If there is a tie, the ordering is determined by the default string ordering of the letters that follow. For example, `106A < 106B`. After implementing, you should be able to see:
 
 ```
->>> cs106a = Course("CS", "106A", "Programming Methodology")
->>> cs106b = CSCourse("CS", "106B", "Programming Abstractions")
->>> cs107 = CSCourse("CS", "107", "Computer Organzation and Systems")
->>> cs110 = CSCourse("CS", "110", "Principles of Computer Systems")
+>>> cs106a = StanfordCourse("CS", "106A", "Programming Methodology")
+>>> cs106b = StanfordCSCourse("CS", "106B", "Programming Abstractions")
+>>> cs107 = StanfordCSCourse("CS", "107", "Computer Organzation and Systems")
+>>> cs110 = StanfordCSCourse("CS", "110", "Principles of Computer Systems")
 >>> cs110 > cs106b
 True
 >>> cs107 > cs110
@@ -98,15 +107,43 @@ False
 
 To accomplish this, you will need to implement a magic method `__le__` that will add functionality to determine if a course is a prerequisite for another course. Read up on [total ordering](https://docs.python.org/3.4/library/functools.html#functools.total_ordering) to figure out what `__le__` should return based on the argument you pass in.
 
-To give a few hints on how to add this piece of functionality might be implemented, consider how you might extract the actual `int` number from the course number attribute, which might be a string, or might be a number. 
+To give a few hints on how to add this piece of functionality might be implemented, consider how you might extract the actual `int` number from the course code attribute.
 
-We encourage you to think about the most space and time-efficient way to accomplish this bit of functionality - perhaps you might investigate creating another class just to store the relations between the instances of `Course`.
+Additionally, you should implement a `__eq__` on `StanfordCourse`s. Two classes are equivalent if they are in the same department and have the same course code: the course title doesn't matter here.
+
+#### Sorting
+
+Now that we've written a `__le__` method and an `__eq__` method, we've implemented everything we need to speak about an "ordering" of `StanfordCourse`s. Using the [`functools.total_ordering` decorator](https://docs.python.org/3.4/library/functools.html#functools.total_ordering), decorate the class so that all of the comparison methods are implemented. You should be able to run
+
+```
+courses = [cs110, cs106a, cs107, cs106b]
+courses.sort()
+courses # => [cs106a, cs106b, cs107, cs110]
+```
 
 ### Instructors (challenge)
 
 Allow the class to take a splat argument `instructors` that will take any number of strings and store them as a list of instructors.
 
 Modify the way you track attendance in the `Course` class to map a Python date object (you can use the `datetime` module) to a data structure tracking what students are there on that day.
+
+### Catalog
+
+Implement a class called `CourseCatalog` that is constructed from a list of `StanfordCourse`s. Write a method for the `CourseCatalog` which returns a list of courses in a given department. Additionally, write a method for `CourseCatalog` that returns all courses that contain a given piece of search text in their title. The skeleton will look like the following:
+
+```
+class CourseCatalog:
+    def __init__(self, courses):
+        pass
+       
+    def courses_by_department(self, department_name):
+        pass
+        
+    def courses_by_search_term(self, search_snippet):
+        pass
+```
+
+Feel free to implement any other interesting methods you'd like.
 
 ## SimpleGraph
 
@@ -182,15 +219,16 @@ See if you can rewrite the `SimpleGraph` class using magic methods to emulate th
 
 ```
 graph[v]  # returns neighbors of v
-graph[v] = v_2  # Builds an edge from v to v2
+graph[v] = v_2  # Insert an edge from v to v2
 len(graph)
 # etc
 ```
 
 ## Timed Key-Value Store (challenge)
+
 Let's build an interesting data structure straight out of an interview programming challenge from [Stripe](https://stripe.com/). This is more of an algorithms challenge than a Python challenge, but we hope you're still interested in tackling it.
 
-At a high-level, we'll be building a key-value store (think Dictionary or HashMap) that has a `get` method that takes an optional second parameter as a `time` object in Python to return the most recent value before that period in time. If no key-value pair was added to the map before that period in time, return `None`.
+At a high-level, we'll be building a key-value store (think `dict` or Java's `HashMap`) that has a `get` method that takes an optional second parameter as a `time` object in Python to return the most recent value before that period in time. If no key-value pair was added to the map before that period in time, return `None`.
 
 For consistency’s sake, let’s call this class `TimedKVStore` and put it into a file called `kv_store.py`
 
@@ -214,6 +252,7 @@ None
 ```
 
 ### Remove (challenge)
+
 Implement a method called `remove(key)` that takes a key and removes that entire key from the key-value store.
 
 Write another `remove(key, time)` method that takes a key and removes all memory of values before that time method.
@@ -296,13 +335,14 @@ f.travel(4)
 ```
 
 ## Bloom Filter (challenge)
+
 A bloom filter is a fascinating data structure that support insertion and probabilistic set membership. Read up on Wikipedia!
 
 Write a class `BloomFilter` to implement a bloom filter data structure. Override the `__contains__` method so that membership can be tested with `x in bloom_filter`.
 
 ## Silencer Context Manager (challenge)
 
-In some cases, you may want to suppress the output a given code block. Maybe it's untrusted code, or maybe it's littered with `print`s that you don't want to comment out. We can use the context manager syntax in Python to define a class that servers as a context manager. We want to use this as:
+In some cases, you may want to suppress the output a given code block. Maybe it's untrusted code, or maybe it's littered with `print`s that you don't want to comment out. We can use the context manager syntax in Python to define a class that serves as a context manager. We want to use this as:
 
 ```
 with Silencer():
@@ -324,6 +364,20 @@ class Silencer():
 ```
 
 The `__enter__` method is called when the with block is entered, and `__exit__` is called when leaving the block, with any relevant information about an active exception passed in. Write the `__enter__` method to redirect standard output and standard error to stringio.StringIO() objects to capture the output, and make sure that `__exit__` restored the saved stdout and stderr. What would a `__str__` method on a Silencer object look like?
+
+Recall that the with statement in Python is *almost* implemented as:
+
+```
+with open(filename) as f:
+    raw = f.read()
+# is (almost) equivalent to
+f = open(filename)
+f.__enter__()
+try:
+    raw = f.read()
+finally:
+    f.__exit__()  # Closes the file
+```
 
 ## Exceptions
 
@@ -399,6 +453,6 @@ in else
 in finally
 ```
 
-For each of the labelled locations, what happens if we `raise Exception()` at that position? Run the code to test your hypotheses.
+For each of the labelled locations `(A), (B), (C), (D)`, which statements print out if we `raise Exception()` at that position? Run the code to test your hypotheses.
 
 > With <3 by @sredmond
