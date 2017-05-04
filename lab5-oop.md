@@ -47,7 +47,7 @@ Let’s add inheritance by creating a `StanfordCSCourse` class that takes an add
 Write the following code snippet in the `courses.py` file:
 
 ```
-class StanfordCSCourse(Course):
+class StanfordCSCourse(StanfordCourse):
     def __init__(self, department, code, title, recorded=False):
         super().__init__(department, code, title)
         self.is_recorded = recorded
@@ -72,10 +72,10 @@ What is the output of the statements below?
 
 ```
 type(a)
-isinstance(a, Course)
-isinstance(b, Course)
-isinstance(x, Course)
-isinstance(x, CSCourse)
+isinstance(a, StanfordCourse)
+isinstance(b, StanfordCourse)
+isinstance(x, StanfordCourse)
+isinstance(x, StanfordCSCourse)
 type(a) == type(b)
 type(b) == type(x)
 a == b
@@ -86,7 +86,7 @@ b == x
 
 Let's add more functionality to the `StanfordCourse` class!
 
-* Add a attribute `students` to the instances of the `Course` class that tracks whether students are present. Initially, students should be an empty set.
+* Add a attribute `students` to the instances of the `StanfordCourse` class that tracks whether students are present. Initially, students should be an empty set.
 * Create a method `mark_attendance(*students)` that takes a variadic number of `students` and marks them as present.
 * Create a method `is_present(student)` that takes a student’s name as a parameter and returns `True` if the student is present and `False` otherwise.
 
@@ -125,7 +125,7 @@ courses # => [cs106a, cs106b, cs107, cs110]
 
 Allow the class to take a splat argument `instructors` that will take any number of strings and store them as a list of instructors.
 
-Modify the way you track attendance in the `Course` class to map a Python date object (you can use the `datetime` module) to a data structure tracking what students are there on that day.
+Modify the way you track attendance in the `StanfordCourse` class to map a Python date object (you can use the `datetime` module) to a data structure tracking what students are there on that day.
 
 ### Catalog
 
