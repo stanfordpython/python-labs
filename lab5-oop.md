@@ -116,6 +116,9 @@ Additionally, you should implement a `__eq__` on `StanfordCourse`s. Two classes 
 Now that we've written a `__le__` method and an `__eq__` method, we've implemented everything we need to speak about an "ordering" of `StanfordCourse`s. Using the [`functools.total_ordering` decorator](https://docs.python.org/3.4/library/functools.html#functools.total_ordering), decorate the class so that all of the comparison methods are implemented. You should be able to run
 
 ```
+# Let's make CS106A a CS course
+cs106a = StanfordCSCourse("CS", "106A", "Programming Methodology")
+
 courses = [cs110, cs106a, cs107, cs106b]
 courses.sort()
 courses # => [cs106a, cs106b, cs107, cs110]
