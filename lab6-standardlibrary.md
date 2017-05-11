@@ -24,78 +24,114 @@ If you don't know which modules to look at, we've put together a list of some of
 
 In this section, you'll practice using some of the more common modules in the Python standard library.
 
-### Using `sys` for command-line tools.
+### Manipulating `collections`
 
-#### Addition
+**Before continuing, make sure you read the [`collections` documentation](https://docs.python.org/3.4/library/collections.html) through 8.3.6.1.**
 
-Write a Python script `add.py` that can be run on the command line with any number of additional arguments representing numbers that you want to add up. Your script should print their sum! If there are arguments that can't be converted to floats, ignore them. If there are no additional arguments to your script, you should print an error message and exit.
+##### Mechanics
 
-Recall you can use `sys.argv` to access the command-line arguments.
+**`collections.namedtuple`**
 
-```
-$ python3 add.py 4 1
-Sum: 5.0
-$ python3 add.py 17 38 "Hey wassup" "hello"
-55.0
-$ python3 add.py 8 6 7 5 3 0 9
-38.0
-$ python3 add.py
-Usage: python3 add.py <nums>
-	
-	Add some numbers together
-```
-
-#### `tree` (challenge)
-
-Write a program that emulates the command-line utility `tree`, which pretty-prints the directory structure rooted by an argument name. If there is no argument, use the current working directory. For example,
+Rewrite the following code to be more Pythonic. Use `collections.namedtuple` to add readable attribute references.
 
 ```
-$ python3 tree.py python-labs/
-python-labs/
-├── LICENSE
-├── README.md
-├── archive
-│   └── aut15
-│       ├── lab1-gettingstarted.md
-│       ├── lab2-datastructures.md
-│       ├── lab3-functions.md
-│       ├── lab4-functionalprogramming.md
-│       ├── lab5-classes.md
-│       └── lab6-wallscraper.md
-├── ideas.md
-├── lab1-warmup.md
-├── lab2-datastructures.md
-├── lab3-functions.md
-├── lab4-fp.md
-├── lab5-oop.md
-├── lab6-standardlibrary.md
-└── solutions
-    ├── lab2solutions.py
-    ├── lab3solutions.py
-    ├── lab4solutions.py
-    ├── lab5solutions.py
-    └── lab6solutions.py
+lassie = ('Lassie', 'dog', 'black', 12)
+astro = ('Astro', 'dog', 'grey', 15)
+mrpb = ('Mr. Peanutbutter', 'dog', 'golden', 35)
+bojack = ('BoJack Horseman', 'horse', 'brown', 52)
+pc = ('Princess Carolyn', 'cat', 'pink', 34)
+tinkles = ('Mr. Tinkles', 'cat', 'white', 7)
+pupper = ('Bella', 'pupper', 'brown', 0.5)
+doggo = ('Max', 'doggo', 'brown', 5)
+seuss = ('The Cat in the Hat', 'cat', 'stripey', 27)
+pluto = ('Pluto (Disney)', 'dog', 'orange', 3)
+yertle = ('Yertle', 'turtle', 'green', 130)
+
+for animal in [lassie, astro, mrpb, bojack, pc, tinkles, pupper, doggo, seuss, pluto, yertle]:
+    if animal[1] == 'dog' or animal[1] == 'doggo' or animal[1] == 'pupper':
+        if animal[3] > 5:
+            print(animal[0] + ' is an old ' + animal[2] + ' ' + animal[1] + ' who is ' + str(animal[3]) + ' years old.')
+        else:
+            print(animal[0] + ' is a young ' + animal[2] + ' ' + animal[1] + ' who is ' + str(animal[3]) + ' years old.')
+    else:
+        print(animal[0] + ' is a non-canine ' + animal[2] + ' ' + animal[1] + '.')
 ```
 
-The above is just an example - don't worry if your actual `python-labs/` directory doesn't look like this.
+#### `collections.defaultdict` and `collections.Counter
 
-Use the `pathlib` library for filesystem navigation. For implementation details, check out `tree`'s [man page](http://linux.die.net/man/1/tree) or this [more helpful description](http://www.computerhope.com/unix/tree.htm). You don't need to implement any command-line flags for this part.
+Using `/usr/share/dict/words` (alternatively, `http://stanfordpython.com/res/misc/words`) as a data source, what are the three most common word lengths in the English language? Remember to strip off trailing whitespace.
 
-#### Improving `tree` (challenge)
+##### Evil Hangman Redux (optional)
 
-Update your `tree` program to handle more advanced use cases, listed in the man page above. Can you handle symbolic links, maximum depth recursion, or pattern matching?
+Feel free to skip this section if you aren't familiar with Keith's CS106B/L assignment: "Evil Hangman."
 
-You can make this tool as powerful as you'd like.
+Suppose you are provided with the function `mask(word, letter)` which replaces each character in `word` with a dash if that character is different than `letter` - for example, `mask('banana', 'a')  # => '-a-a-a'`.
+
+```
+def mask(word, letter):
+    return ''.join('-' if letter != ch else letter for ch in word)
+```
+
+Write a function called
+
+```
+def largest_families(words, letter, num_families):
+    pass
+```
+which returns the top `num_families` largest collections of words which share a mask, given a source collection of words and a chosen letter. Specifically, given a chosen letter, a family of words is one in which every word yields the same mask when applied with that letter. For example, if the chosen letter is `'s'`, then `'sees'`, and `'says'` would be in the same family, but `'sass'` would be in a different family.
+
+#### Working Together
+
+Use tools from the `collections` module to implement an `Employee` database. You should read in a file of
+
+```
+employee_name    employee_manager    salary    department    title
+employee_name    employee_manager    salary    department    title
+...
+employee_name    employee_manager    salary    department    title
+```
+
+If you'd like sample data to work with, you can use the following
+```
+sredmond	poohbear	41	CS	Instructor
+poohbear	sahami	500	CS	Lecturer
+htiek	sahami	500	CS	Lecturer
+sahami	mtl	5000	CS	Lecturer
+guido	sahami	50000	PSF	BDFL
+```
+You can assume that lines in the file are tab-separated. If you're saving the above text to a file, make sure that your text editor didn't automatically replace tabs with spaces!
+
+You should implement the following functions:
+
+```
+def directly_reports_to(employee, manager):
+    """Return whether or not employee directly reports to manager"""
+    pass
+
+def indirectly_reports_to(employee, manager):
+    """Return whether or not employee directly reports to manager"""
+    pass
+    
+def in_department(dept):
+    """Return a collection of all employees of a given department"""
+    pass
+    
+def cost_of(dept):
+    """Return the sum total of salaries for all employees of a given department""""
+    pass
+```
+
+The primary portion of this section is parsing the file and storing the employees in a your choice of data structure keyed by some of the employees' information.
 
 ### Extracting data with `re`
 
 If you're new to regular expressions, we recommend you read through [the official Python HOWTO](https://docs.python.org/3.4/howto/regex.html)
 
-Otherwise, read through the official [`re` documentation](https://docs.python.org/3.4/library/re.html) in its entirety.
+Otherwise, **read through the official [`re` documentation](https://docs.python.org/3.4/library/re.html) through 6.2.4 (although 6.2.5 is neat).**
 
 #### Wordplay
 
-Using the list of words found at `/usr/share/dict/words`, or alternatively `http://stanfordpython.com/words` if you're running Windows, determine all words that have the five vowels in order. That is, words that contain an `'a'`, `'e'`, `'i'`, `'o'`, and `'u'` in order.
+Using the list of words found at `/usr/share/dict/words`, or alternatively `http://stanfordpython.com/res/misc/words` if you're running Windows, determine all words that have the five vowels in order. That is, words that contain an `'a'`, `'e'`, `'i'`, `'o'`, and `'u'` in order, with any number (including 0) of word characters before the 'a', between the vowels, and after the 'u'.
 
 #### Regex Crossword Checker
 
@@ -110,8 +146,8 @@ def regex_crossword_check(horizontal_patterns, vertical_patterns, width, height,
 For example, the call corresponding to the first "Beginner" puzzle (it's called "Beatles") would look like:
 
 ```
-horiz = [r'HE|LL|O+', r'[PLEASE]+']
-vert = [r'[^SPEAK]+', r'EP|IP|EF']
+horiz = [r'^HE|LL|O+$', r'^[PLEASE]+$']
+vert = [r'^[^SPEAK]+$', r'^EP|IP|EF$']
 candidate = [
 	['H', 'E'],
 	['L', 'P']
@@ -122,8 +158,8 @@ regex_crossword_check(horiz, vert, candidate)  # => True
 and the call corresponding to the second "Experiences" puzzle (it's called "Royal Dinner") would look like:
 
 ```
-horiz = [r'(Y|F)(.)\2[DAF]\1', r'(U|O|I)*T[FRO]+', r'[KANE]*[GIN]*']
-vert = [r'(FI|A)+', r'(YE|OT)K', r'(.)[IF]+', r'[NODE]+', r'(FY|F|RG)+']
+horiz = [r'^(Y|F)(.)\2[DAF]\1$', r'^(U|O|I)*T[FRO]+$', r'^[KANE]*[GIN]*$']
+vert = [r'^(FI|A)+$', r'^(YE|OT)K$', r'^(.)[IF]+$', r'^[NODE]+$', r'^(FY|F|RG)+$']
 candidate = [
 	['F', 'O', 'O', 'D', 'F'],
 	['I', 'T', 'F', 'O', 'R'],
@@ -134,7 +170,7 @@ regex_crossword_check(horiz, vert, candidate)  # => True
 
 Some implementation notes:
 
-* Make sure you're using `re.match` instead of `re.search`. The former matches an pattern string against an entire piece of text, whereas the latter checks to see if the pattern matches any substring of the text.
+* You may want to use `re.fullmatch` instead of `re.search` or `re.match`. The former matches a pattern string against an entire piece of text, whereas the latter checks to see if the pattern matches any substring of the text.
 * You can get the width and height of the cr2ossword from the length of the vertical and horizontal clue lists, respectively.
 * Remember your friend, `zip`!
 
@@ -157,7 +193,7 @@ For example, the call corresponding to the first "Beginner" puzzle (it's called 
 ```
 horiz = [r'HE|LL|O+', r'[PLEASE]+']
 vert = [r'[^SPEAK]+', r'EP|IP|EF']
-regex_crossword_solve(horiz, vert)
+regex_crossword_solve(horiz, vert, 2, 2)
 ```
 
 and would return the final answer `['HELP']` derived from the (unique, in this case) solution `[['H', 'E'], ['L', 'P']]`. If there are multiple answers, return them all.
@@ -177,26 +213,9 @@ def minimal_regex(positives, negatives):
 
 *Note: this problem is NP-hard, and is tied to some deep results in complexity theory. For more information, check out [this CSTheory.SE post](http://cstheory.stackexchange.com/questions/1854/is-finding-the-minimum-regular-expression-an-np-complete-problem)
 
-### Manipulating `collections`
-
-**Before continuing, make sure you read the [`collections` documentation](https://docs.python.org/3.4/library/collections.html) in its entirety.**
-
-Use `collections.namedtuple` and `collections.defaultdict` to implement an Employee database. You should read in a file of
-
-```
-employee_name employee_manager salary department title
-employee_name employee_manager salary department title
-...
-employee_name employee_manager salary department title
-```
-
-and answer queries about all employees in a given department, with a given title, underneath a given manager, etc. You can also answer any other graph-related queries you'd like.
-
-The primary part of this component is parsing the file and storing the employees in a data structure keyed by some of that employee's information.
-
 ### Working with `itertools`
 
-**Before continuing, make sure you read the [`itertools` documentation](https://docs.python.org/3.4/library/itertools.html) in its entirety.**
+**Before continuing, make sure you read the [`itertools` documentation](https://docs.python.org/3.4/library/itertools.html) through 10.1.1 (although 10.1.2 is neat).**
 
 #### Tabulation
 
@@ -213,16 +232,81 @@ This function can be used as follows:
 sqgen = tabulate(lambda x: x ** 2)
 next(sqgen)  # => 0
 next(sqgen)  # => 1
-next(sqgen)  # => 2
 next(sqgen)  # => 4
 next(sqgen)  # => 9
 ```
 
-For reference, our solution has one line and 32 characters.
+For reference, our implmentation is one line and 43 characters.
+
+### JSON
+
+**Before continuing, make sure you read the [`json` documentation](https://docs.python.org/3.4/library/json.html) through 19.2.1.**
+
+Think of a broad topic you're interested in. For example, spend a few minutes trying to find a JSON file on the internet
+
+### `random`
+
+Write a program that plays "Higher/Lower" with a user. Prompt the user for an maximum value, and then randomly generate a number between . 
+
+
+### Using `sys` for command-line tools.
+
+#### Addition
+
+Write a Python script `add.py` that can be run on the command line with any number of additional arguments representing numbers that you want to add up. Your script should print their sum! If there are arguments that can't be converted to floats, ignore them. If there are no additional arguments to your script, you should print an error message and exit.
+
+Recall you can use `sys.argv` to access the command-line arguments.
+
+```
+$ python3 add.py 4 1
+5.0
+$ python3 add.py 17 38 "Hey wassup" "hello"
+55.0
+$ python3 add.py 8 6 7 5 3 0 9
+38.0
+$ python3 add.py
+Usage: python3 add.py <nums>
+	
+	Add some numbers together
+```
+
+#### `tree` (challenge)
+
+Write a program that emulates the command-line utility `tree`, which pretty-prints the directory structure rooted by an argument name. If there is no argument, use the current working directory. For example,
+
+```
+$ python3 tree.py python-labs/
+python-labs/
+├── LICENSE
+├── README.md
+├── ideas.md
+├── lab1-warmup.md
+├── lab2-datastructures.md
+├── lab3-functions.md
+├── lab4-fp.md
+├── lab5-oop.md
+├── lab6-standardlibrary.md
+└── solutions
+    ├── lab2solutions.py
+    ├── lab3solutions.py
+    ├── lab4solutions.py
+    ├── lab5solutions.py
+    └── lab6solutions.py
+```
+
+The above is just an example - don't worry if your actual `python-labs/` directory doesn't look like this.
+
+Use the `pathlib` library for filesystem navigation. For implementation details, check out `tree`'s [man page](http://linux.die.net/man/1/tree) or this [more helpful description](http://www.computerhope.com/unix/tree.htm). You don't need to implement any command-line flags for this part.
+
+#### Improving `tree` (super challenge)
+
+Update your `tree` program to handle more advanced use cases, listed in the man page above. Can you handle symbolic links, maximum depth recursion, or pattern matching?
+
+You can make this tool as powerful as you'd like.
 
 ### All Together
 
-This final challenge will incorporate all of the modules we've seen so far. We'll build a tool to determine the shortest airport journey between any two airports.
+This final problem will incorporate all of the modules we've seen so far. We'll build a tool to determine the shortest airport journey between any two airports.
 
 First, the data:
 
@@ -232,13 +316,18 @@ First, the data:
 
 For information about the data itself, [DataHub](https://datahub.io/dataset/open-flights) has a good writeup.
 
+The information [here](https://openflights.org/data.html) is also quite good.
+
 Write a script that, when given two airport codes (like SFO and JFK) and a maximum segment count, prints all possible ways to get from the source airport to the destination airport in at most that many segments. For example,
 
 ```
-$ python3 flights.py SFO JFK
-SFO -> JFK (nonstop)
-SFO -> ORD -> JFK (1 stop)
+$ python3 flights.py SFO JFK 2
+SFO -> JFK
+SFO -> LAX -> JFK
+SFO -> ORD -> JFK
+SFO -> DFW -> JFK
 ...
+SFO -> PDX -> JFK
 ```
 
 > With <3 by @sredmond
