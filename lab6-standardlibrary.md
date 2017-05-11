@@ -95,6 +95,7 @@ If you'd like sample data to work with, you can use the following
 ```
 sredmond	poohbear	41	CS	Instructor
 poohbear	sahami	500	CS	Lecturer
+tigger	poohbear	500	CS	Tiger
 htiek	sahami	500	CS	Lecturer
 sahami	mtl	5000	CS	Professor
 guido	sahami	50000	PSF	BDFL
