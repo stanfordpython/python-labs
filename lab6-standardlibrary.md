@@ -222,10 +222,10 @@ def minimal_regex(positives, negatives):
 
 #### Tabulation
 
-Write a `tabulate` function to generate a computation lookup table. `tabulate` should takes in three arguments, a function, a start number, and a step size (the latter two default to 0).
+Write a `tabulate` function to generate a computation lookup table. `tabulate` should takes in three arguments, a function, a start number (default 0), and a step size (default 1)
 
 ```
-def tabulate(f, start=0, step=0):
+def tabulate(f, start=0, step=1):
 	pass
 ```
 
