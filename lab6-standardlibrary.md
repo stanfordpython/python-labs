@@ -251,8 +251,9 @@ Think of a broad topic you're interested in. Then, spend a few minutes trying to
 
 ### `random`
 
-Write a program that plays "Higher/Lower" with a user. Prompt the user for an maximum value, and then randomly generate a number between . 
+**Before continuing, make sure you read the [`random` documentation](https://docs.python.org/3.4/library/random.html) through 19.2.1.**
 
+There's no code in this section - just read the documentation! It's rather short.
 
 ### Using `sys` for command-line tools.
 

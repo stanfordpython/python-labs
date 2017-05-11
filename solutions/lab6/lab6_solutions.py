@@ -19,8 +19,69 @@ import collections
 import string
 import itertools
 
+DICTIONARY_FILENAME = '/usr/share/dict/words'
+
+def horsin_around():
+    Animal = collections.namedtuple('Animal', ['name', 'kind', 'color', 'age'])
+    lassie = Animal('Lassie', 'dog', 'black', 12)
+    astro = Animal('Astro', 'dog', 'grey', 15)
+    mrpb = Animal('Mr. Peanut Butter', 'dog', 'golden', 35)
+    tinkles = Animal('Mr. Tinkles', 'cat', 'white', 7)
+    pupper = Animal('Bella', 'pupper', 'brown', 0.5)
+    doggo = Animal('Max', 'doggo', 'brown', 5)
+    seuss = Animal('The Cat in the Hat', 'cat', 'stripey', 27)
+    pluto = Animal('Pluto (Disney)', 'dog', 'orange', 3)
+    yertle = Animal('Yertle', 'turtle', 'green', 130)
+
+    animals = [lassie, astro, mrpb, tinkles, pupper, doggo, seuss, pluto, yertle]
+
+    for animal in animals:
+        if animal.kind in ['dog', 'doggo', 'pupper']:
+            if animal.age > 5:
+                age_descriptor = 'an old'
+            else:
+                age_descriptor = 'a young'
+
+            # You can use named format parameters, which is more readable,
+            # although it can get verbose.
+            print('{name} is {descr} {color} {kind} who is {age} years old.'.format(
+                    name=animal.name, descr=age_descriptor, color=animal.color,
+                    kind=animal.kind, age=animal.age
+            ))
+        else:
+            # Or you can use positional format parameters, which are shorter
+            # at the expense of readability.
+            print('{} is a non-canine {} {}.'.format(animal.name, animal.color, animal.kind))
+
+def most_common_words():
+    with open(DICTIONARY_FILENAME) as f:
+        return collections.Counter(map(len, f.read().split())).most_common(3)
+
+def mask(word, letter):
+    return ''.join('-' if letter != ch else letter for ch in word)
+
+def largest_families(words, letter, num_families):
+    # We maintain a counter for the size of masks, and a defaultdict of the families
+    families = collections.defaultdict(list)
+    family_sizes = collections.Counter()
+    for word in words:
+        word_mask = mask(word, letter)
+        families[word_mask].append(word)
+        family_sizes[word_mask] += 1
+
+    largest = []
+    for family_key, _unused_family_count in family_sizes.most_common(num_families):
+        largest.append(families[family_key])
+    return largest
+
+def test_largest_families():
+    with open(DICTIONARY_FILENAME, 'r') as f:
+        words = f.read().lower().split()
+
+    print(largest_families(words, 'e', 2))
+
 def wordplay():
-    with open('/usr/share/dict/words', 'r') as f:
+    with open(DICTIONARY_FILENAME, 'r') as f:
         for line in f:
             if not re.match(r'.*a.*e.*i.*o.*u.*', line.strip()):
                 continue
@@ -69,27 +130,25 @@ def regex_crossword_solve(horizontal_patterns, vertical_patterns, width, height,
     all satisfying strings, and then for every element in the product of these possibilities, we verify the vertical patterns."""
 
     # Optimization: if width > height, solve for height first
-    # if width > height:
-    #     for transposed_solution in regex_crossword_solve(vertical_patterns, horizontal_patterns, height, width, alphabet):
-    #         yield tuple(''.join(horiz_letters) for horiz_letters in zip(*transposed_solution))
-    #     return
+    if width > height:
+        for transposed_solution in regex_crossword_solve(vertical_patterns, horizontal_patterns, height, width, alphabet):
+            yield tuple(''.join(horiz_letters) for horiz_letters in zip(*transposed_solution))
+        return
 
     horizontal_possibilities = []
     horizontal_patterns = map(re.compile, horizontal_patterns)
     for horiz_pattern in map(re.compile, horizontal_patterns):
         successes = []
         for line in map(''.join, itertools.product(alphabet, repeat=width)):
-            if horiz_pattern.match(line):  # Don't worry about full-match - widths are same
+            if horiz_pattern.fullmatch(line):  # Don't worry about full-match - widths are same
                 successes.append(line)
         horizontal_possibilities.append(successes)
-
-    print(horizontal_possibilities)
 
     vertical_patterns = [re.compile(pattern) for pattern in vertical_patterns]
     for horizontal_choices in itertools.product(*horizontal_possibilities):
         success = True
         for vert_line, vert_pattern in zip(map(''.join, zip(*horizontal_choices)), vertical_patterns):
-            if not vert_pattern.match(vert_line):
+            if not vert_pattern.fullmatch(vert_line):
                 success = False
         if success:
             yield horizontal_choices
@@ -97,18 +156,28 @@ def regex_crossword_solve(horizontal_patterns, vertical_patterns, width, height,
 
 
 def test_regex_crossword_solve():
-    horiz = [r'^HE|LL|O+$', r'^[PLEASE]+$']
-    vert = [r'^[^SPEAK]+$', r'^EP|IP|EF$']
+    horiz = [r'HE|LL|O+', r'[PLEASE]+']
+    vert = [r'[^SPEAK]+', r'EP|IP|EF']
     for solution in regex_crossword_solve(horiz, vert, 2, 2):
-        print(solution)
+        print(''.join(solution))
+
+    horiz = [r'(Y|F)(.)\2[DAF]\1', r'(U|O|I)*T[FRO]+', r'[KANE]*[GIN]*']
+    vert = [r'(FI|A)+', r'(YE|OT)K', r'(.)[IF]+', r'[NODE]+', r'(FY|F|RG)+']
+    for solution in regex_crossword_solve(horiz, vert, 5, 3):
+        print(''.join(solution))
 
 
-# def multidirectional(horizontal_patterns, vertical_patterns, width, height, alphabet=string.ascii_uppercase):
-#     """As a super challenge, we don't implement the solution to this."""
+def multidirectional(horizontal_patterns, vertical_patterns, width, height, alphabet=string.ascii_uppercase):
+    """As a super challenge, we don't implement the solution to this."""
+
+def minimal_regex(positives, negatives):
+    """As a super challenge, we don't implement the solution to this."""
 
 def tabulate(f, start=0, step=1):
     return map(f, itertools.count(start, step))
 
-
-test_regex_crossword_check()
-test_regex_crossword_solve()
+if __name__ == '__main__':
+    print(most_common_words())
+    test_largest_families()
+    test_regex_crossword_check()
+    test_regex_crossword_solve()
