@@ -26,7 +26,7 @@ In this section, you'll practice using some of the more common modules in the Py
 
 ### Manipulating `collections`
 
-**Before continuing, make sure you read the [`collections` documentation](https://docs.python.org/3.4/library/collections.html) through 8.3.6.1.**
+**Before continuing, make sure you have read the [`collections` documentation](https://docs.python.org/3.4/library/collections.html) through 8.3.6.1.**
 
 ##### Mechanics
 
@@ -57,7 +57,7 @@ for animal in [lassie, astro, mrpb, bojack, pc, tinkles, pupper, doggo, seuss, p
         print(animal[0] + ' is a non-canine ' + animal[2] + ' ' + animal[1] + '.')
 ```
 
-#### `collections.defaultdict` and `collections.Counter
+#### `collections.defaultdict` and `collections.Counter`
 
 Using `/usr/share/dict/words` (alternatively, `http://stanfordpython.com/res/misc/words`) as a data source, what are the three most common word lengths in the English language? Remember to strip off trailing whitespace.
 
@@ -78,7 +78,7 @@ Write a function called
 def largest_families(words, letter, num_families):
     pass
 ```
-which returns the top `num_families` largest collections of words which share a mask, given a source collection of words and a chosen letter. Specifically, given a chosen letter, a family of words is one in which every word yields the same mask when applied with that letter. For example, if the chosen letter is `'s'`, then `'sees'`, and `'says'` would be in the same family, but `'sass'` would be in a different family.
+which returns the top `num_families` largest collections of words which share a mask, given a source collection of words and a chosen letter. Specifically, given a chosen letter, a family of words is one in which every word yields the same mask when applied with that letter. For example, if the chosen letter is `'s'`, then `'sees'`, and `'says'` would be in the same family (`'s--s'`), but `'sass'` would be in a different family (`'s-ss'`).
 
 #### Working Together
 
@@ -96,7 +96,7 @@ If you'd like sample data to work with, you can use the following
 sredmond	poohbear	41	CS	Instructor
 poohbear	sahami	500	CS	Lecturer
 htiek	sahami	500	CS	Lecturer
-sahami	mtl	5000	CS	Lecturer
+sahami	mtl	5000	CS	Professor
 guido	sahami	50000	PSF	BDFL
 ```
 You can assume that lines in the file are tab-separated. If you're saving the above text to a file, make sure that your text editor didn't automatically replace tabs with spaces!
@@ -109,7 +109,7 @@ def directly_reports_to(employee, manager):
     pass
 
 def indirectly_reports_to(employee, manager):
-    """Return whether or not employee directly reports to manager"""
+    """Return whether or not employee indirectly reports to manager"""
     pass
     
 def in_department(dept):
@@ -127,7 +127,7 @@ The primary portion of this section is parsing the file and storing the employee
 
 If you're new to regular expressions, we recommend you read through [the official Python HOWTO](https://docs.python.org/3.4/howto/regex.html)
 
-Otherwise, **read through the official [`re` documentation](https://docs.python.org/3.4/library/re.html) through 6.2.4 (although 6.2.5 is neat).**
+Otherwise, **read through the official [`re` documentation](https://docs.python.org/3.4/library/re.html) through 6.2.4** (although 6.2.5 is neat).
 
 #### Wordplay
 
@@ -135,19 +135,21 @@ Using the list of words found at `/usr/share/dict/words`, or alternatively `http
 
 #### Regex Crossword Checker
 
-In the spirit of [Regex Crossword](https://regexcrossword.com/) (a highly entertaining site, if you've got hours to spare), write a function that checks arbitrary regex crosswords. Your function should take in two lists, one representing horizontal clues and one representing vertical clues, two integers representing the width and height of the crossword, as well as the potential solution to crossword in the form a list-of-lists in row-major order (i.e. the elements are lists representing rows of the crossword. Return true if and only if the potential solution is in fact valid.
+Take a moment to play one round of [Regex Crossword](https://regexcrossword.com/) (a highly entertaining site, if you've got hours to spare).
+
+In the spirit of Regex Crossword, write a function that checks arbitrary regex crosswords. Your function should take in two lists, one representing horizontal clues and one representing vertical clues, as well as the potential solution to crossword in the form a list-of-lists in row-major order (i.e. the elements are lists representing rows of the crossword. Return whether or not the potential solution is in fact valid.
 
 ```
 import string
-def regex_crossword_check(horizontal_patterns, vertical_patterns, width, height, candidate, alphabet=string.ascii_uppercase):
+def regex_crossword_check(horizontal_patterns, vertical_patterns, candidate):
     pass  # Your implementation here
 ```
 
 For example, the call corresponding to the first "Beginner" puzzle (it's called "Beatles") would look like:
 
 ```
-horiz = [r'^HE|LL|O+$', r'^[PLEASE]+$']
-vert = [r'^[^SPEAK]+$', r'^EP|IP|EF$']
+horiz = [r'HE|LL|O+', r'[PLEASE]+']
+vert = [r'[^SPEAK]+', r'EP|IP|EF']
 candidate = [
 	['H', 'E'],
 	['L', 'P']
@@ -158,8 +160,8 @@ regex_crossword_check(horiz, vert, candidate)  # => True
 and the call corresponding to the second "Experiences" puzzle (it's called "Royal Dinner") would look like:
 
 ```
-horiz = [r'^(Y|F)(.)\2[DAF]\1$', r'^(U|O|I)*T[FRO]+$', r'^[KANE]*[GIN]*$']
-vert = [r'^(FI|A)+$', r'^(YE|OT)K$', r'^(.)[IF]+$', r'^[NODE]+$', r'^(FY|F|RG)+$']
+horiz = [r'(Y|F)(.)\2[DAF]\1', r'(U|O|I)*T[FRO]+', r'[KANE]*[GIN]*']
+vert = [r'(FI|A)+', r'(YE|OT)K', r'(.)[IF]+', r'[NODE]+', r'(FY|F|RG)+']
 candidate = [
 	['F', 'O', 'O', 'D', 'F'],
 	['I', 'T', 'F', 'O', 'R'],
@@ -170,8 +172,8 @@ regex_crossword_check(horiz, vert, candidate)  # => True
 
 Some implementation notes:
 
-* You may want to use `re.fullmatch` instead of `re.search` or `re.match`. The former matches a pattern string against an entire piece of text, whereas the latter checks to see if the pattern matches any substring of the text.
-* You can get the width and height of the cr2ossword from the length of the vertical and horizontal clue lists, respectively.
+* You may want to use `re.fullmatch` instead of `re.match` or `re.search`. The former matches a pattern string against an entire string, whereas the latter methods check to see if any prefix string or any substring, respectively, match the pattern.
+* You can get the width and height of the crossword from the length of the vertical and horizontal clue lists, respectively.
 * Remember your friend, `zip`!
 
 
@@ -202,7 +204,7 @@ and would return the final answer `['HELP']` derived from the (unique, in this c
 
 If you look though the Regex Crossword site linked above, you'll see that some puzzles (starting from "Double Cross" onwards), support multiple directions. Update your function above to work first with bidirection clues (as in "Double Cross", "Cities", "Volapük", and "Hamlet"). If that's too easy, see if you can solve the types of puzzles shown in "Hexagonal."
 
-#### Minimal Regex (challenge)
+#### Minimal Regex (super challenge)
 
 Given a finite set of positive samples and a finite set of negative examples, can we build a regular expression that matches the positives but rejects the negatives? Of course! We can just explicitly include the positives and explicitly reject the negatives. However, this approach leads to regexes that are quite long. For this part, write an algorithm that approximately generates the smallest regular expression that matches a list of positive samples and rejects a list of negative samples. Our metric for smallest will default to shortest, but feel free to come up with your own metric.
 
@@ -211,11 +213,11 @@ def minimal_regex(positives, negatives):
     pass
 ```
 
-*Note: this problem is NP-hard, and is tied to some deep results in complexity theory. For more information, check out [this CSTheory.SE post](http://cstheory.stackexchange.com/questions/1854/is-finding-the-minimum-regular-expression-an-np-complete-problem)
+*Note: this problem is NP-hard, and is tied to some deep results in complexity theory. For more information, check out [this CSTheory.SE post](http://cstheory.stackexchange.com/questions/1854/is-finding-the-minimum-regular-expression-an-np-complete-problem)*
 
 ### Working with `itertools`
 
-**Before continuing, make sure you read the [`itertools` documentation](https://docs.python.org/3.4/library/itertools.html) through 10.1.1 (although 10.1.2 is neat).**
+**Before continuing, make sure you read the [`itertools` documentation](https://docs.python.org/3.4/library/itertools.html) through 10.1.1** (although 10.1.2 is neat).
 
 #### Tabulation
 
@@ -230,19 +232,21 @@ This function can be used as follows:
 
 ```
 sqgen = tabulate(lambda x: x ** 2)
-next(sqgen)  # => 0
-next(sqgen)  # => 1
-next(sqgen)  # => 4
-next(sqgen)  # => 9
+next(sqgen)  # => 0 = f(0)
+next(sqgen)  # => 1 = f(1)
+next(sqgen)  # => 4 = f(2)
+next(sqgen)  # => 9 = f(3)
 ```
 
 For reference, our implmentation is one line and 43 characters.
+
+Hint: take a look at the `itertools.count` function!
 
 ### JSON
 
 **Before continuing, make sure you read the [`json` documentation](https://docs.python.org/3.4/library/json.html) through 19.2.1.**
 
-Think of a broad topic you're interested in. For example, spend a few minutes trying to find a JSON file on the internet
+Think of a broad topic you're interested in. Then, spend a few minutes trying to find a JSON file on the internet related to your interest.
 
 ### `random`
 
