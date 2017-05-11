@@ -4,7 +4,7 @@
 
 The goal of this lab is to familiarize yourself with the tools of the standard library. We want you to gain practice with the common utilities of the standard library, and be aware of the rest of the tools, in case you ever need them.
 
-We expect you to spend most of the time in this lab reading over the modules in the standard library that you find intriguing or applicable to your interests. If you have any questions about any standard library features, please ask us!
+**We expect you to spend most of the time in this lab reading over the modules in the standard library that you find intriguing or applicable to your interests.** If you have any questions about any standard library features, please ask us!
 
 ## Read
 
