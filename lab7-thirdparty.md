@@ -2,13 +2,14 @@
 
 ## Overview
 
-Today, you'll get a chance to build a larger project utilizing the `requests` package by Kenneth Reitz and get a start on Assignment 3!
+Today, you'll get a chance to build a larger project utilizing the `requests` package by Kenneth Reitz and get a start on Assignment 3 and 4!
 
 ## Read
 
-As a reminder, the packages discussed in class are listed below, along with some useful links. Read through the ones that you would like to learn more about, or jump straight into [Assignment 3](https://github.com/stanfordpython/python-assignments/tree/master/assign3).
+As a reminder, the packages discussed in class are listed below, along with some useful links. Read through the ones that you would like to learn more about, or jump straight into building a [Reddit Wallpaper Scraper](https://github.com/stanfordpython/python-assignments/tree/master/old/wallscraper).
 
 ### Crucial Packages
+
 * requests: [Quick Start](docs.python-requests.org/en/master/user/quickstart/)
 * numpy: [Quick Start](https://docs.scipy.org/doc/numpy-dev/user/quickstart.html)
 * scipy: [Reference](https://docs.scipy.org/doc/scipy/reference/index.html)
@@ -44,7 +45,7 @@ As a reminder, the packages discussed in class are listed below, along with some
 * fabric - Automate interactions with remote servers.
 * Scrapy - Screen scraping/Web crawling framework
 * Pattern - Web mining
-* rstr and exrex and regex - Random string generation/regex reversing.
+* rstr and exrex - Random string generation/regex reversing.
 * autobahn - web sockets
 * peewee - simple ORM for databases
 * sh - Python bindings for unix commands
@@ -71,6 +72,6 @@ For more, check out [awesome-python](https://github.com/vinta/awesome-python#awe
 
 ## Write
 
-With the rest of the time in lab, get started on [Assignment 3](https://github.com/stanfordpython/python-assignments/tree/master/assign3)!
+With the rest of the time in lab, get started on the [wallpaper scraper](https://github.com/stanfordpython/python-assignments/tree/master/old/wallscraper)! You can also spend lab time writing up a final project proposal, or getting started with assignment 3 or 4!
 
 > With <3 by @sredmond
