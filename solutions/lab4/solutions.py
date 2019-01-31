@@ -1,26 +1,35 @@
 #!/usr/bin/env python3 -tt
-"""
-File: lab4solutions.py
-----------------------
-Reference solutions to Lab 4 for CS41: Hap.py Code.
+"""Reference solutions to Lab 4 for CS41: Hap.py Code.
 
-(Still WIP)
+As in lecture slides, a data source surrounded by angle brackets such as:
+
+    <1, 2, 3>
+
+is our notation for an iterable over those elements.
 
 Revision history:
+@sredmond 01-31-2019 Minor tweaks for W19
 @sredmond 04-26-2016 Added challenge problem solutions
 @sredmond 04-23-2016 Commented ALL the things
 @sredmond 04-20-2016 Small changes to parallel lab changes
 @sredmond 04-18-2016 Created
 """
-import random       # choice
-import functools    # reduce, wraps
-import operator     # mul
-import itertools    # permutations, cycle, starmap, zip_longest
 import collections  # OrderedDict
+import functools    # reduce, wraps
 import inspect      # Signature
+import itertools    # permutations, cycle, starmap, zip_longest
+import operator     # mul
+import math         # gcd
+import random       # choice
 
-## Functional Tools
+
+####################
+# Functional Tools #
+####################
+
+
 def test_map():
+    """Practice writing transformations using `map`."""
     # ['12', '-2', '0'] -> [12, -2, 0]
     map(int, ['12', '-2', '0'])
     # ['hello', 'world'] -> [5, 5]
@@ -32,7 +41,7 @@ def test_map():
     # zip(range(2, 5), range(3, 9, 2)) -> [6, 15, 28]
     map(lambda l, r: l * r, zip(range(2, 5), range(3, 9, 2)))
 
-def filtertest():
+def test_filter():
     # ['12', '-2', '0'] -> ['12', '0']
     filter(lambda x: int(x) >= 0, ['12', '-2', '0'])
     # ['hello', 'world'] -> ['world']
@@ -42,19 +51,13 @@ def filtertest():
     # range(20) -> [0, 3, 5, 6, 9, 10, 12, 15, 18]
     filter(lambda n: n % 3 == 0 or n % 5 == 0, range(20))
 
-## Useful Modules
-def gcd(a, b):
-    """Reference implementation of finding the
-    greatest common denominator of two numbers"""
-    while b != 0:
-        a, b = b, a % b
-    return a
+def lcm(*nums):
+    return functools.reduce(lambda x, y: x * y // math.gcd(x, y), nums, 1)
 
-def lcm(*args):
-    return functools.reduce(lambda x, y: x * y / gcd(x, y), args)
+make_change = lambda target, coins: ( (sum(map(lambda choice: make_change(target - choice, coins[1:]), range(0, target + 1, coins[0]))), 0))[0]
 
 def fact(n):
-    return functools.reduce(operator.mul, range(n))
+    return functools.reduce(operator.mul, range(1, n+1))
 
 def testfact():
     fact(3)
@@ -108,7 +111,7 @@ def iterator_consumption():
     67 in it  # => True
     # After the above two lines are executed, the iterator has been
     # run until it finds the 67, that is, until the point when next(it)
-    # returned 68
+    # returned 67
 
     next(it)  # => 68
     37 in it  # => False, and in searching runs the iterator to exhaustion
@@ -158,7 +161,6 @@ def matmul_lazy(m1, m2):
     return map(lambda row: (dot_product(row, col) for col in transpose(m2)), m1)
 
 ## Generator Expressions
-# TODO
 """
 (1) Searching for a given entity in the entries of a 1TB database.
     Generator expression! We couldn't buffer the entire database in memory
@@ -264,7 +266,7 @@ which has been changed.
 
 ## Decorators
 def bind_args(function, *args, **kwargs):
-    """Returns an map from the names of function's arguments to values given by *args and **kwargs
+    r"""Returns an map from the names of function's arguments to values given by *args and **kwargs
 
     This is more or less an implementation of Python argument bind semantics, but it's not super accurate
     ¯\_(ツ)_/¯
@@ -276,10 +278,26 @@ def bind_args(function, *args, **kwargs):
 
     Pre: *args and **kwargs represent valid parameters
     """
+    argspec = inspect.getfullargspec(function)
     sig = inspect.Signature.from_function(function)
     ba = sig.bind(*args, **kwargs)
-    return ba.arguments
-
+    print(argspec, ba)
+    bindings = ba.arguments.copy()
+    # default values for keyword arguments
+    if argspec.defaults:
+        for var_name, default_value in zip(reversed(argspec.args), reversed(argspec.defaults)):
+            if var_name not in bindings:
+                bindings[var_name] = default_value
+    # default values for keyword-only argument
+    if argspec.kwonlydefaults:
+        for var_name, default_value in argspec.kwonlydefaults.items():
+            if var_name not in bindings:
+                bindings[var_name] = default_value
+    if argspec.varargs and argspec.varargs not in bindings:
+        bindings[argspec.varargs] = tuple()
+    if argspec.varkw and argspec.varkw not in bindings:
+        bindings[argspec.varkw] = dict()
+    return bindings
 
 def print_args(function):
     """Decorate the given function to print out it's arguments and return val if not None
@@ -297,6 +315,27 @@ def print_args(function):
             print("(return) {!r}".format(retval))
         return retval
     return wrapper
+
+def test_print_args():
+    @print_args
+    def all_together(x, y, z=1, *nums, indent=True, spaces=4, **options):
+        """The all_together function from Lab 3."""
+        pass
+
+    # all_together(2)
+    all_together(2, 5, 7, 8, indent=False)
+    all_together(2, 5, 7, 6, indent=None)
+    all_together()
+    # all_together(indent=True, 3, 4, 5)
+    # all_together(**{'indent': False}, scope='maximum')
+    all_together(dict(x=0, y=1), *range(10))
+    # all_together(**dict(x=0, y=1), *range(10))
+    # all_together(*range(10), **dict(x=0, y=1))
+    all_together([1, 2], {3:4})
+    all_together(8, 9, 10, *[2, 4, 6], x=7, spaces=0, **{'a':5, 'b':'x'})
+    all_together(8, 9, 10, *[2, 4, 6], spaces=0, **{'a':[4,5], 'b':'x'})
+    # all_together(8, 9, *[2, 4, 6], *dict(z=1), spaces=0, **{'a':[4,5], 'b':'x'})
+
 
 def cache(function):
     function._cache = {}
@@ -377,19 +416,25 @@ def enforce_types(function):
         return retval
     return wrapper
 
-@enforce_types
-# def foo(a: int, b: str) -> bool:
-    # if a == -1:
-    #     return 'Gotcha!'
-    # return b[a] == 'X'
+def test_enforce_types():
+    @enforce_types
+    def foo(a: int, b: str) -> bool:
+        if a == -1:
+            return 'Gotcha!'
+        return b[a] == 'X'
 
-foo(3, 'XYZXYZ')  # => True
-foo(2, 'python')  # => False
-foo(1, 4)  # prints "(Bad Argument Type!) argument b=4: expected <class 'str'>, received <class 'int'>" and then crashes
-foo(-1, '')  # prints "(Bad Return Value!) return Gotcha!: expected <class 'bool'>, received <class 'str'>" and returns "Gotcha!"
+    try:
+        foo(3, 'XYZXYZ')  # => True
+        foo(2, 'python')  # => False
+        foo(1, 4)  # prints "(Bad Argument Type!) argument b=4: expected <class 'str'>, received <class 'int'>" and then crashes
+        foo(-1, '')  # prints "(Bad Return Value!) return Gotcha!: expected <class 'bool'>, received <class 'str'>" and returns "Gotcha!"
+    except TypeError:
+        pass
+
+
 
 def enforce_types_challenge(severity=1):
-    assert severity in [0, 1, 2]
+    assert severity in (0, 1, 2)
     if severity == 0:
         # Return a no-op decorator
         return lambda function: function
@@ -436,9 +481,12 @@ def enforce_types_challenge(severity=1):
 def bar(a: list, b: str) -> int:
     return 0
 
-@enforce_types_challenge()  # Note that there are parentheses
+@enforce_types_challenge()
 def baz(a: bool, b: str) -> str:
     return ''
 
 if __name__ == '__main__':
     """Runs each of the lab solution functions and prints the docstring"""
+    test_map()
+    test_filter()
+    test_print_args()
