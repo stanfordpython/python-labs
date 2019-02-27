@@ -1,8 +1,5 @@
-#!/usr/bin/env python3 -tt
-"""
-File: lab8solutions.py
-----------------------
-Reference solutions to Lab 8 for CS41: Hap.py Code.
+#!/usr/bin/env python3
+"""Reference solutions to Lab 8 for CS41: Hap.py Code.
 
 There isn't any programming specific to Lab 8!
 These solutions are intentionally blank.
