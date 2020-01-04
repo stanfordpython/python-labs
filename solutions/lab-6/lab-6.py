@@ -6,12 +6,16 @@
 import pandas as pd
 import numpy as np
 from PIL import Image
+import requests
 
 # Load the CSV into a pandas DataFrame
-d = pd.load_csv('~/Desktop/secret.csv')
+# either download 'secret.csv' and run:
+d = pd.read_csv('secret.csv')
+# or:
+d = pd.read_csv(BytesIO(requests.get('https://raw.githubusercontent.com/stanfordpython/python-labs/master/notebooks/lab-6/secret.csv').content))
 
 # Convert the DataFrame into a numpy array
-a = np.asarray(d).astype(np.uint8)
+a = d.values.astype(np.uint8)
 
 # Convert the numpy array into a Pillow image
 im = Image.fromarray(a)
