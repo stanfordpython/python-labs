@@ -80,10 +80,13 @@ def max_collatz_len(n):
     In Python, the `max` function returns the largest element of some collection.
     Since "finding the max element" isn't naturally iterative (although it can be
     solved iteratively), we can use this functional-looking code to compute the
-    maximal collatz length. Note, however, that this approach buffers the list of
-    lengths in memory (due to the list comprehension). In general, we can mitigate
-    this problem using a generator comprehension (look it up!) rather than a list
-    comprehension, but we'll cover that later in the course.
+    maximal collatz length. 
+
+
+    One option is to buffers the list of lengths in memory (using a list 
+    comprehension). In general, we can mitigate this problem using a generator 
+    comprehension (look it up!) rather than a list comprehension, but we'll cover 
+    that later in the course.
 
     An even more Pythonic way to solve this problem is to use `map`, which applies a
     function to all elements of a sequence.
@@ -91,7 +94,16 @@ def max_collatz_len(n):
         return max(map(collatz_len, range(1, n)))
 
     """
-    return max([collatz_len(i) for i in range(1, n)])
+    collatz = []
+    for i in range(1, n):
+        collatz.append(collatz_len(i))
+
+    return max(collatz)
+
+    """Another option is to use a list comprehension, which we haven't
+    seen yet:
+        return max([collatz_len(i) for i in range(1, n)])
+    """
 
 
 def collatz_len_fast(n, cache):
@@ -309,6 +321,359 @@ def object_reference():
     s[0] += [1]
     print(s)  # [[1], [1], [1]]... what?!
 
+def gcd(a, b):
+    """Return the GCD of two numbers.
+
+    The GCD can be computed iteratively as shown below, with the two elements
+    progressively getting smaller and smaller. The use of tuple-packing and
+    unpacking allows us to communicate this paired update step in one line
+    without needing to use a temporary variable.
+
+    For example, gcd(91, 35) is evaluated as follows:
+
+    gcd(91, 35)
+        a, b = 91, 35
+        a, b = (35, 91 % 35) = 35, 21
+        a, b = (21, 35 % 21) = 21, 14
+        a, b = (14, 21 % 14) = 14,  7
+        a, b = ( 7, 14 %  7) =  7,  0
+        b = 0, so we return 7
+
+    Note: if a < b, then a % b = a, so the values of a and b will be swapped.
+    """
+    while b:
+        a, b = b, a % b
+    return a
+
+##################
+# BONUS PROBLEMS #
+##################
+def generate_pascal_row(row):
+    """Generate the successive row in Pascal's triangle.
+
+    While there are many iterative approaches, we can zip together offsets of
+    the given row to generate pairs of elements, which we sum to form the final
+    data structure.
+
+    For example, if row = [1, 4, 6, 4, 1], then
+
+        [0] + row  # => [0, 1, 4, 6, 4, 1]
+        row + [0]  # => [1, 4, 6, 4, 1, 0]
+
+    Adding together corresponding entries with zip and a list comprehension gives
+
+                        [1, 5, 10, 10, 5, 1]
+
+    Just like we wanted!
+    """
+    if not row: return [1]
+    
+    """Using a list comprehension and zip:
+        return [left + right for left, right in zip([0] + row, row + [0])]
+    """
+
+    output = []
+    top = [0] + row
+    bottom = row + [0]
+    for i, el in enumerate(top):
+        output.append(el + bottom[i])
+
+
+def is_cyclone_word(word):
+    """Returns whether a word is a cyclone word.
+
+    There are many different approach to solving this problem, but the one
+    shown below using a clever, little-known feature of Python list-slicing.
+    List slices can be assigned into! For example,
+
+        l = [0, 0, 0, 0, 0, 0, 0, 0]
+        l[:4] = range(4)
+        print(l)  # => [0, 1, 2, 3, 0, 0, 0, 0]
+
+    In this case, we put the first half of the word into every other character
+    (slicing with a step size of 2) starting at index 0, and put the reversed
+    second half of the word into every other character starting at index 1.
+
+    Then, we can test if each letter is less than its neighbor alphabetically
+    by zipping together the letters and the offset letters, and tuple-unpack
+    inside the list comprehension.
+
+    To be completely honest, a purely iterative approach would work just as
+    well, if not better (less auxiliary memory, more readable), but I wanted
+    to illustrate some cool features of Python (assigning into list slices as
+    Lvalues, zipping a sequence with itself to generate pairs, etc).
+    """
+    word = word.upper()
+    letters = [None] * len(word)
+    half = (len(word) + 1) // 2
+    letters[::2] = word[:half]
+    letters[1::2] = word[:half - 1:-1]
+
+    for i, ch in enumerate(letters):
+        if i < len(letters) - 1 and ch > letters[i+1]:
+            return False
+
+    return True
+    
+    """Using a list comprehension and zip:
+        return all([left <= right for left, right in zip(letters, letters[1:])])
+    """
+
+
+def is_cyclone_phrase(phrase):
+    """Returns whether all the space-delimited words in phrases are cyclone words
+
+    A phrase is a cyclone phrase if and only if all of its component words are
+    cyclone words, so we first split the phrase into words using .split(), and then
+    check if all of the words are cyclone words.
+    """
+    
+    """Using a list comprehension:
+        return all([is_cyclone_word(word) for word in phrase.split()])
+    """
+
+    for word in phrase.split():
+        if not is_cyclone_word(word):
+            return False
+    return True
+
+
+#############################################
+#                  PART 2                   #
+#############################################
+def print_pascal_triangle(n):
+    """Print the first n rows of Pascal's triangle.
+
+    We first generate a list of the first n rows of Pascal's triangle.
+    This is kind of tricky because the function we've written generates
+    the *next* row of Pascal's triangle, based on the previous one.
+
+    The most Pythonic way to keep track of the previous row and update
+    it as you generate the next row is using assignment expressions.
+    Because you can assign a variable *and* use it at the same time,
+    we can assign:
+
+        prev := generate_pascal_row(prev)
+
+    which will add `prev` to the list and update it for the next iteration
+    of the loop.
+
+    Then, we convert each of the rows to a string. There are several ways
+    to do this. One way is using the map function:
+
+        [' '.join(map(str, row)) for row in rows]
+
+    This might seem a little complicated and perhaps un-Pythonic (for that
+    reason), but I think it's reasonably nice because joining a map of 
+    str onto an iterable is quite common and readable.
+
+    We haven't learned what the map function is, yet, though, so one
+    could instead use a list comprehension:
+
+        [' '.join([str(e) for e in row]) for row in rows]
+
+    This is funcitonally equivalent to the map-based solution, but less
+    readable. Instead, this solution does it in two steps.
+
+    The largest row, then, will be the last one, and we can easily 
+    calculate its length using the `len` function.
+
+    One of the trickiest pieces of the logic is printing out each
+    of the rows, centered. Remember that the '^' alignment specifier
+    will center text, where the number that appears after the '^'
+    is the length of the string to be returned. So,
+
+        '{:^10}'.format('CS41') # => '   CS41   '
+
+    We can use nested format specification to fill out the string
+    length with a variable:
+
+        '{:^{}}'.format('CS41', 10) # => '   CS41   '
+
+    Using that, we can get a centered row, where the width is equal
+    to the width of the longest row."""
+    prev = []
+    rows = [prev := generate_pascal_row(prev) for _ in range(n)]
+    
+    rows = [[str(e) for e in row] for row in rows]
+    rows = [' '.join(row) for row in rows]
+    width = len(rows[-1])
+    
+    # Print each row
+    for row in rows:
+        print("{row:^{width}}".format(row=row, width=width))
+
+
+def is_triad_word(word, english):
+    """Returns whether a word is a triad word.
+
+    There are many solutions to this problem, but the easiest is to slice our
+    string using the slice syntax to extract two words (built from alternating
+    letters), and then check that both of those words are valid English words.
+    """
+    return word[::2] in english and word[1::2] in english
+
+
+def is_triad_phrase(phrase, english):
+    """Returns whether all the space-delimited words in `phrase` are triad words
+
+    A phrase is a triad phrase if and only if all of its component words are
+    triad words, so we first split the phrase into words using .split(), and then
+    check if all of the words are triad words.
+
+    In Python, you can use `all` to check if all elements of an iterable are True-y,
+    short-circuiting as soon as a False-y element is found. Currently, we're computing
+    the triad-ness of all of the words before evaluating `all`, but there is a way to
+    stream the words through is_triad_word to `all` using generator expressions, which
+    we'll learn about Week 4.
+
+    This strategy is repeated for the other types of phrases, and the same caveats apply
+    for those problems as well.
+    """
+    return all([is_triad_word(word, english) for word in phrase.split()])
+
+
+def character_distance(left, right):
+    """Return the alphabetic distance between two uppercase one-character strings.
+
+    For example, character_distance('R', 'B') returns 16, since 'B' has value 66
+    and 'R' has value 82.
+    """
+    return abs(ord(left) - ord(right))
+
+
+def is_surpassing_word(word):
+    """Returns whether a word is a surpassing word.
+
+    As usual, there are many solutions, but we choose to compute the distances between
+    pairs of characters (zipping together word with word[1:]) first, and then check
+    whether these distances are all increasing (again using zip). This is certainly not
+    the fastest or most readable solution (since we are first computing all adjacent
+    distances, and then only later checking to see if the distances are in increasing
+    order), but it illustrates the use of zip to associate adjacent pairs of elements
+    of a sequence. For example, consider the case where `word` is SUPERB.
+
+        word     ->  S  U  P  E  R  B
+        word[1:] ->  U  P  E  R  B
+                     ----------------
+                     SU UP PE ER RB
+        zip(word, word[1:]) generates (S, U), (U, P), (P, E), (E, R), (R, B)
+
+    Since the last B is unmatched, it isn't included in the results generated by zip.
+    We immediately unpack the tuples generated by zip into a left term and a right term.
+
+    We use the same trick to compare distances, checking if for all pairs, the left term
+    is less than the right term (reminiscent of a stopping condition for bubble sort).
+    """
+    distances = [character_distance(left, right) for left, right in zip(word, word[1:])]
+    return all(left < right for left, right in zip(distances, distances[1:]))
+
+
+def is_surpassing_phrase(phrase):
+    """Returns whether all the space-delimited words in `phrase` are surpassing words
+
+    A phrase is a surpassing phrase if and only if all of its component words are
+    triad words, so we first split the phrase into words using .split(), and then
+    check if all of the words are triad words.
+    """
+    return all([is_surpassing_word(word) for word in phrase.split()])
+
+
+def is_triangle_number(num):
+    """Returns whether a number is a triangle number.
+
+    A triangle number n is one for which there exists an integer x with
+    n = (x^2 + x) / 2. Solving this quadratic equation gives
+
+        x = (-1 +- sqrt(1 + 8n)) / 2
+
+    which will be an integer if and only if 1 + 8n is a perfect square.
+    Note: if 1 + 8n is a perfect square, it's square root will be odd,
+    so we don't need to worry about the division by 2.
+
+    A number is a perfect square if and only if the square of the floor of
+    the square root gives back the original number.
+
+    Note: there are other ways to solve this problem (notably, the iterative
+    approach of generating triangle numbers until you either hit or pass num)
+    which will work fine! In which cases would each approach be better?
+    """
+    discrim = 8 * num + 1
+    base = int(math.sqrt(discrim))
+    return base * base == discrim
+
+
+def is_triangle_word(word):
+    """Returns whether a word is a triangle word.
+
+    A word is a triangle word if and only if the sum of its character values is
+    a triangle number. Here, we show the iterative approach (as a change-of-pace),
+    although we'll see a way to solve this functionally Week 4.
+    """
+    count = 0
+    for ch in word.upper().strip():
+        count += ord(ch) - ord('A') + 1
+    return is_triangle_number(count)
+
+
+def get_word_counts():
+    """Print the number of English words satisfying a number of conditions.
+
+    Specifically, print the number of English words that are
+        (1) Triad words
+        (2) Surpassing words
+        (3) Cyclone words
+        (4) Triangle words
+    """
+    english = get_english_words(DICTIONARY_PATH)
+    triad_words = [word for word in english if is_triad_word(word, english)]
+    surpassing_words = [word for word in english if is_surpassing_word(word)]
+    cyclone_words = [word for word in english if is_cyclone_word(word)]
+    triangle_words = [word for word in english if is_triangle_word(word)]
+
+    print("Number of triad words: {}".format(len(triad_words)))
+    print("Number of surpassing words: {}".format(len(surpassing_words)))
+    print("Number of cyclone words: {}".format(len(cyclone_words)))
+    print("Number of triangle words: {}".format(len(triangle_words)))
+
+
+def get_english_words(dictionary_path):
+    """Returns a set of trimmed, capitalized English words from a path to a dictionary.
+
+    The dictionary is assumed to have one English word per line.
+
+    If dictionary_path can not be read or is formatted incorrectly, a default English word
+    set is returned containing some fruits.
+
+    Note that we keep the file open for as little time as possible, which is
+    generally a good practice. One downside of this implementation is that it
+    buffers all of the words in memory (first as a string, and later as a collection
+    of lines, but the word list is a known finite size (and that size isn't *too*
+    big), so this approach will work fine. Iterating through the lines in the file
+    with a for loop could mitigate this downside.
+
+    We then use a set comprehension to build an uppercased collection of all of
+    the words in the dictionary.
+
+    Note that we choose to represent the English words as a set, because we want fast
+    membership testing (using `in`) and also want to be able to iterate over all words.
+    """
+    try:
+        with open(dictionary_path, 'r') as f:
+            content = f.read()
+        return {line.strip().upper() for line in content.split('\n') if line}
+    except OSError:
+        return {'APPLE', 'BANANA', 'PEAR', 'ORANGE'}
+
+
+def polygon_collision(poly1, poly2):
+    """As a bonus problem, we're not publishing the solution to this :)
+
+    If you're interested in reading more about the strategy to solve it,
+    check out https://www.codeproject.com/Articles/15573/2D-Polygon-Collision-Detection
+    """
+    pass
+
 def comprehension_read():
     """Practice reading comprehensions and explore oddities with function calls
 
@@ -460,375 +825,3 @@ def flip_dict(d):
             out[value] = []
         out[value].append(key)
     return out
-
-
-##################
-# BONUS PROBLEMS #
-##################
-def generate_pascal_row(row):
-    """Generate the successive row in Pascal's triangle.
-
-    While there are many iterative approaches, we can zip together offsets of
-    the given row to generate pairs of elements, which we sum to form the final
-    data structure.
-
-    For example, if row = [1, 4, 6, 4, 1], then
-
-        [0] + row  # => [0, 1, 4, 6, 4, 1]
-        row + [0]  # => [1, 4, 6, 4, 1, 0]
-
-    Adding together corresponding entries with zip and a list comprehension gives
-
-                        [1, 5, 10, 10, 5, 1]
-
-    Just like we wanted!
-    """
-    if not row: return [1]
-    return [left + right for left, right in zip([0] + row, row + [0])]
-
-
-def is_cyclone_word(word):
-    """Returns whether a word is a cyclone word.
-
-    There are many different approach to solving this problem, but the one
-    shown below using a clever, little-known feature of Python list-slicing.
-    List slices can be assigned into! For example,
-
-        l = [0, 0, 0, 0, 0, 0, 0, 0]
-        l[:4] = range(4)
-        print(l)  # => [0, 1, 2, 3, 0, 0, 0, 0]
-
-    In this case, we put the first half of the word into every other character
-    (slicing with a step size of 2) starting at index 0, and put the reversed
-    second half of the word into every other character starting at index 1.
-
-    Then, we can test if each letter is less than its neighbor alphabetically
-    by zipping together the letters and the offset letters, and tuple-unpack
-    inside the list comprehension.
-
-    To be completely honest, a purely iterative approach would work just as
-    well, if not better (less auxiliary memory, more readable), but I wanted
-    to illustrate some cool features of Python (assigning into list slices as
-    Lvalues, zipping a sequence with itself to generate pairs, etc).
-    """
-    word = word.upper()
-    letters = [None] * len(word)
-    half = (len(word) + 1) // 2
-    letters[::2] = word[:half]
-    letters[1::2] = word[:half - 1:-1]
-    return all([left <= right for left, right in zip(letters, letters[1:])])
-
-
-def is_cyclone_phrase(phrase):
-    """Returns whether all the space-delimited words in phrases are cyclone words
-
-    A phrase is a cyclone phrase if and only if all of its component words are
-    cyclone words, so we first split the phrase into words using .split(), and then
-    check if all of the words are cyclone words.
-    """
-    return all([is_cyclone_word(word) for word in phrase.split()])
-
-
-#############################################
-#                  PART 2                   #
-#############################################
-def gcd(a, b):
-    """Return the GCD of two numbers.
-
-    The GCD can be computed iteratively as shown below, with the two elements
-    progressively getting smaller and smaller. The use of tuple-packing and
-    unpacking allows us to communicate this paired update step in one line
-    without needing to use a temporary variable.
-
-    For example, gcd(91, 35) is evaluated as follows:
-
-    gcd(91, 35)
-        a, b = 91, 35
-        a, b = (35, 91 % 35) = 35, 21
-        a, b = (21, 35 % 21) = 21, 14
-        a, b = (14, 21 % 14) = 14,  7
-        a, b = ( 7, 14 %  7) =  7,  0
-        b = 0, so we return 7
-
-    Note: if a < b, then a % b = a, so the values of a and b will be swapped.
-    """
-    while b:
-        a, b = b, a % b
-    return a
-
-
-def print_pascal_triangle(n):
-    """Print the first n rows of Pascal's triangle.
-
-    We first generate a list of the first n rows of Pascal's triangle.
-    This is kind of tricky because the function we've written generates
-    the *next* row of Pascal's triangle, based on the previous one.
-
-    The most Pythonic way to keep track of the previous row and update
-    it as you generate the next row is using assignment expressions.
-    Because you can assign a variable *and* use it at the same time,
-    we can assign:
-
-        prev := generate_pascal_row(prev)
-
-    which will add `prev` to the list and update it for the next iteration
-    of the loop.
-
-    Then, we convert each of the rows to a string. There are several ways
-    to do this. One way is using the map function:
-
-        [' '.join(map(str, row)) for row in rows]
-
-    This might seem a little complicated and perhaps un-Pythonic (for that
-    reason), but I think it's reasonably nice because joining a map of 
-    str onto an iterable is quite common and readable.
-
-    We haven't learned what the map function is, yet, though, so one
-    could instead use a list comprehension:
-
-        [' '.join([str(e) for e in row]) for row in rows]
-
-    This is funcitonally equivalent to the map-based solution, but less
-    readable. Instead, this solution does it in two steps.
-
-    The largest row, then, will be the last one, and we can easily 
-    calculate its length using the `len` function.
-
-    One of the trickiest pieces of the logic is printing out each
-    of the rows, centered. Remember that the '^' alignment specifier
-    will center text, where the number that appears after the '^'
-    is the length of the string to be returned. So,
-
-        '{:^10}'.format('CS41') # => '   CS41   '
-
-    We can use nested format specification to fill out the string
-    length with a variable:
-
-        '{:^{}}'.format('CS41', 10) # => '   CS41   '
-
-    Using that, we can get a centered row, where the width is equal
-    to the width of the longest row."""
-    prev = []
-    rows = [prev := generate_pascal_row(prev) for _ in range(n)]
-    
-    rows = [[str(e) for e in row] for row in rows]
-    rows = [' '.join(row) for row in rows]
-    width = len(rows[-1])
-    
-    # Print each row
-    for row in rows:
-        print("{row:^{width}}".format(row=row, width=width))
-
-
-def is_triad_word(word, english):
-    """Returns whether a word is a triad word.
-
-    There are many solutions to this problem, but the easiest is to slice our
-    string using the slice syntax to extract two words (built from alternating
-    letters), and then check that both of those words are valid English words.
-    """
-    return word[::2] in english and word[1::2] in english
-
-
-def is_triad_phrase(phrase, english):
-    """Returns whether all the space-delimited words in `phrase` are triad words
-
-    A phrase is a triad phrase if and only if all of its component words are
-    triad words, so we first split the phrase into words using .split(), and then
-    check if all of the words are triad words.
-
-    In Python, you can use `all` to check if all elements of an iterable are True-y,
-    short-circuiting as soon as a False-y element is found. Currently, we're computing
-    the triad-ness of all of the words before evaluating `all`, but there is a way to
-    stream the words through is_triad_word to `all` using generator expressions, which
-    we'll learn about Week 4.
-
-    This strategy is repeated for the other types of phrases, and the same caveats apply
-    for those problems as well.
-    """
-    return all([is_triad_word(word, english) for word in phrase.split()])
-
-
-def character_distance(left, right):
-    """Return the alphabetic distance between two uppercase one-character strings.
-
-    For example, character_distance('R', 'B') returns 16, since 'B' has value 66
-    and 'R' has value 82.
-    """
-    return abs(ord(left) - ord(right))
-
-
-def is_surpassing_word(word):
-    """Returns whether a word is a surpassing word.
-
-    As usual, there are many solutions, but we choose to compute the distances between
-    pairs of characters (zipping together word with word[1:]) first, and then check
-    whether these distances are all increasing (again using zip). This is certainly not
-    the fastest or most readable solution (since we are first computing all adjacent
-    distances, and then only later checking to see if the distances are in increasing
-    order), but it illustrates the use of zip to associate adjacent pairs of elements
-    of a sequence. For example, consider the case where `word` is SUPERB.
-
-        word     ->  S  U  P  E  R  B
-        word[1:] ->  U  P  E  R  B
-                     ----------------
-                     SU UP PE ER RB
-        zip(word, word[1:]) generates (S, U), (U, P), (P, E), (E, R), (R, B)
-
-    Since the last B is unmatched, it isn't included in the results generated by zip.
-    We immediately unpack the tuples generated by zip into a left term and a right term.
-
-    We use the same trick to compare distances, checking if for all pairs, the left term
-    is less than the right term (reminiscent of a stopping condition for bubble sort).
-    """
-    distances = [character_distance(left, right) for left, right in zip(word, word[1:])]
-    return all(left < right for left, right in zip(distances, distances[1:]))
-
-
-def is_surpassing_phrase(phrase):
-    """Returns whether all the space-delimited words in `phrase` are surpassing words
-
-    A phrase is a surpassing phrase if and only if all of its component words are
-    triad words, so we first split the phrase into words using .split(), and then
-    check if all of the words are triad words.
-    """
-    return all([is_surpassing_word(word) for word in phrase.split()])
-
-
-def is_cyclone_word(word):
-    """Returns whether a word is a cyclone word.
-
-    There are many different approach to solving this problem, but the one
-    shown below using a clever, little-known feature of Python list-slicing.
-    List slices can be assigned into! For example,
-
-        l = [0, 0, 0, 0, 0, 0, 0, 0]
-        l[:4] = range(4)
-        print(l)  # => [0, 1, 2, 3, 0, 0, 0, 0]
-
-    In this case, we put the first half of the word into every other character
-    (slicing with a step size of 2) starting at index 0, and put the reversed
-    second half of the word into every other character starting at index 1.
-
-    Then, we can test if each letter is less than its neighbor alphabetically
-    by zipping together the letters and the offset letters, and tuple-unpack
-    inside the list comprehension.
-
-    To be completely honest, a purely iterative approach would work just as
-    well, if not better (less auxiliary memory, more readable), but I wanted
-    to illustrate some cool features of Python (assigning into list slices as
-    Lvalues, zipping a sequence with itself to generate pairs, etc).
-    """
-    word = word.upper()
-    letters = [None] * len(word)
-    half = (len(word) + 1) // 2
-    letters[::2] = word[:half]
-    letters[1::2] = word[:half - 1:-1]
-    return all([left <= right for left, right in zip(letters, letters[1:])])
-
-
-def is_cyclone_phrase(phrase):
-    """Returns whether all the space-delimited words in phrases are cyclone words
-
-    A phrase is a cyclone phrase if and only if all of its component words are
-    cyclone words, so we first split the phrase into words using .split(), and then
-    check if all of the words are cyclone words.
-    """
-    return all([is_cyclone_word(word) for word in phrase.split()])
-
-
-def is_triangle_number(num):
-    """Returns whether a number is a triangle number.
-
-    A triangle number n is one for which there exists an integer x with
-    n = (x^2 + x) / 2. Solving this quadratic equation gives
-
-        x = (-1 +- sqrt(1 + 8n)) / 2
-
-    which will be an integer if and only if 1 + 8n is a perfect square.
-    Note: if 1 + 8n is a perfect square, it's square root will be odd,
-    so we don't need to worry about the division by 2.
-
-    A number is a perfect square if and only if the square of the floor of
-    the square root gives back the original number.
-
-    Note: there are other ways to solve this problem (notably, the iterative
-    approach of generating triangle numbers until you either hit or pass num)
-    which will work fine! In which cases would each approach be better?
-    """
-    discrim = 8 * num + 1
-    base = int(math.sqrt(discrim))
-    return base * base == discrim
-
-
-def is_triangle_word(word):
-    """Returns whether a word is a triangle word.
-
-    A word is a triangle word if and only if the sum of its character values is
-    a triangle number. Here, we show the iterative approach (as a change-of-pace),
-    although we'll see a way to solve this functionally Week 4.
-    """
-    count = 0
-    for ch in word.upper().strip():
-        count += ord(ch) - ord('A') + 1
-    return is_triangle_number(count)
-
-
-def get_word_counts():
-    """Print the number of English words satisfying a number of conditions.
-
-    Specifically, print the number of English words that are
-        (1) Triad words
-        (2) Surpassing words
-        (3) Cyclone words
-        (4) Triangle words
-    """
-    english = get_english_words(DICTIONARY_PATH)
-    triad_words = [word for word in english if is_triad_word(word, english)]
-    surpassing_words = [word for word in english if is_surpassing_word(word)]
-    cyclone_words = [word for word in english if is_cyclone_word(word)]
-    triangle_words = [word for word in english if is_triangle_word(word)]
-
-    print("Number of triad words: {}".format(len(triad_words)))
-    print("Number of surpassing words: {}".format(len(surpassing_words)))
-    print("Number of cyclone words: {}".format(len(cyclone_words)))
-    print("Number of triangle words: {}".format(len(triangle_words)))
-
-
-def get_english_words(dictionary_path):
-    """Returns a set of trimmed, capitalized English words from a path to a dictionary.
-
-    The dictionary is assumed to have one English word per line.
-
-    If dictionary_path can not be read or is formatted incorrectly, a default English word
-    set is returned containing some fruits.
-
-    Note that we keep the file open for as little time as possible, which is
-    generally a good practice. One downside of this implementation is that it
-    buffers all of the words in memory (first as a string, and later as a collection
-    of lines, but the word list is a known finite size (and that size isn't *too*
-    big), so this approach will work fine. Iterating through the lines in the file
-    with a for loop could mitigate this downside.
-
-    We then use a set comprehension to build an uppercased collection of all of
-    the words in the dictionary.
-
-    Note that we choose to represent the English words as a set, because we want fast
-    membership testing (using `in`) and also want to be able to iterate over all words.
-    """
-    try:
-        with open(dictionary_path, 'r') as f:
-            content = f.read()
-        return {line.strip().upper() for line in content.split('\n') if line}
-    except OSError:
-        return {'APPLE', 'BANANA', 'PEAR', 'ORANGE'}
-
-
-def polygon_collision(poly1, poly2):
-    """As a bonus problem, we're not publishing the solution to this :)
-
-    If you're interested in reading more about the strategy to solve it,
-    check out https://www.codeproject.com/Articles/15573/2D-Polygon-Collision-Detection
-    """
-    pass
-
