@@ -439,11 +439,59 @@ def matmul_lazy(m1, m2):
     return map(lambda row: (dot_product(row, col) for col in transpose(m2)), m1)
 
 
+################
+#  DECORATORS  #
+################
+def timeit(fn):
+    """
+    Decorator that prints out the duration that a function took to execute.
+    
+    Arguments:
+        fn (function) -- The function to time.
+    """
+    def modified_fn(*args, **kwargs):
+        before = time.time()
+        out = fn(*args, **kwargs)
+        after = time.time()
+        
+        delta = (after - before) * 1000
+        print("Function duration: {} ms".format(delta))
+        
+        return out
+    
+    return modified_fn
+
+
+def timeit_challenge(num_iterations=1):
+    """
+    Decorator that prints out the duration that a function took to execute.
+    
+    Arguments:
+        num_iterations -- The number of times to run the function.
+    """
+    def wrapper(fn):
+        def modified_fn(*args, **kwargs):
+            before = time.time()
+            
+            for _ in range(num_iterations):
+                out = fn(*args, **kwargs)
+            
+            after = time.time()
+            
+            delta = (after - before) * 1000 / num_iterations
+            print("Average function duration: {} ms for {} iterations".format(delta, num_iterations))
+            
+            return out
+        return modified_fn
+    return wrapper
+
+
 ##############
 ##############
 ##  PART 2  ##
 ##############
 ##############
+
 
 ################
 #  DECORATORS  #
