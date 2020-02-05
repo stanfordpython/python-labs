@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Assignment 3: Wallscraper
+Reddit Wallscraper
 Course: CS 41
 Name: <YOUR NAME>
 SUNet: <SUNet ID>
