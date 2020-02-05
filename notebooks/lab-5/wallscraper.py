@@ -20,7 +20,11 @@ class RedditPost:
     def __str__(self):
         return ""
 
-
+    
+def query():
+    pass
+    
+    
 def main():
     pass
 
