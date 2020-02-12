@@ -11,7 +11,9 @@ This will download the Lab-6 folder from GitHub into your current directory.
 
 That's all for setup instructions - have fun with the lab! 😊
 
+```
 With ❤️ and 🦄,
 @coopermj, @psarin
+```
 
 (We also owe credit to @sredmond, who wrote today's OOP lab - minor modifications to that lab were made by @coopermj, but it was almost entirely the work of @sredmond).
