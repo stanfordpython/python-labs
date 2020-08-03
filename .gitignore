@@ -1,2 +1,3 @@
 .ipynb_checkpoints/
 *.psd
+.DS_Store
