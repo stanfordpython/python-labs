@@ -425,4 +425,4 @@ Skim [Python’s Style Guide](https://www.python.org/dev/peps/pep-0008/), keepin
 
 *Credit to Sam Redmond, Puzzling.SE (specifically [JLee](https://puzzling.stackexchange.com/users/463/jlee)), ProjectEuler and InterviewCake for several problem ideas*
 
-> With 🦄 by @psarin and @coopermj[]([]([]([]([]()))))
+> With 🦄 by @psarin and @coopermj
