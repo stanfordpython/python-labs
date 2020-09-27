@@ -172,7 +172,7 @@ class Harness(cmd.Cmd):
             print(f"The function raised an error: {e}.")
             print(traceback.format_exc(chain=False))
         else:
-            print(f"Out: {repr(retval)}")
+            print(f"=> {repr(retval)}")
             print()
 
 
@@ -184,7 +184,7 @@ class Harness(cmd.Cmd):
 
     def do_list(self, arg):
         'Prints a list of functions that are available for testing.'
-        print(f"Functions\n=========\n{self._make_choices_lst(choices)}\n")
+        print(f"Functions\n=========\n{self._make_choices_lst(self.choices)}\n")
 
 
 if __name__ == '__main__':
